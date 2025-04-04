@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const userRouter = require("./routes/userRouter");
 const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
+const authRouter=require("./routes/authRouter")
 connectDB();
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/activity", activityRouter);
+app.use("/api", authRouter)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
