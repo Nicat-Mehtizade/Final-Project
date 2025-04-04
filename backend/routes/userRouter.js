@@ -1,5 +1,6 @@
 const express=require("express")
 const {getAllUsers,getUserById,deleteUser,uptadeUser}=require("../controllers/userControllers")
+const upload=require("../middlewares/multerMiddleware")
 
 const router=express.Router()
 

@@ -67,7 +67,10 @@ const uptadeActivity = async (req, res) => {
   try {
     const updatedActivity = await Activity.findByIdAndUpdate(
       id,
-      { ...req.body },
+      {
+        ...req.body,
+        image: req.file && `http://localhost:8000/${req.file.path}`,
+      },
       { new: true }
     );
 
@@ -89,8 +92,12 @@ const uptadeActivity = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
+  const imageUrl = `http://localhost:8000/${req.file.path}`;
   try {
-    const addedActivity = await Activity.create({ ...req.body });
+    const addedActivity = await Activity.create({
+      ...req.body,
+      image: imageUrl,
+    });
     await Activity.save();
     res.status(201).json({
       data: addedActivity,
@@ -108,5 +115,5 @@ module.exports = {
   getActivityById,
   deleteActivity,
   uptadeActivity,
-  addActivity
+  addActivity,
 };
