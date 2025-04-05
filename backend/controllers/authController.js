@@ -30,11 +30,11 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (res, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const existUser = await User.findOne({ email });
-    if (!existUser || (await bcrypt.compare(password, existUser.password))) {
+    if (!existUser || !(await bcrypt.compare(password, existUser.password))) {
       return res.status(400).json({
         status: "error",
         message: "Invalid email or password",

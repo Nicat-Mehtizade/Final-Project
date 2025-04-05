@@ -1,0 +1,17 @@
+.yellowLine{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fde047; 
+    clip-path: polygon(60% 0, 80% 0, 40% 100%, 20% 100%);
+    z-index: 0;
+}
+
+.secondYellowLine{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fde047; 
+    clip-path: polygon(0 0,15% 0,0 20%);
+    border-top-left-radius: 8px;
+}

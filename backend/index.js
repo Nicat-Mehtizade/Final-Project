@@ -7,12 +7,26 @@ const userRouter = require("./routes/userRouter");
 const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
+const session = require("cookie-session");
+const passport = require("passport");
+const path=require("path")
 connectDB();
-
+require("./config/passport")
 dotenv.config();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(
+  session({
+    name: "session",
+    keys: [process.env.SESSION_SECRET || "secret"],
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/users", userRouter);
 app.use("/api/comments", commentRouter);

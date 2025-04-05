@@ -62,7 +62,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const uptadeUser = async (req, res) => {
+const updateUser = async (req, res) => {
   const { id } = req.params;
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -92,5 +92,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   deleteUser,
-  uptadeUser,
+  updateUser,
 };
