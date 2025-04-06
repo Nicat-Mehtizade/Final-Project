@@ -15,6 +15,7 @@ import MostPopularSection from "../../components/MostPopularSection";
 import SlideNavBar from "../../components/SlideNavBar";
 import AzerbaijanTravelSection from "../../components/AzerbaijanTravelSection";
 import TourismSection from "../../components/TourismSection";
+import HomeGifSection from "../../components/HomeGifSection";
 
 
 const Home = () => {
@@ -94,6 +95,7 @@ const Home = () => {
       <MostPopularSection sliderData={sliderData} />
       <AzerbaijanTravelSection/>
       <TourismSection tourismData={tourismData}/>
+      <HomeGifSection/>
     </div>
   );
 };
