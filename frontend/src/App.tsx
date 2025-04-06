@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import HomeLayout from "./layout/HomeLayout";
 
+
 function App() {
   return (
     <>
@@ -16,8 +17,11 @@ function App() {
 
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Home />} />
+
         </Route>
         
+
+
       </Routes>
     </>
   );

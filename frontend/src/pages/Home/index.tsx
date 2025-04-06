@@ -8,17 +8,26 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Activity } from "../../types/activityType";
 import "./index.css";
-import { PiHeartStraightBold } from "react-icons/pi";
-import { IoSearch } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUserLarge } from "react-icons/fa6";
+import { RxHamburgerMenu } from "react-icons/rx";
+import MostPopularSection from "../../components/MostPopularSection";
+import SlideNavBar from "../../components/SlideNavBar";
+import AzerbaijanTravelSection from "../../components/AzerbaijanTravelSection";
+import TourismSection from "../../components/TourismSection";
+
 
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
+  const [tourismData,setTourismData]=useState<Activity[]>([])
+
   const getAllActivities = async () => {
     try {
       const response = await axios(`${BASE_URL}/activity`);
       setSliderData(response.data.data.slice(0, 8));
+     
+      const tourismActivities=response.data.data.filter((q:Activity)=>q.genre=="tourism")
+      setTourismData(tourismActivities)
     } catch (error) {
       console.log(error);
     }
@@ -26,12 +35,27 @@ const Home = () => {
   useEffect(() => {
     getAllActivities();
   }, []);
+  console.log(tourismData);
   return (
     <div className="bg-gradient-to-br from-gray-300 to-white">
       <div className="yellowLine"></div>
       <div className="max-w-[1400px] mx-auto">
-        <div>
-          <div className="py-6">
+        <div className="bg-white flex lg:hidden justify-between items-center py-8 px-3 relative z-2">
+          <button>
+            <RxHamburgerMenu className="text-gray-400 text-2xl" />
+          </button>
+          <img
+            className="w-35 cursor-pointer"
+            src="./123-removebg-preview.png"
+            alt="iTicket Logo"
+          />
+          <div className="flex items-center gap-4 text-2xl text-gray-300">
+            <FaShoppingCart className="cursor-pointer" />
+            <FaUserLarge className="bg-yellow-300 w-12 h-12 p-3 rounded-full text-black cursor-pointer" />
+          </div>
+        </div>
+        <div className="relative overflow-hidden">
+          <div className="py-6 mb-4">
             <Swiper
               slidesPerView={1}
               spaceBetween={30}
@@ -51,11 +75,11 @@ const Home = () => {
               {sliderData.map((q) => {
                 return (
                   <SwiperSlide
-                    className="!rounded-2xl overflow-hidden"
+                    className="!lg:rounded-2xl overflow-hidden"
                     key={q._id}
                   >
                     <img
-                      className="w-full h-full object-cover rounded-2xl cursor-pointer"
+                      className="w-full h-full object-cover lg:rounded-2xl cursor-pointer"
                       src={q.image}
                       alt=""
                     />
@@ -63,31 +87,13 @@ const Home = () => {
                 );
               })}
             </Swiper>
-            <div className="absolute flex justify-between items-center left-30 top-15 z-50 w-[85%]">
-              <img
-                className="w-40 cursor-pointer"
-                src="./123-removebg-preview.png"
-                alt="iTicket Logo"
-              />
-              <div className="flex gap-4 text-white font-bold text-xl">
-                <button className="nav-button">All events</button>
-                <button className="nav-button">Concert</button>
-                <button className="nav-button ">Theatre</button>
-                <button className="nav-button">Kids</button>
-                <button className="nav-button">Dream Fest 2025</button>
-                <button className="nav-button">Sport</button>
-                <button className="cursor-pointer">...</button>
-              </div>
-              <div className="flex items-center font-semibold text-2xl gap-5 text-white">
-                <PiHeartStraightBold className="cursor-pointer" />
-                <IoSearch className="cursor-pointer"/>
-                <FaShoppingCart className="cursor-pointer"/>
-                <FaUserLarge  className="bg-yellow-300 w-12 h-12 p-3 rounded-full text-black cursor-pointer" />
-              </div>
-            </div>
+            <SlideNavBar />
           </div>
         </div>
       </div>
+      <MostPopularSection sliderData={sliderData} />
+      <AzerbaijanTravelSection/>
+      <TourismSection tourismData={tourismData}/>
     </div>
   );
 };
