@@ -161,7 +161,7 @@ const Register = () => {
                 ): null}
                 <button
                   type="submit"
-                  className="bg-yellow-300 text-black rounded-lg p-2 font-semibold text-lg cursor-pointer mt-4"
+                  className={styles.button}
                 >
                   Register
                 </button>

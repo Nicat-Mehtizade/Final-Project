@@ -131,7 +131,7 @@ const Login = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-yellow-300 text-black rounded-lg p-2 font-semibold text-lg cursor-pointer mt-1"
+                  className={styles.button}
                 >
                   Login
                 </button>

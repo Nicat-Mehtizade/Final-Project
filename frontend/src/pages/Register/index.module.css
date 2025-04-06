@@ -1,17 +1,48 @@
-.yellowLine{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #fde047; 
-    clip-path: polygon(60% 0, 80% 0, 40% 100%, 20% 100%);
-    z-index: 0;
+.yellowLine {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fde047;
+  clip-path: polygon(60% 0, 80% 0, 40% 100%, 20% 100%);
+  z-index: 0;
 }
 
-.secondYellowLine{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #fde047; 
-    clip-path: polygon(0 0,15% 0,0 20%);
-    border-top-left-radius: 8px;
+.secondYellowLine {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fde047;
+  clip-path: polygon(0 0, 15% 0, 0 20%);
+  border-top-left-radius: 8px;
+}
+.button {
+  background-color: #fde047;
+  border-radius: 8px;
+  padding: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: 0.5s;
+  overflow: hidden;
+  position: relative;
+}
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background-color: white;
+  transition: 0.5s;
+  transform: translateX(-100%) rotate(45deg);
+}
+
+.button:hover::before {
+  transform: translateX(100%) rotate(45deg);
+}
+
+.button:hover {
+  background-color: #fde047;
 }
