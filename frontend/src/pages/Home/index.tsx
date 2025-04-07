@@ -16,11 +16,13 @@ import SlideNavBar from "../../components/SlideNavBar";
 import AzerbaijanTravelSection from "../../components/AzerbaijanTravelSection";
 import TourismSection from "../../components/TourismSection";
 import HomeGifSection from "../../components/HomeGifSection";
+import TheatreSection from "../../components/TheatreSection";
 
 
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
   const [tourismData,setTourismData]=useState<Activity[]>([])
+  const [theatreData,setTheatreData]=useState<Activity[]>([])
 
   const getAllActivities = async () => {
     try {
@@ -28,7 +30,9 @@ const Home = () => {
       setSliderData(response.data.data.slice(0, 8));
      
       const tourismActivities=response.data.data.filter((q:Activity)=>q.genre=="tourism")
+      const theatreActivities=response.data.data.filter((q:Activity)=>q.genre=="theatre")
       setTourismData(tourismActivities)
+      setTheatreData(theatreActivities)
     } catch (error) {
       console.log(error);
     }
@@ -96,6 +100,7 @@ const Home = () => {
       <AzerbaijanTravelSection/>
       <TourismSection tourismData={tourismData}/>
       <HomeGifSection/>
+      <TheatreSection theatreData={theatreData}/>
     </div>
   );
 };
