@@ -90,7 +90,7 @@ const KidsSection = ({kidsData}:KidsSectionProps) => {
         ],
       };
   return (
-    <div className="max-w-[1550px] mx-auto overflow-hidden relative">
+    <div className="max-w-[1550px] mx-auto overflow-hidden relative mb-20">
         <div style={{clipPath: "polygon(0 0 , 100% 0, 100% 10% ,0 100%)"}} className="absolute w-full h-full bg-yellow-300 z-0"></div>
                    <h1 className="text-3xl font-bold py-4 mb-2 ml-10 md:ml-20 lg:ml-30 relative z-10">Kids</h1>
                    <div className="relative z-10">

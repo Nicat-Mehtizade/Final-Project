@@ -18,25 +18,47 @@ import TourismSection from "../../components/TourismSection";
 import HomeGifSection from "../../components/HomeGifSection";
 import TheatreSection from "../../components/TheatreSection";
 import KidsSection from "../../components/KidsSection";
-
-
+import WeekendSection from "../../components/WeekendSection";
+import WhatsNewSection from "../../components/WhatsNewSection";
+import AnimationBottomSection from "../../components/AnimationBottomSection";
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
-  const [tourismData,setTourismData]=useState<Activity[]>([])
-  const [theatreData,setTheatreData]=useState<Activity[]>([])
-  const [kidsData,setKidsData]=useState<Activity[]>([])
+  const [tourismData, setTourismData] = useState<Activity[]>([]);
+  const [theatreData, setTheatreData] = useState<Activity[]>([]);
+  const [kidsData, setKidsData] = useState<Activity[]>([]);
+  const [randomData, setRandomData] = useState<Activity[]>([]);
+  const [whatsNewData, setWhatsNewData] = useState<Activity[]>([]);
 
   const getAllActivities = async () => {
     try {
       const response = await axios(`${BASE_URL}/activity`);
       setSliderData(response.data.data.slice(0, 8));
-     
-      const tourismActivities=response.data.data.filter((q:Activity)=>q.genre=="tourism")
-      const theatreActivities=response.data.data.filter((q:Activity)=>q.genre=="theatre")
-      const kidsActivities=response.data.data.filter((q:Activity)=>q.genre=="kids")
-      setTourismData(tourismActivities)
-      setTheatreData(theatreActivities)
-      setKidsData(kidsActivities)
+
+      const tourismActivities = response.data.data.filter(
+        (q: Activity) => q.genre == "tourism"
+      );
+      const theatreActivities = response.data.data.filter(
+        (q: Activity) => q.genre == "theatre"
+      );
+      const kidsActivities = response.data.data.filter(
+        (q: Activity) => q.genre == "kids"
+      );
+      setTourismData(tourismActivities);
+      setTheatreData(theatreActivities);
+      setKidsData(kidsActivities);
+      setRandomData([
+        ...tourismActivities.slice(0, 2),
+        ...theatreActivities.slice(0, 2),
+        ...kidsActivities.slice(0, 2),
+      ]);
+      setWhatsNewData(
+        [...response.data.data]
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .slice(0, 6)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -46,8 +68,11 @@ const Home = () => {
   }, []);
   console.log(tourismData);
   return (
-    <div className="bg-gradient-to-br from-gray-300 to-white">
-      <div style={{ clipPath: "polygon(50% 0, 80% 0, 0 100%, 0 60%)" }} className="absolute w-full h-full bg-yellow-300 z-0"></div>
+    <div className="bg-gradient-to-b from-gray-300 to-white">
+      <div
+        style={{ clipPath: "polygon(50% 0, 80% 0, 0 100%, 0 60%)" }}
+        className="absolute w-full h-full bg-yellow-300 z-0"
+      ></div>
       <div className="max-w-[1400px] mx-auto">
         <div className="bg-white flex lg:hidden justify-between items-center py-8 px-3 relative z-2">
           <button>
@@ -64,7 +89,7 @@ const Home = () => {
           </div>
         </div>
         <div className="relative overflow-hidden">
-          <div className="py-6 mb-4">
+          <div className="py-6 mb-4 ">
             <Swiper
               slidesPerView={1}
               spaceBetween={30}
@@ -79,7 +104,7 @@ const Home = () => {
               }}
               centeredSlides={true}
               modules={[Navigation, Autoplay]}
-              className="mySwiper !relative"
+              className="mySwiper !relative "
             >
               {sliderData.map((q) => {
                 return (
@@ -101,11 +126,14 @@ const Home = () => {
         </div>
       </div>
       <MostPopularSection sliderData={sliderData} />
-      <AzerbaijanTravelSection/>
-      <TourismSection tourismData={tourismData}/>
-      <HomeGifSection/>
-      <TheatreSection theatreData={theatreData}/>
-      <KidsSection kidsData={kidsData}/>
+      <AzerbaijanTravelSection />
+      <TourismSection tourismData={tourismData} />
+      <HomeGifSection />
+      <TheatreSection theatreData={theatreData} />
+      <KidsSection kidsData={kidsData} />
+      <WeekendSection randomData={randomData} />
+      <WhatsNewSection whatsNewData={whatsNewData} />
+      <AnimationBottomSection/>
     </div>
   );
 };
