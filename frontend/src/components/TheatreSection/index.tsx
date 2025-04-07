@@ -91,7 +91,7 @@ const TheatreSection = ({theatreData}:TheatreSectionProps) => {
         ],
       };
   return (
-      <div className="max-w-[1550px] mx-auto overflow-hidden">
+      <div className="max-w-[1550px] mx-auto overflow-hidden mb-20">
                 <h1 className="text-3xl font-bold py-8 mb-2 ml-10 md:ml-20 lg:ml-30">Theatre</h1>
                 <div>
                   <Slider {...settings}>

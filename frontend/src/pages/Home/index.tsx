@@ -17,12 +17,14 @@ import AzerbaijanTravelSection from "../../components/AzerbaijanTravelSection";
 import TourismSection from "../../components/TourismSection";
 import HomeGifSection from "../../components/HomeGifSection";
 import TheatreSection from "../../components/TheatreSection";
+import KidsSection from "../../components/KidsSection";
 
 
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
   const [tourismData,setTourismData]=useState<Activity[]>([])
   const [theatreData,setTheatreData]=useState<Activity[]>([])
+  const [kidsData,setKidsData]=useState<Activity[]>([])
 
   const getAllActivities = async () => {
     try {
@@ -31,8 +33,10 @@ const Home = () => {
      
       const tourismActivities=response.data.data.filter((q:Activity)=>q.genre=="tourism")
       const theatreActivities=response.data.data.filter((q:Activity)=>q.genre=="theatre")
+      const kidsActivities=response.data.data.filter((q:Activity)=>q.genre=="kids")
       setTourismData(tourismActivities)
       setTheatreData(theatreActivities)
+      setKidsData(kidsActivities)
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +47,7 @@ const Home = () => {
   console.log(tourismData);
   return (
     <div className="bg-gradient-to-br from-gray-300 to-white">
-      <div className="yellowLine"></div>
+      <div style={{ clipPath: "polygon(50% 0, 80% 0, 0 100%, 0 60%)" }} className="absolute w-full h-full bg-yellow-300 z-0"></div>
       <div className="max-w-[1400px] mx-auto">
         <div className="bg-white flex lg:hidden justify-between items-center py-8 px-3 relative z-2">
           <button>
@@ -101,6 +105,7 @@ const Home = () => {
       <TourismSection tourismData={tourismData}/>
       <HomeGifSection/>
       <TheatreSection theatreData={theatreData}/>
+      <KidsSection kidsData={kidsData}/>
     </div>
   );
 };
