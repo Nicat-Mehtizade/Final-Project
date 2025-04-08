@@ -21,6 +21,7 @@ import KidsSection from "../../components/KidsSection";
 import WeekendSection from "../../components/WeekendSection";
 import WhatsNewSection from "../../components/WhatsNewSection";
 import AnimationBottomSection from "../../components/AnimationBottomSection";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
   const [tourismData, setTourismData] = useState<Activity[]>([]);
@@ -28,7 +29,7 @@ const Home = () => {
   const [kidsData, setKidsData] = useState<Activity[]>([]);
   const [randomData, setRandomData] = useState<Activity[]>([]);
   const [whatsNewData, setWhatsNewData] = useState<Activity[]>([]);
-
+  const nav=useNavigate()
   const getAllActivities = async () => {
     try {
       const response = await axios(`${BASE_URL}/activity`);
@@ -66,7 +67,12 @@ const Home = () => {
   useEffect(() => {
     getAllActivities();
   }, []);
-  console.log(tourismData);
+  
+  const handleDetails=async(id:string)=>{
+    nav(`activity/${id}`)
+  }
+
+
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
       <div
@@ -113,6 +119,7 @@ const Home = () => {
                     key={q._id}
                   >
                     <img
+                    onClick={()=>handleDetails(q._id)}
                       className="w-full h-full object-cover lg:rounded-2xl cursor-pointer"
                       src={q.image}
                       alt=""

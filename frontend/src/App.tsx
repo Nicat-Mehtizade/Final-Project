@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import HomeLayout from "./layout/HomeLayout";
+import Details from "./pages/Details";
 
 
 function App() {
@@ -17,7 +18,9 @@ function App() {
 
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Home />} />
-
+          <Route path="activity">
+                <Route path=":id" element={<Details/>}/>
+          </Route>
         </Route>
         
 

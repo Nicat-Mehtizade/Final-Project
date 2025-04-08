@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Activity } from "../../types/activityType"; 
+import { useNavigate } from "react-router-dom";
 
 interface ArrowProps {
     className: string;
@@ -13,7 +14,7 @@ interface MostPopularSectionProps {
     sliderData: Activity[];
   }
 const MostPopularSection = ({sliderData}:MostPopularSectionProps) => {
-
+const nav=useNavigate()
     function SampleNextArrow({ className, style, onClick }: ArrowProps) {
         return (
           <div
@@ -91,6 +92,9 @@ const MostPopularSection = ({sliderData}:MostPopularSectionProps) => {
           },
         ],
       };
+      const handleDetails=async(id)=>{
+        nav(`activity/${id}`)
+      }
   return (
           <div className="max-w-[1550px] mx-auto overflow-hidden">
             <h1 className="text-3xl font-bold py-8 mb-2 ml-10 md:ml-20 lg:ml-30 relative z-1">Popular events</h1>
@@ -98,7 +102,7 @@ const MostPopularSection = ({sliderData}:MostPopularSectionProps) => {
               <Slider {...settings}>
                 {sliderData.map((q) => {
                   return (
-                    <div
+                    <div onClick={()=>handleDetails(q._id)}
                       className="px-3 relative group group-hover:bg-white overflow-hidden rounded-lg"
                       key={q._id}
                     >

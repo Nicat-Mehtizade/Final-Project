@@ -8,6 +8,7 @@ export interface Activity{
     language: string;
     price: number[];
     showtimes: Showtime[];
+    ageLimit: number,
     location: Location;
     createdAt?: Date;
     updatedAt?: Date;

@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Activity } from "../../types/activityType"; 
+import { useNavigate } from "react-router-dom";
 
 interface ArrowProps {
     className: string;
@@ -14,6 +15,7 @@ interface WeekendSectionProps {
   }
 
 const WeekendSection = ({randomData}:WeekendSectionProps) => {
+  const nav=useNavigate()
     function SampleNextArrow({ className, style, onClick }: ArrowProps) {
         return (
           <div
@@ -91,6 +93,9 @@ const WeekendSection = ({randomData}:WeekendSectionProps) => {
           },
         ],
       };
+      const handleDetails=async(id:string)=>{
+        nav(`activity/${id}`)
+      }
   return (
       <div className="max-w-[1550px] mx-auto overflow-hidden relative mb-20">
              <div style={{clipPath: "polygon(0 0 , 100% 0, 100% 10% ,0 100%)"}} className="absolute w-full h-full bg-yellow-300 z-0"></div>
@@ -99,7 +104,7 @@ const WeekendSection = ({randomData}:WeekendSectionProps) => {
                           <Slider {...settings}>
                             {randomData.map((q) => {
                               return (
-                                <div
+                                <div onClick={()=>handleDetails(q._id)}
                                   className="px-3 relative group group-hover:bg-white overflow-hidden rounded-lg"
                                   key={q._id}
                                 >

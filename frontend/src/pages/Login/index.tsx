@@ -7,9 +7,12 @@ import { BASE_URL } from "../../constant";
 import styles from "./index.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { loginValidation } from "../../validation/emailValidation";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const nav = useNavigate();
+  const { setToken } = useContext(AuthContext);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -19,7 +22,9 @@ const Login = () => {
     onSubmit: async (values) => {
       console.log(values);
       try {
-        const response = await axios.post(`${BASE_URL}/login`, values);
+        const response = await axios.post(`${BASE_URL}/login`, values,{
+          withCredentials: true
+        });
         console.log(response);
 
         if (response.data.status == "success") {
@@ -27,6 +32,7 @@ const Login = () => {
             duration: 2000,
           });
           setTimeout(() => {
+            setToken(response.data.token)
             nav("/");
           }, 2000);
         }
