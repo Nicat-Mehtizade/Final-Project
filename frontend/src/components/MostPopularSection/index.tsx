@@ -78,6 +78,7 @@ const MostPopularSection = ({sliderData}:MostPopularSectionProps) => {
             settings: {
               slidesToShow: 2, 
               centerPadding: "30px", 
+              arrows: false,
             },
           },
           {
@@ -85,13 +86,14 @@ const MostPopularSection = ({sliderData}:MostPopularSectionProps) => {
             settings: {
               slidesToShow: 1, 
               centerPadding: "0px", 
+              arrows: false,
             },
           },
         ],
       };
   return (
           <div className="max-w-[1550px] mx-auto overflow-hidden">
-            <h1 className="text-3xl font-bold py-8 mb-2 ml-10 md:ml-20 lg:ml-30">Popular events</h1>
+            <h1 className="text-3xl font-bold py-8 mb-2 ml-10 md:ml-20 lg:ml-30 relative z-1">Popular events</h1>
             <div>
               <Slider {...settings}>
                 {sliderData.map((q) => {

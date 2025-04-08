@@ -24,8 +24,8 @@ const Footer = () => {
     <div>
       <div className="max-w-[1280px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-between mb-5">
-          <div className="mb-5 md:mb-0 flex justify-between md:block md:border-">
-            <img className="w-40 mb-20" src="./123-removebg-preview.png" alt="" />
+          <div className="mb-5 md:mb-0">
+            <img className="w-40 mb-10 md:mb-20" src="./123-removebg-preview.png" alt="" />
             <div>
               <p className="text-gray-600 text-lg ">Support service</p>
               <p className="text-2xl font-bold">+994 12 424 24 24</p>
@@ -54,9 +54,9 @@ const Footer = () => {
             <img className="w-50" src="https://iticket.az/images/cards.svg" alt="" />
           </div>
         </div>
-        <div className="flex items-center justify-between ">
-          <p className="text-gray-500 text-lg font-medium">ITICKET® is a registered trademark of «ITICKET» LLC.</p>
-          <div className="flex bg-yellow-300 gap-10 p-5 text-3xl">
+        <div className="md:flex items-center justify-between ">
+          <p className="text-gray-500 text-sm md:text-lg font-medium">ITICKET® is a registered trademark of «ITICKET» LLC.</p>
+          <div className="flex justify-center bg-yellow-300 gap-10 p-5 text-3xl">
             <button className="cursor-pointer" onClick={facebookBtn}><FaFacebookF /></button>
             <button className="cursor-pointer" onClick={instagramBtn}><RiInstagramFill /></button>
             <button className="cursor-pointer" onClick={tiktokBtn}><FaTiktok /></button>

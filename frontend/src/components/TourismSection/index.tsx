@@ -78,6 +78,7 @@ const TourismSection = ({tourismData}:TourismSectionProps) => {
             breakpoint: 768, 
             settings: {
               slidesToShow: 2, 
+              arrows: false,
               centerPadding: "30px", 
             },
           },
@@ -85,6 +86,7 @@ const TourismSection = ({tourismData}:TourismSectionProps) => {
             breakpoint: 480, 
             settings: {
               slidesToShow: 1, 
+              arrows: false,
               centerPadding: "0px", 
             },
           },

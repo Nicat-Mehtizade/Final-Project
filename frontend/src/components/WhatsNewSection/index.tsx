@@ -76,6 +76,7 @@ const WhatsNewSection = ({whatsNewData}:WhatsNewSectionProps) => {
             breakpoint: 768, 
             settings: {
               slidesToShow: 2, 
+              arrows: false,
               centerPadding: "30px", 
             },
           },
@@ -83,6 +84,7 @@ const WhatsNewSection = ({whatsNewData}:WhatsNewSectionProps) => {
             breakpoint: 480, 
             settings: {
               slidesToShow: 1, 
+              arrows: false,
               centerPadding: "0px", 
             },
           },

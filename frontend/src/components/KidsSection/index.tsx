@@ -77,6 +77,7 @@ const KidsSection = ({kidsData}:KidsSectionProps) => {
             breakpoint: 768, 
             settings: {
               slidesToShow: 2, 
+              arrows: false,
               centerPadding: "30px", 
             },
           },
@@ -84,6 +85,7 @@ const KidsSection = ({kidsData}:KidsSectionProps) => {
             breakpoint: 480, 
             settings: {
               slidesToShow: 1, 
+              arrows: false,
               centerPadding: "0px", 
             },
           },
