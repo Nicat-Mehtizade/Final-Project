@@ -93,7 +93,7 @@ const WhatsNewSection = ({whatsNewData}:WhatsNewSectionProps) => {
         ],
       };
       const handleDetails=async(id:string)=>{
-        nav(`activity/${id}`)
+        nav(`events/${id}`)
       }
   return (
      <div className="max-w-[1550px] mx-auto overflow-hidden relative mb-20">

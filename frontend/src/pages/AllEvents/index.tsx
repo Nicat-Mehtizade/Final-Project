@@ -1,0 +1,163 @@
+import { useEffect, useState } from "react";
+import { Activity } from "../../types/activityType";
+import { BASE_URL } from "../../constant";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+
+const AllEvents = () => {
+  const [allActivities, setAllActivities] = useState<Activity[]>([]);
+  const [priceRange, setPriceRange] = useState<number[]>([1, 9250]);
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+  const nav = useNavigate();
+
+  const getAllActivities = async () => {
+    try {
+      const response = await axios(`${BASE_URL}/activity`);
+      setAllActivities(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllActivities();
+  }, []);
+
+  const handleDetails = async (id: string) => {
+    nav(`/events/${id}`);
+  };
+
+  function valuetext(value: number) {
+    return `${value}°C`;
+  }
+
+  const handlePriceChange = (event: Event, newValue: number | number[]) => {
+    setPriceRange(newValue as number[]);
+  };
+
+  const filteredActivities = allActivities.filter((a) => {
+    const minPrice = Math.min(...a.price);
+    return minPrice >= priceRange[0] && minPrice <= priceRange[1];
+  });
+
+  return (
+    <div className="bg-gradient-to-b from-gray-200 to-white py-12">
+      <div className="max-w-[1320px] mx-auto">
+        <div>
+          <h1 className="text-3xl font-medium mb-10">All events</h1>
+          <div className="md:flex md:justify-around">
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Start date"
+                  className="border-yellow-300"
+                  value={startDate}
+                  onChange={(newValue) => setStartDate(newValue)}
+                />
+                <DatePicker
+                  label="End date"
+                  value={endDate}
+                  onChange={(newValue) => setEndDate(newValue)}
+                />
+              </LocalizationProvider>
+            </div>
+            <div className="relative md:w-[35%] bg-white rounded-full p-2 py-3 shadow-xl ">
+              <p className="text-center font-semibold">
+                Price from {priceRange[0].toFixed(2)} ₼ to{" "}
+                {priceRange[1].toFixed(2)} ₼
+              </p>
+              <Box className="absolute top-7 md:top-9.5 left-6" sx={{ width: "90%" }}>
+                <Slider
+                  track="inverted"
+                  aria-labelledby="track-inverted-range-slider"
+                  value={priceRange}
+                  onChange={handlePriceChange}
+                  valueLabelDisplay="auto"
+                  getAriaValueText={valuetext}
+                  min={1}
+                  max={9250}
+                  sx={{
+                    color: "#FFD700",
+                    height: 5,
+                    "& .MuiSlider-thumb": {
+                      borderRadius: "50%",
+                      height: 24,
+                      width: 24,
+                      "&:hover": {
+                        boxShadow: "0 0 0 8px rgba(255, 215, 0, 0.3)",
+                      },
+                    },
+                    "& .MuiSlider-track": {
+                      backgroundColor: "#FFD700",
+                      border: "none",
+                    },
+                    "& .MuiSlider-rail": {
+                      backgroundColor: "#FFD700",
+                    },
+                    "&.Mui-focusVisible": {
+                      boxShadow: "0 0 0 8px rgba(255, 215, 0, 0.5)",
+                      outline: "none",
+                    },
+                    "& .MuiSlider-valueLabel": {
+                      backgroundColor: "#FFD700",
+                      color: "black",
+                    },
+                  }}
+                />
+              </Box>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 gap-y-10 py-5">
+            {filteredActivities ? (
+              filteredActivities.map((a) => {
+                return (
+                  <div
+                    onClick={() => handleDetails(a._id)}
+                    className="px-3 relative group group-hover:bg-white overflow-hidden rounded-lg"
+                    key={a._id}
+                  >
+                    <div className="relative">
+                      <img
+                        className="rounded-xl shadow-md transition duration-300 group-hover:scale-90 group-hover:translate-y-[-15px] object-cover h-100 w-full cursor-pointer"
+                        src={a.image}
+                        alt={a.title}
+                      />
+                    </div>
+                    <p className="absolute top-2 right-5 bg-yellow-300 font-bold text-lg rounded-full p-3 transform duration-300 group-hover:top-4 group-hover:right-9 transition-all">
+                      from {a.price[0]} ₼
+                    </p>
+                    <div>
+                      <p className="text-white absolute bottom-10 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-10.5 transition-all duration-300 group-hover:text-gray-500 group-hover:text-sm">
+                        {new Date(a.date).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
+                      <p className="text-white absolute bottom-2 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-[-3px] transition-all duration-300 group-hover:text-black group-hover:text-lg">
+                        {a.title.length > 20
+                          ? a.title.slice(0, 20) + "..."
+                          : a.title}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div>There is no activity,yet!</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AllEvents;

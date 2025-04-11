@@ -94,7 +94,7 @@ const nav=useNavigate()
         ],
       };
       const handleDetails=async(id:string)=>{
-        nav(`activity/${id}`)
+        nav(`events/${id}`)
       }
   return (
       <div className="max-w-[1550px] mx-auto overflow-hidden mb-20">

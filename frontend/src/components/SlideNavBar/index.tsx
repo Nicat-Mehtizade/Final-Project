@@ -10,24 +10,27 @@ import { TbLockPassword } from "react-icons/tb";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useState } from "react";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
+import { NavLink } from "react-router-dom";
 
 const SlideNavBar = () => {
-  const token = getTokenFromCookie()
+  const token = getTokenFromCookie();
   console.log(token);
   const [profileVisible, setProfileVisible] = useState(false);
 
-  const login=()=>{
-    window.location.href="http://localhost:5173/login"
-  }
+  const login = () => {
+    window.location.href = "http://localhost:5173/login";
+  };
   return (
     <div className="absolute  justify-between items-center left-10 top-15 z-50 lg:w-[95%] hidden lg:flex">
-      <img
-        className="w-40 cursor-pointer"
-        src="./123-removebg-preview.png"
-        alt="iTicket Logo"
-      />
+      <NavLink to={"/"}>
+        <img
+          className="w-40 cursor-pointer"
+          src="/123-removebg-preview.png"
+          alt="iTicket Logo"
+        />
+      </NavLink>
       <div className="flex gap-4 text-white font-bold text-xl">
-        <button className="nav-button">All events</button>
+        <NavLink to={"/events"} className="nav-button">All events</NavLink>
         <button className="nav-button">Concert</button>
         <button className="nav-button ">Theatre</button>
         <button className="nav-button">Kids</button>
@@ -50,7 +53,7 @@ const SlideNavBar = () => {
           onMouseLeave={() => token && setProfileVisible(false)}
           className="relative"
         >
-          <button onClick={()=> !token && login()}>
+          <button onClick={() => !token && login()}>
             <FaUserLarge
               className={`bg-yellow-300 w-12 h-12 p-3 rounded-full cursor-pointer ${
                 token ? "text-white" : "text-black"

@@ -69,7 +69,7 @@ const Home = () => {
   }, []);
   
   const handleDetails=async(id:string)=>{
-    nav(`activity/${id}`)
+    nav(`events/${id}`)
   }
 
 

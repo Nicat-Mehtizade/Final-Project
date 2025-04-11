@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { BASE_URL } from "../../constant";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -37,9 +37,7 @@ const Details = () => {
   const login = () => {
     window.location.href = "/login";
   };
-  const handleHome = () => {
-    window.location.href = "/";
-  };
+
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
       <div className="max-w-[1350px] mx-auto">
@@ -74,14 +72,15 @@ const Details = () => {
                 </button>
               </div>
               <div className="absolute  justify-between items-center left-10 top-8 z-50 lg:w-[95%] hidden lg:flex">
+                <NavLink to={"/"}>
                 <img
-                  onClick={handleHome}
                   className="w-40 cursor-pointer"
                   src="/123-removebg-preview.png"
                   alt="iTicket Logo"
                 />
+                </NavLink>
                 <div className="flex gap-4 text-white font-bold text-xl">
-                  <button className="nav-button">All events</button>
+                  <NavLink to={"/events"} className="nav-button">All events</NavLink>
                   <button className="nav-button">Concert</button>
                   <button className="nav-button ">Theatre</button>
                   <button className="nav-button">Kids</button>

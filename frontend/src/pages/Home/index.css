@@ -55,7 +55,8 @@
   opacity: 0;
 }
 
-.nav-button:hover::after {
+.nav-button:hover::after,
+.nav-button.active::after {
   width: 100%;
   opacity: 1;
 }
