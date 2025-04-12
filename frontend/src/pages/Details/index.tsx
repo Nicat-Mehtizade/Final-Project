@@ -73,16 +73,22 @@ const Details = () => {
               </div>
               <div className="absolute  justify-between items-center left-10 top-8 z-50 lg:w-[95%] hidden lg:flex">
                 <NavLink to={"/"}>
-                <img
-                  className="w-40 cursor-pointer"
-                  src="/123-removebg-preview.png"
-                  alt="iTicket Logo"
-                />
+                  <img
+                    className="w-40 cursor-pointer"
+                    src="/123-removebg-preview.png"
+                    alt="iTicket Logo"
+                  />
                 </NavLink>
                 <div className="flex gap-4 text-white font-bold text-xl">
-                  <NavLink to={"/events"} end className="nav-button">All events</NavLink>
-                  <button className="nav-button">Concert</button>
-                  <button className="nav-button ">Theatre</button>
+                  <NavLink to={"/events"} end className="nav-button">
+                    All events
+                  </NavLink>
+                  <NavLink to={"/events/concert"} end className="nav-button">
+                    Concert
+                  </NavLink>
+                  <NavLink to={"/events/theatre"} end className="nav-button ">
+                    Theatre
+                  </NavLink>
                   <button className="nav-button">Kids</button>
                   <button className="nav-button">Dream Fest 2025</button>
                   <button className="nav-button">Sport</button>
