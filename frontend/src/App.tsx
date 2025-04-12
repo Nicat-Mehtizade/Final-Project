@@ -9,6 +9,7 @@ import AllEvents from "./pages/AllEvents";
 import ClientLayout from "./layout/Client";
 import ConcertPage from "./pages/ConcertPage";
 import TheatrePage from "./pages/TheatrePage";
+import KidsPage from "./pages/KidsPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<AllEvents />} />
           <Route path="concert" element={<ConcertPage/>}/>
           <Route path="theatre" element={<TheatrePage/>}/>
+          <Route path="kids" element={<KidsPage/>}/>
         </Route>
       </Routes>
     </>

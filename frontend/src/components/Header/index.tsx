@@ -54,7 +54,15 @@ const Header = () => {
             >
               Theatre
             </NavLink>
-            <button className="nav-button">Kids</button>
+            <NavLink
+              to={"/events/kids"}
+              end
+              className={({ isActive }) =>
+                isActive ? "nav-button active" : "nav-button"
+              }
+            >
+              Kids
+            </NavLink>
             <button className="nav-button">Dream Fest 2025</button>
             <button className="nav-button">Sport</button>
             <button className="cursor-pointer">...</button>

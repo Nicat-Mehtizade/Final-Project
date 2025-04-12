@@ -33,7 +33,7 @@ const SlideNavBar = () => {
         <NavLink to={"/events"} end className="nav-button">All events</NavLink>
         <NavLink to={"/events/concert"} end className="nav-button">Concert</NavLink>
         <NavLink to={"/events/theatre"} end className="nav-button ">Theatre</NavLink>
-        <button className="nav-button">Kids</button>
+        <NavLink to={"/events/kids"} end className="nav-button">Kids</NavLink>
         <button className="nav-button">Dream Fest 2025</button>
         <button className="nav-button">Sport</button>
         <button className="cursor-pointer">...</button>
