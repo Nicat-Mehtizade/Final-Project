@@ -89,9 +89,12 @@ const Details = () => {
                   <NavLink to={"/events/theatre"} end className="nav-button ">
                     Theatre
                   </NavLink>
-                  <NavLink to={"/events/kids"} end className="nav-button">Kids</NavLink>
-                  <button className="nav-button">Dream Fest 2025</button>
-                  <button className="nav-button">Sport</button>
+                  <NavLink to={"/events/kids"} end className="nav-button">
+                    Kids
+                  </NavLink>
+                  <NavLink to={"/events/dream-fest"} end className="nav-button">
+                    Dream Fest 2025
+                  </NavLink>
                   <button className="cursor-pointer">...</button>
                 </div>
                 <div className="flex items-center font-semibold text-2xl gap-5 text-white">

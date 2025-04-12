@@ -10,6 +10,7 @@ import ClientLayout from "./layout/Client";
 import ConcertPage from "./pages/ConcertPage";
 import TheatrePage from "./pages/TheatrePage";
 import KidsPage from "./pages/KidsPage";
+import DreamFestPage from "./pages/DreamFestPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="concert" element={<ConcertPage/>}/>
           <Route path="theatre" element={<TheatrePage/>}/>
           <Route path="kids" element={<KidsPage/>}/>
+          <Route path="dream-fest" element={<DreamFestPage/>}/>
         </Route>
       </Routes>
     </>

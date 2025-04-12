@@ -63,8 +63,15 @@ const Header = () => {
             >
               Kids
             </NavLink>
-            <button className="nav-button">Dream Fest 2025</button>
-            <button className="nav-button">Sport</button>
+            <NavLink
+              to={"/events/dream-fest"}
+              end
+              className={({ isActive }) =>
+                isActive ? "nav-button active" : "nav-button"
+              }
+            >
+              Dream Fest 2025
+            </NavLink>
             <button className="cursor-pointer">...</button>
           </div>
           <div className="flex items-center font-semibold text-2xl gap-5 text-gray-500">
