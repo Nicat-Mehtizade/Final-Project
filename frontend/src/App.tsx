@@ -7,6 +7,7 @@ import HomeLayout from "./layout/HomeLayout";
 import Details from "./pages/Details";
 import AllEvents from "./pages/AllEvents";
 import ClientLayout from "./layout/Client";
+import ConcertPage from "./pages/ConcertPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
 
         <Route path="/events" element={<ClientLayout />}>
           <Route index element={<AllEvents />} />
+          <Route path="concert" element={<ConcertPage/>}/>
         </Route>
       </Routes>
     </>

@@ -30,8 +30,8 @@ const SlideNavBar = () => {
         />
       </NavLink>
       <div className="flex gap-4 text-white font-bold text-xl">
-        <NavLink to={"/events"} className="nav-button">All events</NavLink>
-        <button className="nav-button">Concert</button>
+        <NavLink to={"/events"} end className="nav-button">All events</NavLink>
+        <NavLink to={"/events/concert"} className="nav-button">Concert</NavLink>
         <button className="nav-button ">Theatre</button>
         <button className="nav-button">Kids</button>
         <button className="nav-button">Dream Fest 2025</button>

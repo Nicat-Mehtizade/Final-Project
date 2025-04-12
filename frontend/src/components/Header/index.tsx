@@ -16,7 +16,7 @@ const Header = () => {
     window.location.href = "http://localhost:5173/login";
   };
   return (
-    <div className="shadow-xl">
+    <div className="shadow-lg">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex items-center justify-between py-5 ">
           <NavLink to={"/"}>
@@ -29,13 +29,22 @@ const Header = () => {
           <div className="flex gap-4 font-bold text-xl">
             <NavLink
               to={"/events"}
+              end
               className={({ isActive }) =>
                 isActive ? "nav-button active" : "nav-button"
               }
             >
               All events
             </NavLink>
-            <button className="nav-button">Concert</button>
+            <NavLink
+              to={"/events/concert"}
+              end
+              className={({ isActive }) =>
+                isActive ? "nav-button active" : "nav-button"
+              }
+            >
+              Concert
+            </NavLink>
             <button className="nav-button ">Theatre</button>
             <button className="nav-button">Kids</button>
             <button className="nav-button">Dream Fest 2025</button>

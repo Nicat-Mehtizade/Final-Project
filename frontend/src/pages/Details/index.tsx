@@ -80,7 +80,7 @@ const Details = () => {
                 />
                 </NavLink>
                 <div className="flex gap-4 text-white font-bold text-xl">
-                  <NavLink to={"/events"} className="nav-button">All events</NavLink>
+                  <NavLink to={"/events"} end className="nav-button">All events</NavLink>
                   <button className="nav-button">Concert</button>
                   <button className="nav-button ">Theatre</button>
                   <button className="nav-button">Kids</button>

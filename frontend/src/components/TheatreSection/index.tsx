@@ -119,7 +119,7 @@ const nav=useNavigate()
                           </p>
                           <div>
                             <p className="text-white absolute bottom-10 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-10.5 transition-all duration-300 group-hover:text-gray-500 group-hover:text-sm">
-                              {new Date(q.date).toLocaleDateString("en-GB", {
+                              {new Date(q.showtimes[0].startTime).toLocaleDateString("en-GB", {
                                 day: "2-digit",
                                 month: "long",
                                 year: "numeric",

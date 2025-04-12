@@ -9,12 +9,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 const AllEvents = () => {
   const [allActivities, setAllActivities] = useState<Activity[]>([]);
-  const [priceRange, setPriceRange] = useState<number[]>([1, 9250]);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+  const [priceRange, setPriceRange] = useState<number[]>([1, 10000]);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const nav = useNavigate();
 
   const getAllActivities = async () => {
@@ -34,41 +39,45 @@ const AllEvents = () => {
     nav(`/events/${id}`);
   };
 
-  function valuetext(value: number) {
-    return `${value}°C`;
-  }
-
   const handlePriceChange = (event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
   };
 
   const filteredActivities = allActivities.filter((a) => {
     const minPrice = Math.min(...a.price);
-    return minPrice >= priceRange[0] && minPrice <= priceRange[1];
+    const activityDate = dayjs(a.showtimes[0].startTime);
+
+    const isPriceInRange = minPrice >= priceRange[0] && minPrice <= priceRange[1];
+
+    const isStartValid = startDate ? activityDate.isSameOrAfter(startDate, "day") : true;
+    const isEndValid = endDate ? activityDate.isSameOrBefore(endDate, "day") : true;
+
+    return isPriceInRange && isStartValid && isEndValid;
   });
 
   return (
-    <div className="bg-gradient-to-b from-gray-200 to-white py-12">
+    <div className=" py-12">
       <div className="max-w-[1320px] mx-auto">
         <div>
           <h1 className="text-3xl font-medium mb-10">All events</h1>
-          <div className="md:flex md:justify-around">
-            <div>
+          <div className="md:flex md:justify-around mb-5">
+            <div className="mb-4 md:mb-0">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Start date"
-                  className="border-yellow-300"
                   value={startDate}
-                  onChange={(newValue) => setStartDate(newValue)}
+                  onChange={(newValue) => setStartDate(newValue)} 
+                  format="DD/MM/YYYY"
                 />
                 <DatePicker
                   label="End date"
                   value={endDate}
                   onChange={(newValue) => setEndDate(newValue)}
+                  format="DD/MM/YYYY"
                 />
               </LocalizationProvider>
             </div>
-            <div className="relative md:w-[35%] bg-white rounded-full p-2 py-3 shadow-xl ">
+            <div className="relative md:w-[35%] bg-white rounded-full p-2 py-3 shadow-[0px_2px_8px_rgba(0,0,0,0.35)] ">
               <p className="text-center font-semibold">
                 Price from {priceRange[0].toFixed(2)} ₼ to{" "}
                 {priceRange[1].toFixed(2)} ₼
@@ -80,9 +89,8 @@ const AllEvents = () => {
                   value={priceRange}
                   onChange={handlePriceChange}
                   valueLabelDisplay="auto"
-                  getAriaValueText={valuetext}
                   min={1}
-                  max={9250}
+                  max={10000}
                   sx={{
                     color: "#FFD700",
                     height: 5,
@@ -135,7 +143,7 @@ const AllEvents = () => {
                     </p>
                     <div>
                       <p className="text-white absolute bottom-10 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-10.5 transition-all duration-300 group-hover:text-gray-500 group-hover:text-sm">
-                        {new Date(a.date).toLocaleDateString("en-GB", {
+                        {new Date(a.showtimes[0].startTime).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "long",
                           year: "numeric",
