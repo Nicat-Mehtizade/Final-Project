@@ -11,6 +11,8 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { useState } from "react";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { NavLink } from "react-router-dom";
+import { BASE_URL } from "../../constant";
+import axios from "axios";
 
 const SlideNavBar = () => {
   const token = getTokenFromCookie();
@@ -20,6 +22,18 @@ const SlideNavBar = () => {
   const login = () => {
     window.location.href = "http://localhost:5173/login";
   };
+
+  const handleLogout=async()=>{
+    try {
+      const response=await axios.post(`${BASE_URL}/logout`,{},{
+        withCredentials: true
+      })
+      console.log(response.data.message);
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="absolute  justify-between items-center left-10 top-15 z-50 lg:w-[95%] hidden lg:flex">
       <NavLink to={"/"}>
@@ -82,7 +96,7 @@ const SlideNavBar = () => {
                   <TbLockPassword /> Update Password
                 </button>
               </div>
-              <button className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer">
+              <button onClick={handleLogout} className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer">
                 <IoLogOutOutline /> Logout
               </button>
             </div>

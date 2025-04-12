@@ -47,10 +47,15 @@ const AllEvents = () => {
     const minPrice = Math.min(...a.price);
     const activityDate = dayjs(a.showtimes[0].startTime);
 
-    const isPriceInRange = minPrice >= priceRange[0] && minPrice <= priceRange[1];
+    const isPriceInRange =
+      minPrice >= priceRange[0] && minPrice <= priceRange[1];
 
-    const isStartValid = startDate ? activityDate.isSameOrAfter(startDate, "day") : true;
-    const isEndValid = endDate ? activityDate.isSameOrBefore(endDate, "day") : true;
+    const isStartValid = startDate
+      ? activityDate.isSameOrAfter(startDate, "day")
+      : true;
+    const isEndValid = endDate
+      ? activityDate.isSameOrBefore(endDate, "day")
+      : true;
 
     return isPriceInRange && isStartValid && isEndValid;
   });
@@ -66,7 +71,7 @@ const AllEvents = () => {
                 <DatePicker
                   label="Start date"
                   value={startDate}
-                  onChange={(newValue) => setStartDate(newValue)} 
+                  onChange={(newValue) => setStartDate(newValue)}
                   format="DD/MM/YYYY"
                 />
                 <DatePicker
@@ -77,12 +82,15 @@ const AllEvents = () => {
                 />
               </LocalizationProvider>
             </div>
-            <div className="relative md:w-[35%] bg-white rounded-full p-2 py-3 shadow-[0px_2px_8px_rgba(0,0,0,0.35)] ">
+            <div className="relative  md:w-[35%] bg-white rounded-full p-2 py-3 shadow-[0px_2px_8px_rgba(0,0,0,0.35)] ">
               <p className="text-center font-semibold">
                 Price from {priceRange[0].toFixed(2)} ₼ to{" "}
                 {priceRange[1].toFixed(2)} ₼
               </p>
-              <Box className="absolute top-7 md:top-9.5 left-6" sx={{ width: "90%" }}>
+              <Box
+                className="absolute left-0 -bottom-6.5 2xl:-bottom-5.5 w-full px-4"
+               
+              >
                 <Slider
                   track="inverted"
                   aria-labelledby="track-inverted-range-slider"
@@ -143,11 +151,14 @@ const AllEvents = () => {
                     </p>
                     <div>
                       <p className="text-white absolute bottom-10 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-10.5 transition-all duration-300 group-hover:text-gray-500 group-hover:text-sm">
-                        {new Date(a.showtimes[0].startTime).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                        })}
+                        {new Date(a.showtimes[0].startTime).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}
                       </p>
                       <p className="text-white absolute bottom-2 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-[-3px] transition-all duration-300 group-hover:text-black group-hover:text-lg">
                         {a.title.length > 20

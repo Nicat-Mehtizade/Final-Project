@@ -66,7 +66,7 @@ const KidsPage = () => {
     <div className=" py-12">
       <div className="max-w-[1320px] mx-auto">
         <div>
-          <h1 className="text-3xl font-medium mb-10">All events</h1>
+          <h1 className="text-3xl font-medium mb-10">Kids</h1>
           <div className="md:flex md:justify-around mb-5">
             <div className="mb-4 md:mb-0">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -90,8 +90,8 @@ const KidsPage = () => {
                 {priceRange[1].toFixed(2)} ₼
               </p>
               <Box
-                className="absolute top-7 md:top-9.5 left-6"
-                sx={{ width: "90%" }}
+                className="absolute left-0 -bottom-6.5 2xl:-bottom-5.5 w-full px-4"
+                
               >
                 <Slider
                   track="inverted"
