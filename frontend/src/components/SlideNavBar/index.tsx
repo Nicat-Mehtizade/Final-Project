@@ -16,24 +16,28 @@ import axios from "axios";
 
 const SlideNavBar = () => {
   const token = getTokenFromCookie();
-  console.log(token);
   const [profileVisible, setProfileVisible] = useState(false);
+  const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
 
   const login = () => {
     window.location.href = "http://localhost:5173/login";
   };
 
-  const handleLogout=async()=>{
+  const handleLogout = async () => {
     try {
-      const response=await axios.post(`${BASE_URL}/logout`,{},{
-        withCredentials: true
-      })
+      const response = await axios.post(
+        `${BASE_URL}/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response.data.message);
       window.location.href = "/login";
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div className="absolute  justify-between items-center left-10 top-15 z-50 lg:w-[95%] hidden lg:flex">
       <NavLink to={"/"}>
@@ -44,12 +48,36 @@ const SlideNavBar = () => {
         />
       </NavLink>
       <div className="flex gap-4 text-white font-bold text-xl">
-        <NavLink to={"/events"} end className="nav-button">All events</NavLink>
-        <NavLink to={"/events/concert"} end className="nav-button">Concert</NavLink>
-        <NavLink to={"/events/theatre"} end className="nav-button ">Theatre</NavLink>
-        <NavLink to={"/events/kids"} end className="nav-button">Kids</NavLink>
-        <NavLink to={"/events/dream-fest"} end className="nav-button">Dream Fest 2025</NavLink>
-        <button className="cursor-pointer">...</button>
+        <NavLink to={"/events"} end className="nav-button">
+          All events
+        </NavLink>
+        <NavLink to={"/events/concert"} end className="nav-button">
+          Concert
+        </NavLink>
+        <NavLink to={"/events/theatre"} end className="nav-button ">
+          Theatre
+        </NavLink>
+        <NavLink to={"/events/kids"} end className="nav-button">
+          Kids
+        </NavLink>
+        <NavLink to={"/events/dream-fest"} end className="nav-button">
+          Dream Fest 2025
+        </NavLink>
+        <div className="relative">
+          <button
+            onClick={() => setSlideNavbarVisible(!slideNavbarVisible)}
+            className="cursor-pointer"
+          >
+            ...
+          </button>
+
+          {slideNavbarVisible && (
+            <div className="bg-white font-semibold text-black text-lg gap-4 flex flex-col absolute right-0 top-12 rounded-xl py-3">
+              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/tourism"}>Tourism</NavLink>
+              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/museum"}>Museum</NavLink>
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex items-center font-semibold text-2xl gap-5 text-white">
         <button>
@@ -96,7 +124,10 @@ const SlideNavBar = () => {
                   <TbLockPassword /> Update Password
                 </button>
               </div>
-              <button onClick={handleLogout} className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer"
+              >
                 <IoLogOutOutline /> Logout
               </button>
             </div>

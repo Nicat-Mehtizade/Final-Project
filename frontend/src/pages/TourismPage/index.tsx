@@ -15,58 +15,59 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-const KidsPage = () => {
-  const [allActivities, setAllActivities] = useState<Activity[]>([]);
-  const [priceRange, setPriceRange] = useState<number[]>([1, 10000]);
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const nav = useNavigate();
+const TourismPage = () => {
+    const [allActivities, setAllActivities] = useState<Activity[]>([]);
+    const [priceRange, setPriceRange] = useState<number[]>([1, 10000]);
+    const [startDate, setStartDate] = useState<Dayjs | null>(null);
+    const [endDate, setEndDate] = useState<Dayjs | null>(null);
+    const nav = useNavigate();
 
-  const getAllKidsActivities = async () => {
-    try {
-      const response = await axios(`${BASE_URL}/activity`);
-      const allKidsActivities = response.data.data.filter(
-        (q: Activity) => q.genre == "kids"
-      );
-      setAllActivities(allKidsActivities);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const getAllTourismActivities = async () => {
+        try {
+          const response = await axios(`${BASE_URL}/activity`);
+          const allTourismActivities = response.data.data.filter(
+            (q: Activity) => q.genre == "tourism"
+          );
+          setAllActivities(allTourismActivities);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      useEffect(() => {
+        getAllTourismActivities();
+      }, []);
+    
+      const handleDetails = async (id: string) => {
+        nav(`/events/${id}`);
+      };
+    
+      const handlePriceChange = (event: Event, newValue: number | number[]) => {
+        setPriceRange(newValue as number[]);
+      };
+    
+      const filteredActivities = allActivities.filter((a) => {
+        const minPrice = Math.min(...a.price);
+        const activityDate = dayjs(a.showtimes[0].startTime);
+    
+        const isPriceInRange =
+          minPrice >= priceRange[0] && minPrice <= priceRange[1];
+    
+        const isStartValid = startDate
+          ? activityDate.isSameOrAfter(startDate, "day")
+          : true;
+        const isEndValid = endDate
+          ? activityDate.isSameOrBefore(endDate, "day")
+          : true;
+    
+        return isPriceInRange && isStartValid && isEndValid;
+      });
 
-  useEffect(() => {
-    getAllKidsActivities();
-  }, []);
-
-  const handleDetails = async (id: string) => {
-    nav(`/events/${id}`);
-  };
-
-  const handlePriceChange = (event: Event, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
-  };
-
-  const filteredActivities = allActivities.filter((a) => {
-    const minPrice = Math.min(...a.price);
-    const activityDate = dayjs(a.showtimes[0].startTime);
-
-    const isPriceInRange =
-      minPrice >= priceRange[0] && minPrice <= priceRange[1];
-
-    const isStartValid = startDate
-      ? activityDate.isSameOrAfter(startDate, "day")
-      : true;
-    const isEndValid = endDate
-      ? activityDate.isSameOrBefore(endDate, "day")
-      : true;
-
-    return isPriceInRange && isStartValid && isEndValid;
-  });
   return (
     <div className=" py-12">
       <div className="max-w-[1320px] mx-auto">
         <div>
-          <h1 className="text-3xl font-medium mb-10">Kids</h1>
+          <h1 className="text-3xl font-medium mb-10">Tourism</h1>
           <div className="md:flex md:justify-around mb-5">
             <div className="mb-4 md:mb-0">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -178,7 +179,7 @@ const KidsPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default KidsPage;
+export default TourismPage

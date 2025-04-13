@@ -23,12 +23,12 @@ import WhatsNewSection from "../../components/WhatsNewSection";
 import AnimationBottomSection from "../../components/AnimationBottomSection";
 import { IoLogOutOutline, IoSearch, IoWallet } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { GrHistory } from "react-icons/gr";
 import { MdCardGiftcard } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
+
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
   const [tourismData, setTourismData] = useState<Activity[]>([]);
@@ -162,6 +162,12 @@ const Home = () => {
                   </NavLink>
                   <NavLink to={"/events/dream-fest"} className="text-left">
                     Dream Fest 2025
+                  </NavLink>
+                  <NavLink to={"/events/tourism"} className="text-left">
+                    Tourism
+                  </NavLink>
+                  <NavLink to={"/events/museum"} className="text-left">
+                    Museum
                   </NavLink>
                 </nav>
               </div>

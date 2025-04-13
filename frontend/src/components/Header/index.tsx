@@ -17,6 +17,7 @@ const Header = () => {
   const token = getTokenFromCookie();
   const [profileVisible, setProfileVisible] = useState(false);
   const [navbarActive, setNavbarActive] = useState(false);
+  const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
 
   const login = () => {
     window.location.href = "http://localhost:5173/login";
@@ -39,9 +40,12 @@ const Header = () => {
   return (
     <div className="shadow-lg">
       <div className="max-w-[1400px] mx-auto">
-        <div className="flex items-center justify-between py-5 ">
-          <button onClick={() => setNavbarActive(!navbarActive)}>
-            <RxHamburgerMenu className="text-gray-400 text-2xl block lg:hidden" />
+        <div className="flex items-center justify-between py-5">
+          <button
+            className="block lg:hidden"
+            onClick={() => setNavbarActive(!navbarActive)}
+          >
+            <RxHamburgerMenu className="text-gray-400 text-2xl" />
           </button>
           {navbarActive && (
             <>
@@ -91,6 +95,12 @@ const Header = () => {
                   </NavLink>
                   <NavLink to={"/events/dream-fest"} className="text-left">
                     Dream Fest 2025
+                  </NavLink>
+                  <NavLink to={"/events/tourism"} className="text-left">
+                    Tourism
+                  </NavLink>
+                  <NavLink to={"/events/museum"} className="text-left">
+                    Museum
                   </NavLink>
                 </nav>
               </div>
@@ -149,7 +159,31 @@ const Header = () => {
             >
               Dream Fest 2025
             </NavLink>
-            <button className="cursor-pointer">...</button>
+            <div className="relative">
+              <button
+                onClick={() => setSlideNavbarVisible(!slideNavbarVisible)}
+                className="cursor-pointer"
+              >
+                ...
+              </button>
+
+              {slideNavbarVisible && (
+                <div className="bg-white shadow-2xl font-semibold text-black text-lg gap-4 flex flex-col absolute right-0 top-12 rounded-xl py-3">
+                  <NavLink
+                    className={`transition duration-300 hover:bg-gray-100 px-5`}
+                    to={"/events/tourism"}
+                  >
+                    Tourism
+                  </NavLink>
+                  <NavLink
+                    className={`transition duration-300 hover:bg-gray-100 px-5`}
+                    to={"/events/museum"}
+                  >
+                    Museum
+                  </NavLink>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center font-semibold text-2xl gap-5 text-gray-500">
             <button className="hidden lg:block">
@@ -196,7 +230,10 @@ const Header = () => {
                       <TbLockPassword /> Update Password
                     </button>
                   </div>
-                  <button onClick={handleLogout} className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer">
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer"
+                  >
                     <IoLogOutOutline /> Logout
                   </button>
                 </div>

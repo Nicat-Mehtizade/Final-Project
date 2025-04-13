@@ -10,18 +10,26 @@ const authRouter=require("./routes/authRouter")
 const session = require("cookie-session");
 const passport = require("passport");
 const path=require("path")
+const cookieParser = require("cookie-parser");
+
 connectDB();
 require("./config/passport")
 dotenv.config();
 
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   session({
     name: "session",
     keys: [process.env.SESSION_SECRET || "secret"],
     maxAge: 24 * 60 * 60 * 1000,
+  })
+);
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 

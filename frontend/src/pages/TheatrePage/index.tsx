@@ -22,18 +22,18 @@ const TheatrePage = () => {
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
     const nav = useNavigate();
   
-    const getAllConcertActivities = async () => {
+    const getAllTheatreActivities = async () => {
       try {
         const response = await axios(`${BASE_URL}/activity`);
-        const allConcertActivities=response.data.data.filter((q: Activity)=>q.genre =="theatre")
-        setAllActivities(allConcertActivities);
+        const allTheatreActivities=response.data.data.filter((q: Activity)=>q.genre =="theatre")
+        setAllActivities(allTheatreActivities);
       } catch (error) {
         console.log(error);
       }
     };
   
     useEffect(() => {
-      getAllConcertActivities();
+      getAllTheatreActivities();
     }, []);
   
     const handleDetails = async (id: string) => {

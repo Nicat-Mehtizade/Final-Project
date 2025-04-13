@@ -49,6 +49,14 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: 60 * 60 }
     );
+
+    res.cookie("token", token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 1000,
+      sameSite: "Lax",
+    });
+    
     res.status(200).json({
       status: "success",
       message: "User logged in successfully",
@@ -61,4 +69,12 @@ const login = async (req, res) => {
   }
 };
 
-module.exports={register,login}
+const logout = (req, res) => {
+  res.clearCookie("token");  
+  res.status(200).json({
+    status: "success",
+    message: "User logged out successfully",
+  });
+};
+
+module.exports = { register, login,logout };

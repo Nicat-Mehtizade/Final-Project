@@ -7,14 +7,15 @@ const verify =  (roles) => {
     try {
       const authHeader = req.headers.authorization;
 
-      if (!authHeader) {
+      const token = authHeader
+      ? authHeader.split(" ")[1]
+      : req.cookies.token;
+      
+      if (!token) {
         return res.status(401).json({
           message: "Token is required",
         });
       }
-
-      const token = authHeader.split(" ")[1];
-
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       if (!roles.includes(decoded.role)) {

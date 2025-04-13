@@ -20,10 +20,10 @@ import { IoMdClose } from "react-icons/io";
 const Details = () => {
   const { id } = useParams();
   const token = getTokenFromCookie();
-  console.log(token);
   const [profileVisible, setProfileVisible] = useState(false);
   const [activity, setActivity] = useState<Activity | null>(null);
   const [navbarActive, setNavbarActive] = useState(false);
+  const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
 
   const getActivity = async (id: string | undefined) => {
     try {
@@ -115,11 +115,13 @@ const Details = () => {
               </div>
             </>
           )}
+          <NavLink to={"/"}>
           <img
             className="w-35 cursor-pointer"
             src="/123-removebg-preview.png"
             alt="iTicket Logo"
           />
+          </NavLink>
           <div className="flex items-center gap-4 text-2xl text-gray-300">
             <FaShoppingCart className="cursor-pointer" />
             <div
@@ -207,7 +209,21 @@ const Details = () => {
                   <NavLink to={"/events/dream-fest"} end className="nav-button">
                     Dream Fest 2025
                   </NavLink>
-                  <button className="cursor-pointer">...</button>
+                  <div className="relative">
+          <button
+            onClick={() => setSlideNavbarVisible(!slideNavbarVisible)}
+            className="cursor-pointer"
+          >
+            ...
+          </button>
+
+          {slideNavbarVisible && (
+            <div className="bg-white font-semibold text-black text-lg gap-4 flex flex-col absolute right-0 top-12 rounded-xl py-3">
+              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/tourism"}>Tourism</NavLink>
+              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/museum"}>Museum</NavLink>
+            </div>
+          )}
+        </div>
                 </div>
                 <div className="flex items-center font-semibold text-2xl gap-5 text-white">
                   <button>

@@ -14,58 +14,66 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
-const DreamFestPage = () => {
+
+const MuseumPage = () => {
     const [allActivities, setAllActivities] = useState<Activity[]>([]);
     const [priceRange, setPriceRange] = useState<number[]>([1, 10000]);
     const [startDate, setStartDate] = useState<Dayjs | null>(null);
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
     const nav = useNavigate();
-  
-    const getAllDreamFestActivities = async () => {
-      try {
-        const response = await axios(`${BASE_URL}/activity`);
-        const allDreamFestActivities=response.data.data.filter((q: Activity)=>q.genre =="dreamfest")
-        setAllActivities(allDreamFestActivities);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    useEffect(() => {
-      getAllDreamFestActivities();
-    }, []);
-  
-    const handleDetails = async (id: string) => {
-      nav(`/events/${id}`);
-    };
-  
-    const handlePriceChange = (event: Event, newValue: number | number[]) => {
-      setPriceRange(newValue as number[]);
-    };
-  
-    const filteredActivities = allActivities.filter((a) => {
-      const minPrice = Math.min(...a.price);
-      const activityDate = dayjs(a.showtimes[0].startTime);
-  
-      const isPriceInRange = minPrice >= priceRange[0] && minPrice <= priceRange[1];
-  
-      const isStartValid = startDate ? activityDate.isSameOrAfter(startDate, "day") : true;
-      const isEndValid = endDate ? activityDate.isSameOrBefore(endDate, "day") : true;
-  
-      return isPriceInRange && isStartValid && isEndValid;
-    });
+
+    const getAllMuseumActivities = async () => {
+        try {
+          const response = await axios(`${BASE_URL}/activity`);
+          const allMuseumActivities = response.data.data.filter(
+            (q: Activity) => q.genre == "museum"
+          );
+          setAllActivities(allMuseumActivities);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      useEffect(() => {
+        getAllMuseumActivities();
+      }, []);
+    
+      const handleDetails = async (id: string) => {
+        nav(`/events/${id}`);
+      };
+    
+      const handlePriceChange = (event: Event, newValue: number | number[]) => {
+        setPriceRange(newValue as number[]);
+      };
+    
+      const filteredActivities = allActivities.filter((a) => {
+        const minPrice = Math.min(...a.price);
+        const activityDate = dayjs(a.showtimes[0].startTime);
+    
+        const isPriceInRange =
+          minPrice >= priceRange[0] && minPrice <= priceRange[1];
+    
+        const isStartValid = startDate
+          ? activityDate.isSameOrAfter(startDate, "day")
+          : true;
+        const isEndValid = endDate
+          ? activityDate.isSameOrBefore(endDate, "day")
+          : true;
+    
+        return isPriceInRange && isStartValid && isEndValid;
+      });
   return (
     <div className=" py-12">
     <div className="max-w-[1320px] mx-auto">
       <div>
-        <h1 className="text-3xl font-medium mb-10">Dream Fest 2025</h1>
+        <h1 className="text-3xl font-medium mb-10">Museum</h1>
         <div className="md:flex md:justify-around mb-5">
           <div className="mb-4 md:mb-0">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Start date"
                 value={startDate}
-                onChange={(newValue) => setStartDate(newValue)} 
+                onChange={(newValue) => setStartDate(newValue)}
                 format="DD/MM/YYYY"
               />
               <DatePicker
@@ -81,7 +89,10 @@ const DreamFestPage = () => {
               Price from {priceRange[0].toFixed(2)} ₼ to{" "}
               {priceRange[1].toFixed(2)} ₼
             </p>
-            <Box className="absolute left-0 -bottom-6.5 2xl:-bottom-5.5 w-full px-4">
+            <Box
+              className="absolute left-0 -bottom-6.5 2xl:-bottom-5.5 w-full px-4"
+              
+            >
               <Slider
                 track="inverted"
                 aria-labelledby="track-inverted-range-slider"
@@ -142,11 +153,14 @@ const DreamFestPage = () => {
                   </p>
                   <div>
                     <p className="text-white absolute bottom-10 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-10.5 transition-all duration-300 group-hover:text-gray-500 group-hover:text-sm">
-                      {new Date(a.showtimes[0].startTime).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {new Date(a.showtimes[0].startTime).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
                     </p>
                     <p className="text-white absolute bottom-2 left-8 font-semibold text-lg lg:text-xl transform group-hover:translate-y-[-3px] transition-all duration-300 group-hover:text-black group-hover:text-lg">
                       {a.title.length > 20
@@ -167,4 +181,4 @@ const DreamFestPage = () => {
   )
 }
 
-export default DreamFestPage
+export default MuseumPage

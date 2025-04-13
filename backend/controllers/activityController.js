@@ -5,7 +5,7 @@ const getAllActivities = async (req, res) => {
     const activities = await Activity.find({});
 
     if (activities.length === 0) {
-      res.status(404).json({
+     return res.status(404).json({
         message: "Activities not found",
       });
     }
@@ -26,7 +26,7 @@ const getActivityById = async (req, res) => {
     const activity = await Activity.findById(id);
 
     if (!activity) {
-      res.status(404).json({
+    return  res.status(404).json({
         message: "Activity not found",
       });
     }
@@ -47,7 +47,7 @@ const deleteActivity = async (req, res) => {
     const deletedActivity = await Activity.findByIdAndDelete(id);
 
     if (!deletedActivity) {
-      res.status(404).json({
+     return res.status(404).json({
         message: "Activity not found",
       });
     }
@@ -98,7 +98,7 @@ const addActivity = async (req, res) => {
       ...req.body,
       image: imageUrl,
     });
-    await Activity.save();
+    
     res.status(201).json({
       data: addedActivity,
       message: "Successfully added",

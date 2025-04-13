@@ -11,6 +11,8 @@ import ConcertPage from "./pages/ConcertPage";
 import TheatrePage from "./pages/TheatrePage";
 import KidsPage from "./pages/KidsPage";
 import DreamFestPage from "./pages/DreamFestPage";
+import TourismPage from "./pages/TourismPage";
+import MuseumPage from "./pages/MuseumPage";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
           <Route path="theatre" element={<TheatrePage/>}/>
           <Route path="kids" element={<KidsPage/>}/>
           <Route path="dream-fest" element={<DreamFestPage/>}/>
+          <Route path="tourism" element={<TourismPage/>}/>
+          <Route path="museum" element={<MuseumPage/>}/>
         </Route>
       </Routes>
     </>
