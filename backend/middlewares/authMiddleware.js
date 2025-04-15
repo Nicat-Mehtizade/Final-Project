@@ -10,7 +10,8 @@ const verify =  (roles) => {
       const token = authHeader
       ? authHeader.split(" ")[1]
       : req.cookies.token;
-      
+      console.log(token);
+      console.log(authHeader);
       if (!token) {
         return res.status(401).json({
           message: "Token is required",

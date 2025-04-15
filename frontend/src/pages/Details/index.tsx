@@ -116,11 +116,11 @@ const Details = () => {
             </>
           )}
           <NavLink to={"/"}>
-          <img
-            className="w-35 cursor-pointer"
-            src="/123-removebg-preview.png"
-            alt="iTicket Logo"
-          />
+            <img
+              className="w-35 cursor-pointer"
+              src="/123-removebg-preview.png"
+              alt="iTicket Logo"
+            />
           </NavLink>
           <div className="flex items-center gap-4 text-2xl text-gray-300">
             <FaShoppingCart className="cursor-pointer" />
@@ -142,21 +142,36 @@ const Details = () => {
                   }`}
                 >
                   <div>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                    <NavLink
+                      to={"/profile"}
+                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                    >
                       <FaUser /> Profile
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                    </NavLink>
+                    <NavLink
+                      to={"/profile/orders"}
+                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                    >
                       <GrHistory /> Order History
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                    </NavLink>
+                    <NavLink
+                      to={"/profile/wallet"}
+                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                    >
                       <IoWallet /> Wallet
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                    </NavLink>
+                    <NavLink
+                      to={"/profile/gift-card"}
+                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                    >
                       <MdCardGiftcard /> "iGift" Gift Card
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                    </NavLink>
+                    <NavLink
+                      to={"/profile/update-password"}
+                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                    >
                       <TbLockPassword /> Update Password
-                    </button>
+                    </NavLink>
                   </div>
                   <button
                     onClick={handleLogout}
@@ -210,20 +225,30 @@ const Details = () => {
                     Dream Fest 2025
                   </NavLink>
                   <div className="relative">
-          <button
-            onClick={() => setSlideNavbarVisible(!slideNavbarVisible)}
-            className="cursor-pointer"
-          >
-            ...
-          </button>
+                    <button
+                      onClick={() => setSlideNavbarVisible(!slideNavbarVisible)}
+                      className="cursor-pointer"
+                    >
+                      ...
+                    </button>
 
-          {slideNavbarVisible && (
-            <div className="bg-white font-semibold text-black text-lg gap-4 flex flex-col absolute right-0 top-12 rounded-xl py-3">
-              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/tourism"}>Tourism</NavLink>
-              <NavLink className={`transition duration-300 hover:bg-gray-100 px-5`} to={"/events/museum"}>Museum</NavLink>
-            </div>
-          )}
-        </div>
+                    {slideNavbarVisible && (
+                      <div className="bg-white font-semibold text-black text-lg gap-4 flex flex-col absolute right-0 top-12 rounded-xl py-3">
+                        <NavLink
+                          className={`transition duration-300 hover:bg-gray-100 px-5`}
+                          to={"/events/tourism"}
+                        >
+                          Tourism
+                        </NavLink>
+                        <NavLink
+                          className={`transition duration-300 hover:bg-gray-100 px-5`}
+                          to={"/events/museum"}
+                        >
+                          Museum
+                        </NavLink>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex items-center font-semibold text-2xl gap-5 text-white">
                   <button>
@@ -254,21 +279,36 @@ const Details = () => {
                         }`}
                       >
                         <div>
-                          <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <NavLink
+                            to={"/profile"}
+                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                          >
                             <FaUser /> Profile
-                          </button>
-                          <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          </NavLink>
+                          <NavLink
+                            to={"/profile/orders"}
+                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                          >
                             <GrHistory /> Order History
-                          </button>
-                          <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          </NavLink>
+                          <NavLink
+                            to={"/profile/wallet"}
+                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                          >
                             <IoWallet /> Wallet
-                          </button>
-                          <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          </NavLink>
+                          <NavLink
+                            to={"/profile/gift-card"}
+                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                          >
                             <MdCardGiftcard /> "iGift" Gift Card
-                          </button>
-                          <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          </NavLink>
+                          <NavLink
+                            to={"/profile/update-password"}
+                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                          >
                             <TbLockPassword /> Update Password
-                          </button>
+                          </NavLink>
                         </div>
                         <button
                           onClick={handleLogout}
