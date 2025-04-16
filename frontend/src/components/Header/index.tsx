@@ -186,9 +186,9 @@ const Header = () => {
             </div>
           </div>
           <div className="flex items-center font-semibold text-2xl gap-5 text-gray-500">
-            <button className="hidden lg:block">
+            <NavLink to={"/favorites"} className="hidden lg:block">
               <PiHeartStraightBold className="cursor-pointer" />
-            </button>
+            </NavLink>
             <button className="hidden lg:block">
               <IoSearch className="cursor-pointer" />
             </button>

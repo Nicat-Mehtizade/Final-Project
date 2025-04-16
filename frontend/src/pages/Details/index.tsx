@@ -17,6 +17,7 @@ import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
 
+
 const Details = () => {
   const { id } = useParams();
   const token = getTokenFromCookie();
@@ -33,6 +34,8 @@ const Details = () => {
       console.log(error);
     }
   };
+
+
   useEffect(() => {
     getActivity(id);
   }, [id]);
@@ -55,6 +58,23 @@ const Details = () => {
       console.log(error);
     }
   };
+
+  const handleFav = async (id: string) => {
+    try {
+      await axios.post(
+        `${BASE_URL}/likes/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
       <div className="max-w-[1350px] mx-auto">
@@ -196,7 +216,10 @@ const Details = () => {
                 <button className="bg-yellow-300 font-bold text-lg rounded-full p-3">
                   from {activity.price[0]} ₼
                 </button>
-                <button className="cursor-pointer text-2xl text-white border-3 rounded-full px-3">
+                <button
+                  onClick={() => handleFav(activity._id)}
+                  className="cursor-pointer text-2xl text-white border-3 rounded-full px-3"
+                >
                   <PiHeartStraightBold />
                 </button>
               </div>
@@ -251,9 +274,9 @@ const Details = () => {
                   </div>
                 </div>
                 <div className="flex items-center font-semibold text-2xl gap-5 text-white">
-                  <button>
+                  <NavLink to={"/favorites"}>
                     <PiHeartStraightBold className="cursor-pointer" />
-                  </button>
+                  </NavLink>
                   <button>
                     <IoSearch className="cursor-pointer" />
                   </button>

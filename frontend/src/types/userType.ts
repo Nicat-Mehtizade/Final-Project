@@ -9,7 +9,7 @@ interface userType{
     password:string,
     image:string,
     role:string,
-    wishlist:ActivityRef[],
+    wishlist:string[],
     basket:ActivityRef[]
 }
 

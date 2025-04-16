@@ -80,9 +80,9 @@ const SlideNavBar = () => {
         </div>
       </div>
       <div className="flex items-center font-semibold text-2xl gap-5 text-white">
-        <button>
+        <NavLink to={"/favorites"}>
           <PiHeartStraightBold className="cursor-pointer" />
-        </button>
+        </NavLink>
         <button>
           <IoSearch className="cursor-pointer" />
         </button>

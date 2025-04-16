@@ -7,6 +7,7 @@ const userRouter = require("./routes/userRouter");
 const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
+const likeRouter=require("./routes/likeRouter")
 const session = require("cookie-session");
 const passport = require("passport");
 const path=require("path")
@@ -39,6 +40,7 @@ app.use(passport.session());
 app.use("/api/users", userRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/activity", activityRouter);
+app.use("/api/likes", likeRouter)
 app.use("/api", authRouter)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

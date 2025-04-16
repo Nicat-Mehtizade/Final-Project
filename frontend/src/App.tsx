@@ -19,12 +19,14 @@ import OrdersHistory from "./pages/OrdersHistoryPage";
 import WalletPage from "./pages/WalletPage";
 import GiftCardPage from "./pages/GiftCardPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
+import FavoritesAndBasketLayout from "./layout/FavoritesAndBasketLayout";
+import Favorites from "./pages/Favorites";
+
 
 function App() {
   return (
     <>
       <Routes>
-
         <Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -35,24 +37,30 @@ function App() {
           <Route path="events/:id" element={<Details />} />
         </Route>
 
-        <Route path="/profile" element={<UserLayout/>}>
-          <Route index element={<ProfilePage/>}/>
-          <Route path="orders" element={<OrdersHistory/>}/>
-          <Route path="wallet" element={<WalletPage/>}/>
-          <Route path="gift-card" element={<GiftCardPage/>}/>
-          <Route path="update-password" element={<UpdatePasswordPage/>}/>
+        <Route element={<FavoritesAndBasketLayout/>}>
+            <Route path="/favorites" element={<Favorites/>}/>
+        </Route>
+
+        <Route element={<UserLayout />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/orders" element={<OrdersHistory />} />
+          <Route path="/profile/wallet" element={<WalletPage />} />
+          <Route path="/profile/gift-card" element={<GiftCardPage />} />
+          <Route
+            path="/profile/update-password"
+            element={<UpdatePasswordPage />}
+          />
         </Route>
 
         <Route path="/events" element={<ClientLayout />}>
           <Route index element={<AllEvents />} />
-          <Route path="concert" element={<ConcertPage/>}/>
-          <Route path="theatre" element={<TheatrePage/>}/>
-          <Route path="kids" element={<KidsPage/>}/>
-          <Route path="dream-fest" element={<DreamFestPage/>}/>
-          <Route path="tourism" element={<TourismPage/>}/>
-          <Route path="museum" element={<MuseumPage/>}/>
+          <Route path="concert" element={<ConcertPage />} />
+          <Route path="theatre" element={<TheatrePage />} />
+          <Route path="kids" element={<KidsPage />} />
+          <Route path="dream-fest" element={<DreamFestPage />} />
+          <Route path="tourism" element={<TourismPage />} />
+          <Route path="museum" element={<MuseumPage />} />
         </Route>
-
       </Routes>
     </>
   );
