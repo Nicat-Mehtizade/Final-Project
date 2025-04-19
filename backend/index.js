@@ -8,13 +8,14 @@ const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
 const likeRouter=require("./routes/likeRouter")
-const session = require("cookie-session");
+const session = require("express-session");
 const passport = require("passport");
+const passportRouter=require("./routes/passportRouter")
+const passportConfig=require("./config/passport")
 const path=require("path")
 const cookieParser = require("cookie-parser");
 
 connectDB();
-require("./config/passport")
 dotenv.config();
 
 app.use(express.json());
@@ -22,11 +23,15 @@ app.use(cookieParser());
 
 app.use(
   session({
-    name: "session",
-    keys: [process.env.SESSION_SECRET || "secret"],
-    maxAge: 24 * 60 * 60 * 1000,
+    secret: process.env.SESSION_SECRET || 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -42,6 +47,7 @@ app.use("/api/comments", commentRouter);
 app.use("/api/activity", activityRouter);
 app.use("/api/likes", likeRouter)
 app.use("/api", authRouter)
+app.use("/api", passportRouter)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

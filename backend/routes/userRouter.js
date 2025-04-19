@@ -5,7 +5,7 @@ const verify = require("../middlewares/authMiddleware")
 
 const router=express.Router()
 
-router.get("/",verify(["admin"]),getAllUsers)
+router.get("/",verify(["admin","user"]),getAllUsers)
 router.get("/:id",verify([ "admin" , "user" ]),getUserById)
 router.delete("/:id",verify([ "admin" , "user" ]),deleteUser)
 router.put("/:id",upload.single("image"),verify([ "admin" , "user" ]),updateUser)

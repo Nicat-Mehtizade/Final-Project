@@ -26,15 +26,23 @@ const Login = () => {
           withCredentials: true
         });
         console.log(response);
+        const user = response.data.user;
 
         if (response.data.status == "success") {
           toast.success("Login Successfully!", {
             duration: 2000,
           });
+
+          if (user && user.hasPassword === false) {
           setTimeout(() => {
-            setToken(response.data.token)
+            nav("/set-password");
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            setToken(response.data.token);
             nav("/");
           }, 2000);
+        }
         }
       } catch (error) {
         console.log(error);
@@ -147,18 +155,18 @@ const Login = () => {
                   <p className="bg-yellow-300 h-[1px] w-33"></p>
                 </div>
                 <div className="flex justify-center gap-4 py-2">
-                  <div className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  <a href={`${BASE_URL}/auth/google`} className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
                     <img
                       className="w-6"
                       src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
                       alt=""
                     />
                     <span className="font-semibold">Google</span>
-                  </div>
-                  <div className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  </a>
+                  <a href={`${BASE_URL}/auth/facebook`} className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
                     <FaFacebook />
                     <span>Facebook</span>
-                  </div>
+                  </a>
                 </div>
               </form>
             </div>

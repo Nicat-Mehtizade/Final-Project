@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { Activity } from "../../types/activityType";
-import { BASE_URL } from "../../constant";
-import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
@@ -11,32 +8,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { useGetActivitiesQuery } from "../../redux/services/activity";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 const MuseumPage = () => {
-    const [allActivities, setAllActivities] = useState<Activity[]>([]);
+    const {data:allActivities,isError,isLoading}=useGetActivitiesQuery({genre:"museum"})
     const [priceRange, setPriceRange] = useState<number[]>([1, 10000]);
     const [startDate, setStartDate] = useState<Dayjs | null>(null);
     const [endDate, setEndDate] = useState<Dayjs | null>(null);
     const nav = useNavigate();
 
-    const getAllMuseumActivities = async () => {
-        try {
-          const response = await axios(`${BASE_URL}/activity`);
-          const allMuseumActivities = response.data.data.filter(
-            (q: Activity) => q.genre == "museum"
-          );
-          setAllActivities(allMuseumActivities);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-    
-      useEffect(() => {
-        getAllMuseumActivities();
-      }, []);
     
       const handleDetails = async (id: string) => {
         nav(`/events/${id}`);
@@ -45,8 +28,16 @@ const MuseumPage = () => {
       const handlePriceChange = (event: Event, newValue: number | number[]) => {
         setPriceRange(newValue as number[]);
       };
+
+      if (isLoading) {
+        return <div className="max-w-[1280px] mx-auto flex items-center gap-2 font-semibold py-15 mb-10"><img className="w-7" src="https://iticket.az/images/warning.svg" alt="" />Loading events, please wait a moment...</div>
+      }
     
-      const filteredActivities = allActivities.filter((a) => {
+      if (isError) {
+        return <div className="max-w-[1280px] mx-auto flex items-center gap-2 font-semibold py-15 mb-10"><img className="w-7" src="https://iticket.az/images/warning.svg" alt="" />There was an error loading the events.</div>
+      }
+    
+      const filteredActivities = (allActivities || []).filter((a) => {
         const minPrice = Math.min(...a.price);
         const activityDate = dayjs(a.showtimes[0].startTime);
     

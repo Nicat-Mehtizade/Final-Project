@@ -4,6 +4,7 @@ interface JwtType {
     role:string,
     iat?: number;
     exp?: number;
+    hasPassword:boolean,
   }
 
 export default JwtType 

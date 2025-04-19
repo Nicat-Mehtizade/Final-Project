@@ -16,7 +16,10 @@ import { IoLogOutOutline } from "react-icons/io5";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
-
+import userType from "../../types/userType";
+import { jwtDecode } from "jwt-decode";
+import JwtType from "../../types/jwtType";
+import { IoMdHeart } from "react-icons/io";
 
 const Details = () => {
   const { id } = useParams();
@@ -25,6 +28,7 @@ const Details = () => {
   const [activity, setActivity] = useState<Activity | null>(null);
   const [navbarActive, setNavbarActive] = useState(false);
   const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
+  const [user, setUser] = useState<userType | null>(null);
 
   const getActivity = async (id: string | undefined) => {
     try {
@@ -35,6 +39,30 @@ const Details = () => {
     }
   };
 
+  const getUser = async () => {
+    const token = getTokenFromCookie();
+    if (!token) {
+      console.log("Token not found");
+      return;
+    }
+    const decoded = jwtDecode<JwtType>(token);
+    try {
+      const response = await axios(`${BASE_URL}/users/${decoded.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUser(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   useEffect(() => {
     getActivity(id);
@@ -70,6 +98,7 @@ const Details = () => {
           },
         }
       );
+      getUser();
     } catch (error) {
       console.log(error);
     }
@@ -218,9 +247,17 @@ const Details = () => {
                 </button>
                 <button
                   onClick={() => handleFav(activity._id)}
-                  className="cursor-pointer text-2xl text-white border-3 rounded-full px-3"
+                  className={`cursor-pointer text-2xl text-white border-3 rounded-full px-3 ${
+                    user?.wishlist.includes(activity._id)
+                      ? "border-yellow-300"
+                      : ""
+                  }`}
                 >
-                  <PiHeartStraightBold />
+                  {user?.wishlist.includes(activity._id) ? (
+                    <IoMdHeart className="text-yellow-300" />
+                  ) : (
+                    <PiHeartStraightBold />
+                  )}
                 </button>
               </div>
               <div className="absolute  justify-between items-center left-10 top-8 z-50 lg:w-[95%] hidden lg:flex">

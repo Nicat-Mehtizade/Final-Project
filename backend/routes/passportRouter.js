@@ -1,27 +1,11 @@
-const express = require("express");
-const passport = require("passport");
-
+const express = require('express');
+const passportController = require('../controllers/passportController');
 const router = express.Router();
 
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get('/auth/google', passportController.loginWithGoogle);
+router.get('/auth/google/callback', passportController.googleAuthCallback);
 
-router.get("/google/callback", passport.authenticate("google", {
-    successRedirect: "http://localhost:5173",
-    failureRedirect: "http://localhost:5173/register"
-}))
+router.get('/auth/facebook', passportController.loginWithFacebook);
+router.get('/auth/facebook/callback', passportController.facebookAuthCallback);
 
-router.get("/logout", (req, res) => {
-    req.logout((err) => {
-      if (err) return res.send("Error logging out");
-      res.redirect("http://localhost:5173/login");
-    });
-  });
-
-  router.get("/user", (req, res) => {
-    res.send(req.user);
-  });
-
-  export default router;
+module.exports = router;

@@ -21,7 +21,7 @@ import GiftCardPage from "./pages/GiftCardPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import FavoritesAndBasketLayout from "./layout/FavoritesAndBasketLayout";
 import Favorites from "./pages/Favorites";
-
+import SetPasswordPage from "./pages/setPasswordPage";
 
 function App() {
   return (
@@ -37,8 +37,9 @@ function App() {
           <Route path="events/:id" element={<Details />} />
         </Route>
 
-        <Route element={<FavoritesAndBasketLayout/>}>
-            <Route path="/favorites" element={<Favorites/>}/>
+        <Route element={<FavoritesAndBasketLayout />}>
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/set-password" element={<SetPasswordPage />} />
         </Route>
 
         <Route element={<UserLayout />}>

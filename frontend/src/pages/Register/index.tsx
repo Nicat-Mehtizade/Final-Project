@@ -39,32 +39,6 @@ const Register = () => {
     },
   });
 
-  // const handleGoogleLoginSuccess = async (response) => {
-  //   try {
-  //     const res = await axios.post(
-  //       "http://localhost:8000/auth/google/callback",
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${response.credential}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = res.data;
-  //     console.log(data);
-
-  //     if (data) {
-  //       window.location.href = "/dashboard";
-  //     }
-  //   } catch (error) {
-  //     console.log("Google login failed:", error);
-  //   }
-  // };
-
-  // const handleGoogleLoginFailure = (error) => {
-  //   console.log("Google login failed:", error);
-  // };
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -171,14 +145,14 @@ const Register = () => {
                   <p className="bg-yellow-300 h-[1px] w-33"></p>
                 </div>
                 <div className="flex justify-center gap-4 py-2">
-                  <div className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  <a href={`${BASE_URL}/auth/google`} className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
                     <img
                       className="w-6"
                       src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
                       alt=""
                     />
                     <span className="font-semibold">Google</span>
-                  </div>
+                  </a>
                   <div className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
                     <FaFacebook />
                     <span>Facebook</span>

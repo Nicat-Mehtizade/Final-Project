@@ -28,6 +28,7 @@ import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { GrHistory } from "react-icons/gr";
 import { MdCardGiftcard } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
@@ -37,14 +38,17 @@ const Home = () => {
   const [randomData, setRandomData] = useState<Activity[]>([]);
   const [whatsNewData, setWhatsNewData] = useState<Activity[]>([]);
   const [navbarActive, setNavbarActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const nav = useNavigate();
   const token = getTokenFromCookie();
   console.log(token);
+
   const [profileVisible, setProfileVisible] = useState(false);
 
   const login = () => {
     window.location.href = "http://localhost:5173/login";
   };
+
   const getAllActivities = async () => {
     try {
       const response = await axios(`${BASE_URL}/activity`);
@@ -75,8 +79,10 @@ const Home = () => {
           )
           .slice(0, 6)
       );
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -105,173 +111,194 @@ const Home = () => {
 
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
-      <div
-        style={{ clipPath: "polygon(50% 0, 80% 0, 0 100%, 0 60%)" }}
-        className="absolute w-full h-full bg-yellow-300 z-0"
-      ></div>
-      <div className="max-w-[1400px] mx-auto">
-        <div className="bg-white flex lg:hidden justify-between items-center py-8 px-3 relative z-2">
-          <button onClick={() => setNavbarActive(!navbarActive)}>
-            <RxHamburgerMenu className="text-gray-400 text-2xl" />
-          </button>
-          {navbarActive && (
-            <>
-              <div
-                className="fixed inset-0 bg-black opacity-60 z-40"
-                onClick={() => setNavbarActive(false)}
-              ></div>
-
-              <div className="fixed top-0 left-0 w-[75%] h-full bg-white z-50 p-3  shadow-lg transition-all duration-300">
-                <div>
-                  <NavLink to={"/"}>
-                    <img
-                      className="w-30 cursor-pointer mb-5"
-                      src="/123-removebg-preview.png"
-                      alt="iTicket Logo"
-                    />
-                  </NavLink>
-                  <button
-                    className="mb-4 block lg:hidden text-white text-3xl font-bold absolute -right-10 top-5"
-                    onClick={() => setNavbarActive(false)}
-                  >
-                    <IoMdClose />
-                  </button>
-                </div>
-                <div className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
-                  <IoSearch className="text-gray-400 text-2xl min-w-5" />
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    placeholder="Search"
-                    className="focus:outline-0"
-                  />
-                </div>
-                <nav className="flex flex-col gap-4 py-5 font-bold text-lg">
-                  <NavLink to={"/events"} end className="text-left">
-                    All Events
-                  </NavLink>
-                  <NavLink to={"/events/concert"} end className="text-left">
-                    Concert
-                  </NavLink>
-                  <NavLink to={"/events/theatre"} end className="text-left">
-                    Theatre
-                  </NavLink>
-                  <NavLink to={"/events/kids"} className="text-left">
-                    Kids
-                  </NavLink>
-                  <NavLink to={"/events/dream-fest"} className="text-left">
-                    Dream Fest 2025
-                  </NavLink>
-                  <NavLink to={"/events/tourism"} className="text-left">
-                    Tourism
-                  </NavLink>
-                  <NavLink to={"/events/museum"} className="text-left">
-                    Museum
-                  </NavLink>
-                </nav>
-              </div>
-            </>
-          )}
-          <img
-            className="w-35 cursor-pointer"
-            src="./123-removebg-preview.png"
-            alt="iTicket Logo"
-          />
-          <div className="flex items-center gap-4 text-2xl text-gray-300">
-            <FaShoppingCart className="cursor-pointer" />
-            <div
-              onMouseOver={() => token && setProfileVisible(true)}
-              onMouseLeave={() => token && setProfileVisible(false)}
-            >
-              <button onClick={() => !token && login()}>
-                <FaUserLarge
-                  className={`bg-yellow-300 w-12 h-12 p-3 rounded-full cursor-pointer ${
-                    token ? "text-white" : "text-black"
-                  }`}
-                />
+      {isLoading ? (
+        <div className="flex justify-center items-center w-full h-screen bg-white z-50">
+          <div className="relative w-[150px] h-[150px]">
+            <ClipLoader
+              loading={isLoading}
+              size={150}
+              color="#facc15"
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+            <img
+              src="/123-removebg-preview.png"
+              alt="Logo"
+              className="absolute top-1/2 left-1/2 w-23 h-23 object-contain transform -translate-x-1/2 -translate-y-1/2"
+            />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div
+            style={{ clipPath: "polygon(50% 0, 80% 0, 0 100%, 0 60%)" }}
+            className="absolute w-full h-full bg-yellow-300 z-0"
+          ></div>
+          <div className="max-w-[1400px] mx-auto">
+            <div className="bg-white flex lg:hidden justify-between items-center py-8 px-3 relative z-2">
+              <button onClick={() => setNavbarActive(!navbarActive)}>
+                <RxHamburgerMenu className="text-gray-400 text-2xl" />
               </button>
-              {profileVisible && (
-                <div
-                  className={`absolute right-0 top-20 bg-white w-60 rounded-xl shadow-lg  py-3 px-3 text-black transition-all duration-300 ${
-                    profileVisible ? "block" : "hidden"
-                  }`}
-                >
-                  <div>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                      <FaUser /> Profile
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                      <GrHistory /> Order History
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                      <IoWallet /> Wallet
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                      <MdCardGiftcard /> "iGift" Gift Card
-                    </button>
-                    <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                      <TbLockPassword /> Update Password
-                    </button>
+              {navbarActive && (
+                <>
+                  <div
+                    className="fixed inset-0 bg-black opacity-60 z-40"
+                    onClick={() => setNavbarActive(false)}
+                  ></div>
+
+                  <div className="fixed top-0 left-0 w-[75%] h-full bg-white z-50 p-3  shadow-lg transition-all duration-300">
+                    <div>
+                      <NavLink to={"/"}>
+                        <img
+                          className="w-30 cursor-pointer mb-5"
+                          src="/123-removebg-preview.png"
+                          alt="iTicket Logo"
+                        />
+                      </NavLink>
+                      <button
+                        className="mb-4 block lg:hidden text-white text-3xl font-bold absolute -right-10 top-5"
+                        onClick={() => setNavbarActive(false)}
+                      >
+                        <IoMdClose />
+                      </button>
+                    </div>
+                    <div className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
+                      <IoSearch className="text-gray-400 text-2xl min-w-5" />
+                      <input
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder="Search"
+                        className="focus:outline-0"
+                      />
+                    </div>
+                    <nav className="flex flex-col gap-4 py-5 font-bold text-lg">
+                      <NavLink to={"/events"} end className="text-left">
+                        All Events
+                      </NavLink>
+                      <NavLink to={"/events/concert"} end className="text-left">
+                        Concert
+                      </NavLink>
+                      <NavLink to={"/events/theatre"} end className="text-left">
+                        Theatre
+                      </NavLink>
+                      <NavLink to={"/events/kids"} className="text-left">
+                        Kids
+                      </NavLink>
+                      <NavLink to={"/events/dream-fest"} className="text-left">
+                        Dream Fest 2025
+                      </NavLink>
+                      <NavLink to={"/events/tourism"} className="text-left">
+                        Tourism
+                      </NavLink>
+                      <NavLink to={"/events/museum"} className="text-left">
+                        Museum
+                      </NavLink>
+                    </nav>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer"
-                  >
-                    <IoLogOutOutline /> Logout
-                  </button>
-                </div>
+                </>
               )}
+              <img
+                className="w-35 cursor-pointer"
+                src="./123-removebg-preview.png"
+                alt="iTicket Logo"
+              />
+              <div className="flex items-center gap-4 text-2xl text-gray-300">
+                <FaShoppingCart className="cursor-pointer" />
+                <div
+                  onMouseOver={() => token && setProfileVisible(true)}
+                  onMouseLeave={() => token && setProfileVisible(false)}
+                >
+                  <button onClick={() => !token && login()}>
+                    <FaUserLarge
+                      className={`bg-yellow-300 w-12 h-12 p-3 rounded-full cursor-pointer ${
+                        token ? "text-white" : "text-black"
+                      }`}
+                    />
+                  </button>
+                  {profileVisible && (
+                    <div
+                      className={`absolute right-0 top-20 bg-white w-60 rounded-xl shadow-lg  py-3 px-3 text-black transition-all duration-300 ${
+                        profileVisible ? "block" : "hidden"
+                      }`}
+                    >
+                      <div>
+                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <FaUser /> Profile
+                        </button>
+                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <GrHistory /> Order History
+                        </button>
+                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <IoWallet /> Wallet
+                        </button>
+                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <MdCardGiftcard /> "iGift" Gift Card
+                        </button>
+                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                          <TbLockPassword /> Update Password
+                        </button>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-4 text-lg py-2 mb-3 cursor-pointer"
+                      >
+                        <IoLogOutOutline /> Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="relative overflow-hidden">
+              <div className="lg:py-6 mb-4 ">
+                <Swiper
+                  slidesPerView={1}
+                  spaceBetween={30}
+                  loop={true}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  navigation={true}
+                  autoplay={{
+                    delay: 3500,
+                    disableOnInteraction: false,
+                  }}
+                  centeredSlides={true}
+                  modules={[Navigation, Autoplay]}
+                  className="mySwiper !relative "
+                >
+                  {sliderData.map((q) => {
+                    return (
+                      <SwiperSlide
+                        className="!lg:rounded-2xl overflow-hidden"
+                        key={q._id}
+                      >
+                        <img
+                          onClick={() => handleDetails(q._id)}
+                          className="w-full h-full object-cover lg:rounded-2xl cursor-pointer"
+                          src={q.image}
+                          alt=""
+                        />
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+                <SlideNavBar />
+              </div>
             </div>
           </div>
+          <MostPopularSection sliderData={sliderData} />
+          <AzerbaijanTravelSection />
+          <TourismSection tourismData={tourismData} />
+          <HomeGifSection />
+          <TheatreSection theatreData={theatreData} />
+          <KidsSection kidsData={kidsData} />
+          <WeekendSection randomData={randomData} />
+          <WhatsNewSection whatsNewData={whatsNewData} />
+          <AnimationBottomSection />
         </div>
-        <div className="relative overflow-hidden">
-          <div className="lg:py-6 mb-4 ">
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={30}
-              loop={true}
-              pagination={{
-                clickable: true,
-              }}
-              navigation={true}
-              autoplay={{
-                delay: 3500,
-                disableOnInteraction: false,
-              }}
-              centeredSlides={true}
-              modules={[Navigation, Autoplay]}
-              className="mySwiper !relative "
-            >
-              {sliderData.map((q) => {
-                return (
-                  <SwiperSlide
-                    className="!lg:rounded-2xl overflow-hidden"
-                    key={q._id}
-                  >
-                    <img
-                      onClick={() => handleDetails(q._id)}
-                      className="w-full h-full object-cover lg:rounded-2xl cursor-pointer"
-                      src={q.image}
-                      alt=""
-                    />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-            <SlideNavBar />
-          </div>
-        </div>
-      </div>
-      <MostPopularSection sliderData={sliderData} />
-      <AzerbaijanTravelSection />
-      <TourismSection tourismData={tourismData} />
-      <HomeGifSection />
-      <TheatreSection theatreData={theatreData} />
-      <KidsSection kidsData={kidsData} />
-      <WeekendSection randomData={randomData} />
-      <WhatsNewSection whatsNewData={whatsNewData} />
-      <AnimationBottomSection />
+      )}
     </div>
   );
 };
