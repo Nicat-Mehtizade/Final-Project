@@ -12,12 +12,32 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import { BASE_URL } from "../../constant";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import { Activity } from "../../types/activityType";
 
+const style = {
+  position: "relative",
+  top: "50%",
+  height: "90vh",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "90%",
+  bgcolor: "transparent",
+  p: 4,
+};
 const Header = () => {
   const token = getTokenFromCookie();
   const [profileVisible, setProfileVisible] = useState(false);
   const [navbarActive, setNavbarActive] = useState(false);
   const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [filteredActivities, setFilteredActivities] = useState<
+    Activity[] | null
+  >(null);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const login = () => {
     window.location.href = "http://localhost:5173/login";
@@ -33,6 +53,20 @@ const Header = () => {
       );
       console.log(response.data.message);
       window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    try {
+      const response = await axios(`${BASE_URL}/activity`);
+      const filtered = response.data.data.filter((q: Activity) =>
+        q.title.toLowerCase().includes(value.toLowerCase().trim())
+      );
+      setFilteredActivities(filtered);
     } catch (error) {
       console.log(error);
     }
@@ -70,16 +104,10 @@ const Header = () => {
                     <IoMdClose />
                   </button>
                 </div>
-                <div className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
+                <button onClick={handleOpen} className="border flex items-center border-gray-400 rounded-lg gap-2 p-2">
                   <IoSearch className="text-gray-400 text-2xl min-w-5" />
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    placeholder="Search"
-                    className="focus:outline-0"
-                  />
-                </div>
+                  <p className="mr-2 text-gray-400">Search</p>
+                </button>
                 <nav className="flex flex-col gap-4 py-5 font-bold text-lg">
                   <NavLink to={"/events"} end className="text-left">
                     All Events
@@ -189,7 +217,7 @@ const Header = () => {
             <NavLink to={"/favorites"} className="hidden lg:block">
               <PiHeartStraightBold className="cursor-pointer" />
             </NavLink>
-            <button className="hidden lg:block">
+            <button onClick={handleOpen} className="hidden lg:block">
               <IoSearch className="cursor-pointer" />
             </button>
             <button>
@@ -242,6 +270,76 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <div className="relative top-[10%] rounded-xl bg-white flex gap-3 items-center mb-4 p-5 ">
+              <IoSearch className="text-gray-400 text-2xl" />
+              <input
+                onChange={handleSearch}
+                type="text"
+                value={searchValue}
+                placeholder="Search"
+                className="focus:outline-0 w-full"
+              />
+            </div>
+
+            {filteredActivities && (
+              <div className="bg-white rounded-lg max-h-[300px] overflow-y-auto scrollbar-hide">
+                {filteredActivities ? (
+                  filteredActivities.length > 0 ? (
+                    filteredActivities.map((activity) => {
+                      const title = activity.title;
+                      const search = searchValue.trim().toLowerCase();
+                      const matchIndex = title.toLowerCase().indexOf(search);
+
+                      if (matchIndex !== -1 && search.length > 0) {
+                        const before = title.slice(0, matchIndex);
+                        const match = title.slice(
+                          matchIndex,
+                          matchIndex + search.length
+                        );
+                        const after = title.slice(matchIndex + search.length);
+
+                        return (
+                          <NavLink
+                            key={activity._id}
+                            to={`/events/${activity._id}`}
+                            className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                          >
+                            {before}
+                            <span className="font-bold text-black">
+                              {match}
+                            </span>
+                            {after}
+                          </NavLink>
+                        );
+                      }
+
+                      return (
+                        <NavLink
+                          key={activity._id}
+                          to={`/events/${activity._id}`}
+                          className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                        >
+                          {activity.title}
+                        </NavLink>
+                      );
+                    })
+                  ) : (
+                    <p className="text-gray-500 p-5">No results found.</p>
+                  )
+                ) : null}
+              </div>
+            )}
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

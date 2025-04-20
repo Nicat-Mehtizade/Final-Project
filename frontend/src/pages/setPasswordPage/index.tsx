@@ -60,7 +60,7 @@ const SetPasswordPage = () => {
         <Toaster position="top-center" reverseOrder={false} />
         <h1 className="text-3xl font-semibold mb-3">Set Password</h1>
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex gap-15 py-4 mb-4 px-5 items-center">
+          <div className="md:flex gap-15 py-4 mb-4 px-5 items-center">
             <div className="flex flex-col">
               <label htmlFor="" className="text-gray-500 font-semibold">
                 New Password
@@ -90,7 +90,7 @@ const SetPasswordPage = () => {
           </div>
           <button
             type="submit"
-            className="bg-yellow-300 ml-5 px-5 font-bold py-3 rounded-lg w-[25%] text-xl cursor-pointer"
+            className="bg-yellow-300 ml-5 px-5 font-bold py-3 rounded-lg md:w-[25%] text-xl cursor-pointer"
           >
             Save Changes
           </button>

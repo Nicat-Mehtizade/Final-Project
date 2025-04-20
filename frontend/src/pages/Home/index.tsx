@@ -29,6 +29,19 @@ import { GrHistory } from "react-icons/gr";
 import { MdCardGiftcard } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import ClipLoader from "react-spinners/ClipLoader";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "relative",
+  top: "50%",
+  height: "90vh",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "90%",
+  bgcolor: "transparent",
+  p: 4,
+};
 
 const Home = () => {
   const [sliderData, setSliderData] = useState<Activity[]>([]);
@@ -39,6 +52,13 @@ const Home = () => {
   const [whatsNewData, setWhatsNewData] = useState<Activity[]>([]);
   const [navbarActive, setNavbarActive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [filteredActivities, setFilteredActivities] = useState<
+    Activity[] | null
+  >(null);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const nav = useNavigate();
   const token = getTokenFromCookie();
   console.log(token);
@@ -109,6 +129,20 @@ const Home = () => {
     }
   };
 
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    try {
+      const response = await axios(`${BASE_URL}/activity`);
+      const filtered = response.data.data.filter((q: Activity) =>
+        q.title.toLowerCase().includes(value.toLowerCase().trim())
+      );
+      setFilteredActivities(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
       {isLoading ? (
@@ -162,16 +196,10 @@ const Home = () => {
                         <IoMdClose />
                       </button>
                     </div>
-                    <div className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
+                    <button onClick={handleOpen} className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
                       <IoSearch className="text-gray-400 text-2xl min-w-5" />
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Search"
-                        className="focus:outline-0"
-                      />
-                    </div>
+                      <p className="text-gray-400 mr-2">Search</p>
+                    </button>
                     <nav className="flex flex-col gap-4 py-5 font-bold text-lg">
                       <NavLink to={"/events"} end className="text-left">
                         All Events
@@ -299,6 +327,76 @@ const Home = () => {
           <AnimationBottomSection />
         </div>
       )}
+       <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <div className="relative top-[10%] rounded-xl bg-white flex gap-3 items-center mb-4 p-5 ">
+              <IoSearch className="text-gray-400 text-2xl" />
+              <input
+                onChange={handleSearch}
+                type="text"
+                value={searchValue}
+                placeholder="Search"
+                className="focus:outline-0 w-full"
+              />
+            </div>
+
+            {filteredActivities && (
+              <div className="bg-white rounded-lg max-h-[300px] overflow-y-auto scrollbar-hide">
+                {filteredActivities ? (
+                  filteredActivities.length > 0 ? (
+                    filteredActivities.map((activity) => {
+                      const title = activity.title;
+                      const search = searchValue.trim().toLowerCase();
+                      const matchIndex = title.toLowerCase().indexOf(search);
+
+                      if (matchIndex !== -1 && search.length > 0) {
+                        const before = title.slice(0, matchIndex);
+                        const match = title.slice(
+                          matchIndex,
+                          matchIndex + search.length
+                        );
+                        const after = title.slice(matchIndex + search.length);
+
+                        return (
+                          <NavLink
+                            key={activity._id}
+                            to={`/events/${activity._id}`}
+                            className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                          >
+                            {before}
+                            <span className="font-bold text-black">
+                              {match}
+                            </span>
+                            {after}
+                          </NavLink>
+                        );
+                      }
+
+                      return (
+                        <NavLink
+                          key={activity._id}
+                          to={`/events/${activity._id}`}
+                          className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                        >
+                          {activity.title}
+                        </NavLink>
+                      );
+                    })
+                  ) : (
+                    <p className="text-gray-500 p-5">No results found.</p>
+                  )
+                ) : null}
+              </div>
+            )}
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

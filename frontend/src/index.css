@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+/* tailwind.css və ya global CSS faylında */
+@layer utilities {
+    .scrollbar-hide {
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none;  /* Firefox */
+    }
+  
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;  /* Safari ve Chrome */
+    }
+  }
+  
