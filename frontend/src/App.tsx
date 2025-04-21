@@ -22,6 +22,8 @@ import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import FavoritesAndBasketLayout from "./layout/FavoritesAndBasketLayout";
 import Favorites from "./pages/Favorites";
 import SetPasswordPage from "./pages/setPasswordPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
         <Route element={<FavoritesAndBasketLayout />}>
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/set-password" element={<SetPasswordPage />} />
+          <Route path="/about" element={<About/>}/>
+          <Route path="/contact" element={<Contact/>}/>
         </Route>
 
         <Route element={<UserLayout />}>
