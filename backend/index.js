@@ -8,6 +8,7 @@ const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
 const likeRouter=require("./routes/likeRouter")
+const seatRouter=require("./routes/seatRouter")
 const session = require("express-session");
 const passport = require("passport");
 const passportRouter=require("./routes/passportRouter")
@@ -45,6 +46,7 @@ app.use(passport.session());
 app.use("/api/users", userRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/activity", activityRouter);
+app.use("/api/seats", seatRouter)
 app.use("/api/likes", likeRouter)
 app.use("/api", authRouter)
 app.use("/api", passportRouter)

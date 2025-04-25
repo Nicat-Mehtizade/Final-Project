@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import { BASE_URL } from "../../constant";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Activity } from "../../types/activityType";
 import { PiHeartStraightBold } from "react-icons/pi";
 import { IoSearch } from "react-icons/io5";
@@ -20,6 +20,10 @@ import userType from "../../types/userType";
 import { jwtDecode } from "jwt-decode";
 import JwtType from "../../types/jwtType";
 import { IoMdHeart } from "react-icons/io";
+import DetailsSeatsSection from "../../components/DetailsSeatsSection";
+import DetailsAboutSection from "../../components/DetailsAboutSection";
+import DetailsLocationSection from "../../components/DetailsLocationSection";
+import DetailsSimilarEventsSection from "../../components/DetailsSimilarEventsSection";
 
 const Details = () => {
   const { id } = useParams();
@@ -29,6 +33,9 @@ const Details = () => {
   const [navbarActive, setNavbarActive] = useState(false);
   const [slideNavbarVisible, setSlideNavbarVisible] = useState(false);
   const [user, setUser] = useState<userType | null>(null);
+  const priceTicketInfo = useRef<HTMLDivElement | null>(null);
+  const activityLocation = useRef<HTMLDivElement | null>(null);
+  const activityLanguageAndAge = useRef<HTMLDivElement | null>(null);
 
   const getActivity = async (id: string | undefined) => {
     try {
@@ -40,7 +47,6 @@ const Details = () => {
   };
 
   const getUser = async () => {
-    const token = getTokenFromCookie();
     if (!token) {
       console.log("Token not found");
       return;
@@ -54,7 +60,7 @@ const Details = () => {
       });
 
       setUser(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +73,8 @@ const Details = () => {
   useEffect(() => {
     getActivity(id);
   }, [id]);
+
+  // console.log(activity);
 
   const login = () => {
     window.location.href = "/login";
@@ -102,6 +110,16 @@ const Details = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const scrollPriceTicketInfo = () => {
+    priceTicketInfo.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  const scrollActivityLocation = () => {
+    activityLocation.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  const scrollActivityLanguageAndAge = () => {
+    activityLanguageAndAge.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -264,7 +282,7 @@ const Details = () => {
                 <NavLink to={"/"}>
                   <img
                     className="w-40 cursor-pointer"
-                    src="/123-removebg-preview.png"
+                    src="/1234-removebg-preview.png"
                     alt="iTicket Logo"
                   />
                 </NavLink>
@@ -382,8 +400,11 @@ const Details = () => {
                 </div>
               </div>
             </div>
-            <div className="py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <button className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl">
+            <div className="py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+              <button
+                onClick={scrollActivityLocation}
+                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+              >
                 <div className="flex relative">
                   <img
                     className="relative min-w-13 max-w-full h-auto"
@@ -399,7 +420,10 @@ const Details = () => {
                 <p className="text-xl font-semibold">Venue Date</p>
               </button>
 
-              <button className="bg-white flex items-center  px-15 p-5 gap-5 shadow-2xl rounded-2xl">
+              <button
+                onClick={scrollActivityLanguageAndAge}
+                className="bg-white flex items-center  px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+              >
                 <div className="flex relative">
                   <img
                     className="relative  min-w-13 max-w-full h-auto"
@@ -415,7 +439,10 @@ const Details = () => {
                 </p>
               </button>
 
-              <button className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl">
+              <button
+                onClick={scrollPriceTicketInfo}
+                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+              >
                 <div className="flex relative">
                   <img
                     className="relative min-w-13 max-w-full h-auto"
@@ -431,7 +458,10 @@ const Details = () => {
                 <p className="text-xl font-semibold">Price Ticket info</p>
               </button>
 
-              <button className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl">
+              <button
+                onClick={scrollActivityLanguageAndAge}
+                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+              >
                 <img
                   className="max-w-full h-auto"
                   src="https://iticket.az/images/info.svg"
@@ -440,6 +470,16 @@ const Details = () => {
                 <p className="text-xl font-semibold">About event</p>
               </button>
             </div>
+            <DetailsSeatsSection ref={priceTicketInfo} activity={activity} />
+            <DetailsAboutSection
+              ref={activityLanguageAndAge}
+              activity={activity}
+            />
+            <DetailsLocationSection
+              ref={activityLocation}
+              activity={activity}
+            />
+            <DetailsSimilarEventsSection activity={activity} />
           </div>
         )}
       </div>

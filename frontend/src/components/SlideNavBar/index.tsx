@@ -78,7 +78,7 @@ const SlideNavBar = () => {
       <NavLink to={"/"}>
         <img
           className="w-40 cursor-pointer"
-          src="/123-removebg-preview.png"
+          src="/1234-removebg-preview.png"
           alt="iTicket Logo"
         />
       </NavLink>

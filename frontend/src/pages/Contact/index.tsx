@@ -128,35 +128,51 @@ const Contact = () => {
               </motion.form>
             </motion.div>
           </div>
-          <div className="border border-gray-200 rounded-xl w-full lg:w-[45%] mt-10 pt-2">
+          <motion.div 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+          className="border border-gray-200 rounded-xl w-full lg:w-[45%] mt-10 pt-2">
             <div className="md:flex justify-between gap-5 p-4 ">
-              <div className="md:w-[33%]">
+              <motion.div 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1}}
+              transition={{ delay: 0.7, duration: 0.7, ease: "easeOut" }}
+              className="md:w-[33%]">
                 <h3 className="text-gray-400 text-sm mb-2">Head Office</h3>
                 <p className="text-sm">
                   AF Mall 14th floor, office 36 Azerbaijan, Baku, Samad Vurgun
                   34, AZ1014
                 </p>
-              </div>
-              <div className="md:w-[33%]">
+              </motion.div>
+              <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1}}
+                transition={{ delay: 0.7, duration: 0.7, ease: "easeOut" }}
+              className="md:w-[33%]">
                 <h3 className="text-gray-400 text-sm mb-2">Phone</h3>
                 <p className="text-sm">+994 12 424-24-24</p>
-              </div>
-              <div className="md:w-[33%]">
+              </motion.div>
+              <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1}}
+                transition={{ delay: 0.7, duration: 0.7, ease: "easeOut" }} 
+              className="md:w-[33%]">
                 <h3 className="text-gray-400 text-sm mb-2">
                   You can send all comments and suggestions to:
                 </h3>
                 <p className="text-sm">info@iticket.az</p>
-              </div>
+              </motion.div>
             </div>
             <motion.iframe
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+              transition={{ delay: 0.9, duration: 0.5, ease: "easeOut" }}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.459074957755!2d49.83908007582527!3d40.37651697144612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40307da5a4c85e9f%3A0x8b209a8e1ed5eea9!2sAF%20Mall!5e0!3m2!1sen!2saz!4v1745260153394!5m2!1sen!2saz"
               loading="lazy"
               className="w-full h-[250px] rounded-b-xl"
             ></motion.iframe>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

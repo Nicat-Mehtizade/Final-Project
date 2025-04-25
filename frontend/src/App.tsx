@@ -24,6 +24,9 @@ import Favorites from "./pages/Favorites";
 import SetPasswordPage from "./pages/setPasswordPage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import AdminLayout from "./layout/Admin";
+import Dashboard from "./pages/Dashboard";
+import AdminEventPage from "./pages/AdminEventPage";
 
 function App() {
   return (
@@ -42,8 +45,8 @@ function App() {
         <Route element={<FavoritesAndBasketLayout />}>
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/set-password" element={<SetPasswordPage />} />
-          <Route path="/about" element={<About/>}/>
-          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route element={<UserLayout />}>
@@ -66,6 +69,12 @@ function App() {
           <Route path="tourism" element={<TourismPage />} />
           <Route path="museum" element={<MuseumPage />} />
         </Route>
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="event" element={<AdminEventPage />} />
+        </Route>
+
       </Routes>
     </>
   );

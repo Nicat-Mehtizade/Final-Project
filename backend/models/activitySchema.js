@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const seatSchema = require("./seatSchema");
 
 const activitySchema = mongoose.Schema(
   {
@@ -20,6 +21,10 @@ const activitySchema = mongoose.Schema(
     location: {
       latitude: { type: Number, required: true },
       longitude: { type: Number, required: true },
+    },
+    seats: {
+      type: [[seatSchema]],
+      required: true,
     },
   },
   {

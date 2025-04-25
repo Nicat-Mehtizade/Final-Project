@@ -93,7 +93,7 @@ const Header = () => {
                   <NavLink to={"/"}>
                     <img
                       className="w-30 cursor-pointer mb-5"
-                      src="/123-removebg-preview.png"
+                      src="/1234-removebg-preview.png"
                       alt="iTicket Logo"
                     />
                   </NavLink>

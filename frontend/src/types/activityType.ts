@@ -12,8 +12,25 @@ export interface Activity{
     location: Location;
     createdAt?: Date;
     updatedAt?: Date;
-    _id:string
+    _id:string,
+    seats:Seat[][],
 }
+
+export interface Seat {
+  _id: string;
+  activityId: string;
+  zone: string;
+  row: string;
+  number: number;
+  seatNumber: string;
+  price: number;
+  isBooked: boolean;
+}
+export interface SeatBookingProps {
+  activityId: string;
+  userId: string;
+}
+
 
 export interface Showtime {
     startTime: Date;
