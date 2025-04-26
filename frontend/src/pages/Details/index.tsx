@@ -24,6 +24,20 @@ import DetailsSeatsSection from "../../components/DetailsSeatsSection";
 import DetailsAboutSection from "../../components/DetailsAboutSection";
 import DetailsLocationSection from "../../components/DetailsLocationSection";
 import DetailsSimilarEventsSection from "../../components/DetailsSimilarEventsSection";
+import DetailsCommentSection from "../../components/DetailsCommentSection";
+import toast, { Toaster } from "react-hot-toast";
+import { Box, Modal } from "@mui/material";
+
+const style = {
+  position: "relative",
+  top: "50%",
+  height: "90vh",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "90%",
+  bgcolor: "transparent",
+  p: 4,
+};
 
 const Details = () => {
   const { id } = useParams();
@@ -36,7 +50,11 @@ const Details = () => {
   const priceTicketInfo = useRef<HTMLDivElement | null>(null);
   const activityLocation = useRef<HTMLDivElement | null>(null);
   const activityLanguageAndAge = useRef<HTMLDivElement | null>(null);
-
+  const [searchValue, setSearchValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [filteredActivities, setFilteredActivities] = useState<
+    Activity[] | null
+  >(null);
   const getActivity = async (id: string | undefined) => {
     try {
       const response = await axios(`${BASE_URL}/activity/${id}`);
@@ -74,8 +92,6 @@ const Details = () => {
     getActivity(id);
   }, [id]);
 
-  // console.log(activity);
-
   const login = () => {
     window.location.href = "/login";
   };
@@ -96,6 +112,10 @@ const Details = () => {
   };
 
   const handleFav = async (id: string) => {
+    if (!token) {
+      toast.error("You need to be logged in to add to favorites.");
+      return;
+    }
     try {
       await axios.post(
         `${BASE_URL}/likes/${id}`,
@@ -121,9 +141,26 @@ const Details = () => {
   const scrollActivityLanguageAndAge = () => {
     activityLanguageAndAge.current?.scrollIntoView({ behavior: "smooth" });
   };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    try {
+      const response = await axios(`${BASE_URL}/activity`);
+      const filtered = response.data.data.filter((q: Activity) =>
+        q.title.toLowerCase().includes(value.toLowerCase().trim())
+      );
+      setFilteredActivities(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className="max-w-[1350px] mx-auto">
         <div className="bg-white flex lg:hidden justify-between items-center py-4 px-3 relative z-2">
           <button onClick={() => setNavbarActive(!navbarActive)}>
@@ -332,7 +369,7 @@ const Details = () => {
                   <NavLink to={"/favorites"}>
                     <PiHeartStraightBold className="cursor-pointer" />
                   </NavLink>
-                  <button>
+                  <button onClick={handleOpen}>
                     <IoSearch className="cursor-pointer" />
                   </button>
                   <button>
@@ -403,7 +440,7 @@ const Details = () => {
             <div className="py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
               <button
                 onClick={scrollActivityLocation}
-                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+                className="bg-white flex items-center px-15 p-5 gap-5 cursor-pointer shadow-2xl rounded-2xl"
               >
                 <div className="flex relative">
                   <img
@@ -422,7 +459,7 @@ const Details = () => {
 
               <button
                 onClick={scrollActivityLanguageAndAge}
-                className="bg-white flex items-center  px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+                className="bg-white flex items-center cursor-pointer  px-15 p-5 gap-5 shadow-2xl rounded-2xl"
               >
                 <div className="flex relative">
                   <img
@@ -441,7 +478,7 @@ const Details = () => {
 
               <button
                 onClick={scrollPriceTicketInfo}
-                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+                className="bg-white flex items-center cursor-pointer px-15 p-5 gap-5 shadow-2xl rounded-2xl"
               >
                 <div className="flex relative">
                   <img
@@ -460,7 +497,7 @@ const Details = () => {
 
               <button
                 onClick={scrollActivityLanguageAndAge}
-                className="bg-white flex items-center px-15 p-5 gap-5 shadow-2xl rounded-2xl"
+                className="bg-white flex items-center cursor-pointer px-15 p-5 gap-5 shadow-2xl rounded-2xl"
               >
                 <img
                   className="max-w-full h-auto"
@@ -470,7 +507,11 @@ const Details = () => {
                 <p className="text-xl font-semibold">About event</p>
               </button>
             </div>
-            <DetailsSeatsSection ref={priceTicketInfo} activity={activity} />
+            <DetailsSeatsSection
+              ref={priceTicketInfo}
+              user={user}
+              activity={activity}
+            />
             <DetailsAboutSection
               ref={activityLanguageAndAge}
               activity={activity}
@@ -480,9 +521,80 @@ const Details = () => {
               activity={activity}
             />
             <DetailsSimilarEventsSection activity={activity} />
+            <DetailsCommentSection activity={activity} user={user} />
           </div>
         )}
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div>
+            <div className="relative top-[10%] rounded-xl bg-white flex gap-3 items-center mb-4 p-5 ">
+              <IoSearch className="text-gray-400 text-2xl" />
+              <input
+                onChange={handleSearch}
+                type="text"
+                value={searchValue}
+                placeholder="Search"
+                className="focus:outline-0 w-full"
+              />
+            </div>
+
+            {filteredActivities && (
+              <div className="bg-white rounded-lg max-h-[300px] overflow-y-auto scrollbar-hide">
+                {filteredActivities ? (
+                  filteredActivities.length > 0 ? (
+                    filteredActivities.map((activity) => {
+                      const title = activity.title;
+                      const search = searchValue.trim().toLowerCase();
+                      const matchIndex = title.toLowerCase().indexOf(search);
+
+                      if (matchIndex !== -1 && search.length > 0) {
+                        const before = title.slice(0, matchIndex);
+                        const match = title.slice(
+                          matchIndex,
+                          matchIndex + search.length
+                        );
+                        const after = title.slice(matchIndex + search.length);
+
+                        return (
+                          <NavLink
+                            key={activity._id}
+                            to={`/events/${activity._id}`}
+                            className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                          >
+                            {before}
+                            <span className="font-bold text-black">
+                              {match}
+                            </span>
+                            {after}
+                          </NavLink>
+                        );
+                      }
+
+                      return (
+                        <NavLink
+                          key={activity._id}
+                          to={`/events/${activity._id}`}
+                          className="block py-2 px-3 hover:bg-yellow-300 border-b border-gray-300"
+                        >
+                          {activity.title}
+                        </NavLink>
+                      );
+                    })
+                  ) : (
+                    <p className="text-gray-500 p-5">No results found.</p>
+                  )
+                ) : null}
+              </div>
+            )}
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

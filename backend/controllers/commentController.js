@@ -2,7 +2,12 @@ const Comment = require("../models/commentSchema");
 
 const getAllComments = async (req, res) => {
   try {
-    const comments = await Comment.find({});
+
+    const { activityId } = req.query; 
+
+    const query = activityId ? { activity: activityId } : {}; 
+
+    const comments = await Comment.find(query).populate("userId", "username image");
 
     if (comments.length === 0) {
       res.status(404).json({
@@ -91,7 +96,7 @@ const uptadeComment = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const addedComment = await Comment.create({ ...req.body });
-    await Comment.save();
+
     res.status(201).json({
       data: addedComment,
       message: "Successfully added",

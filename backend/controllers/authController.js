@@ -52,7 +52,7 @@ const login = async (req, res) => {
         role: existUser.role,
       },
       process.env.JWT_SECRET,
-      { expiresIn: 60 * 60 }
+      { expiresIn: "1h" }
     );
 
     res.cookie("token", token, {
@@ -104,7 +104,7 @@ const setPassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     user.password = hashedPassword;
-    user.hasPassword = true;
+    user.hasPassword = false;
     await user.save();
 
     res.status(200).json({ message: "Password updated successfully." });

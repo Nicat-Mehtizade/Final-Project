@@ -77,7 +77,7 @@ const DetailsSimilarEventsSection = ({ activity }: { activity: Activity }) => {
               src="https://iticket.az/images/warning.svg"
               alt=""
             />
-            No events found according to your request.
+            No similar events found for this event.
           </div>
         )}
       </div>

@@ -144,7 +144,7 @@ const AdminLayout = () => {
         </div>
         <p className={`text-gray-500 mt-auto text-nowrap ml-3 ${sideBarActive ? "opacity-0" : "opacity-100"}`}>© 2025 All Rights Reserved</p>
       </div>
-      <div>
+      <div className="w-full">
         <Outlet />
       </div>
     </div>

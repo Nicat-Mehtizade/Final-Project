@@ -28,6 +28,7 @@ const verify =  (roles) => {
       req.user = decoded;
       next();
     } catch (error) {
+      res.clearCookie("token");
       res.status(500).json({
         error: error.message,
       });

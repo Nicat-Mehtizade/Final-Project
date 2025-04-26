@@ -8,6 +8,7 @@ const commentRouter = require("./routes/commentRouter");
 const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
 const likeRouter=require("./routes/likeRouter")
+const basketRouter=require("./routes/basketRouter")
 const seatRouter=require("./routes/seatRouter")
 const session = require("express-session");
 const passport = require("passport");
@@ -28,7 +29,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 60 * 60 * 1000,
     },
   })
 );
@@ -48,6 +49,7 @@ app.use("/api/comments", commentRouter);
 app.use("/api/activity", activityRouter);
 app.use("/api/seats", seatRouter)
 app.use("/api/likes", likeRouter)
+app.use("/api/basket", basketRouter)
 app.use("/api", authRouter)
 app.use("/api", passportRouter)
 

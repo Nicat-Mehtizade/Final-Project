@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const seatSchema=require("./seatSchema")
 
 const userSchema = mongoose.Schema(
   {
@@ -24,6 +25,8 @@ const userSchema = mongoose.Schema(
           ref: "Activity",
           required: true,
         },
+        seat:seatSchema,
+        price: { type: Number }
       },
     ],
   },
