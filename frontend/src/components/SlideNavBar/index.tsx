@@ -131,9 +131,9 @@ const SlideNavBar = () => {
         <button onClick={handleOpen}>
           <IoSearch className="cursor-pointer" />
         </button>
-        <button>
+        <NavLink to={"/basket"} className="cursor-pointer">
           <FaShoppingCart className="cursor-pointer" />
-        </button>
+        </NavLink>
         <div
           onMouseOver={() => token && setProfileVisible(true)}
           onMouseLeave={() => token && setProfileVisible(false)}

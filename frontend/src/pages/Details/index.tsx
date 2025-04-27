@@ -160,7 +160,6 @@ const Details = () => {
   return (
     <div className="bg-gradient-to-b from-gray-300 to-white">
       <Toaster position="top-center" reverseOrder={false} />
-
       <div className="max-w-[1350px] mx-auto">
         <div className="bg-white flex lg:hidden justify-between items-center py-4 px-3 relative z-2">
           <button onClick={() => setNavbarActive(!navbarActive)}>
@@ -372,9 +371,9 @@ const Details = () => {
                   <button onClick={handleOpen}>
                     <IoSearch className="cursor-pointer" />
                   </button>
-                  <button>
+                  <NavLink to={"/basket"}>
                     <FaShoppingCart className="cursor-pointer" />
-                  </button>
+                  </NavLink>
                   <div
                     onMouseOver={() => token && setProfileVisible(true)}
                     onMouseLeave={() => token && setProfileVisible(false)}

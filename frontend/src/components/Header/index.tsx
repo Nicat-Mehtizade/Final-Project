@@ -93,7 +93,7 @@ const Header = () => {
                   <NavLink to={"/"}>
                     <img
                       className="w-30 cursor-pointer mb-5"
-                      src="/1234-removebg-preview.png"
+                      src="/123-removebg-preview.png"
                       alt="iTicket Logo"
                     />
                   </NavLink>
@@ -220,9 +220,9 @@ const Header = () => {
             <button onClick={handleOpen} className="hidden lg:block">
               <IoSearch className="cursor-pointer" />
             </button>
-            <button>
+            <NavLink to={"/basket"}>
               <FaShoppingCart className="cursor-pointer" />
-            </button>
+            </NavLink>
             <div
               onMouseOver={() => token && setProfileVisible(true)}
               onMouseLeave={() => token && setProfileVisible(false)}

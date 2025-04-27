@@ -21,6 +21,7 @@ export interface Seat {
   activityId: string;
   zone: string;
   row: string;
+  type:string,
   number: number;
   seatNumber: string;
   price: number;

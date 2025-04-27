@@ -1,7 +1,8 @@
 import { Seat } from "./activityType";
 interface ActivityRef {
     activityId: string; 
-    seat: Seat
+    seat: Seat,
+    price:number
   }
 
 interface userType{

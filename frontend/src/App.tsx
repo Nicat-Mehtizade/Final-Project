@@ -27,6 +27,7 @@ import Contact from "./pages/Contact";
 import AdminLayout from "./layout/Admin";
 import Dashboard from "./pages/Dashboard";
 import AdminEventPage from "./pages/AdminEventPage";
+import Basket from "./pages/Basket";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
 
         <Route element={<FavoritesAndBasketLayout />}>
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/basket" element={<Basket/>}/>
           <Route path="/set-password" element={<SetPasswordPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

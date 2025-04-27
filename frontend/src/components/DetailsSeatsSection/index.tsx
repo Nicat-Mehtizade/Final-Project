@@ -58,6 +58,14 @@ const DetailsSeatsSection = forwardRef<
         setBasketSeats((prev) => prev.filter((s) => s !== seat.seatNumber));
       } else {
         setBasketSeats((prev) => [...prev, seat.seatNumber]);
+        toast.success("Tickets were added to basket",{
+          icon:null,
+          style: {
+            backgroundColor:"var(--color-yellow-300)",
+            fontWeight: "700",
+            borderRadius:"20px"
+          },
+        })
       }
     } catch (error) {
       console.log(error);
@@ -65,14 +73,12 @@ const DetailsSeatsSection = forwardRef<
     }
   };
 
-  console.log(basketSeats);
   return (
     <div
       ref={ref}
       className="shadow-[0px_12px_24px_rgba(0,0,0,0.35)] rounded-xl mb-10"
     >
       <Toaster position="top-center" reverseOrder={false} />
-
       <div className="flex flex-col lg:flex-row items-start justify-between py-5 px-9 border-b-1 border-gray-300 lg:items-center bg-white rounded-tl-lg rounded-tr-lg relative overflow-hidden">
         <div className="absolute left-0 top-0 h-full w-6 bg-yellow-300 rounded-tl-lg"></div>
         <div className="relative lg:pl-3 font-semibold text-lg">
