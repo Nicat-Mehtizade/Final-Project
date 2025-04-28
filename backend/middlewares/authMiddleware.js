@@ -28,7 +28,10 @@ const verify =  (roles) => {
       req.user = decoded;
       next();
     } catch (error) {
-      res.clearCookie("token");
+      res.clearCookie("token",token, {
+        httpOnly:false,
+        sameSite: "Lax"
+      });
       res.status(500).json({
         error: error.message,
       });

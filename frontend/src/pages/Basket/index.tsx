@@ -9,13 +9,55 @@ import { Activity } from "../../types/activityType";
 import { MdDelete } from "react-icons/md";
 import { Seat } from "../../types/activityType";
 import toast, { Toaster } from "react-hot-toast";
-
+import SyncLoader from "react-spinners/SyncLoader";
+import { loadStripe } from "@stripe/stripe-js";
 const Basket = () => {
   const token = getTokenFromCookie();
   const [user, setUser] = useState<userType | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [promoCode, setPromoCode] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const stripePromise = loadStripe("pk_test_51RITo2Cam93Y6EX3TyMSVqFSAdp5JMa3vzN2lTugzONNd00EKrF1d9xWdJpIEXdBvKeZ2Ux5ps7hO8vXIhUU1GHi00mZg7TiO3")
+
+  const handleCheckout = async () => {
+    if (isProcessing) return
+
+    setIsProcessing(true);
+    const stripe = await stripePromise;
+
+    try {
+      const basketItems = basketActivities.map((item) => ({
+        title: item.activity?.title,
+        image: item.activity?.image,
+        price: item.price,
+      }));
+
+      const response = await axios.post<{ sessionId: string }>(`${BASE_URL}/create-checkout-session`, {
+        basketItems,
+      });
+      const { sessionId } = response.data;
+      if (stripe && sessionId) {
+        await stripe.redirectToCheckout({ sessionId });  
+      } else {
+        throw new Error('Stripe could not be initialized or sessionId is missing');
+      }
+      await stripe?.redirectToCheckout({ sessionId });
+    } catch (error) {
+      console.error(error);
+      toast.error("Payment error. Please try again.", {
+        position: "top-right",
+        style: {
+          backgroundColor: "var(--color-yellow-300)",
+          fontWeight: "700",
+          borderRadius: "20px",
+        },
+      });
+    }finally {
+      setIsProcessing(false); 
+    }
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -34,9 +76,11 @@ const Basket = () => {
 
         setUser(response.data.data);
 
-        getActivities();
+        await getActivities();
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -117,10 +161,14 @@ const Basket = () => {
 
       <div className="max-w-[1200px] mx-auto">
         <div className="bg-white shadow-[0px_6px_24px_rgba(0,0,0,0.35)] rounded-2xl ">
-          <div className="flex">
-            <div className=" w-[73%] py-7 px-6">
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-[73%] py-7 px-6  ">
               <h1 className="text-3xl font-semibold mb-2 ">Cart</h1>
-              {basketActivities && basketActivities.length > 0 ? (
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <SyncLoader color="#facc15" />
+                </div>
+              ) : basketActivities && basketActivities.length > 0 ? (
                 basketActivities.map((item) => {
                   if (!item.activity) {
                     return null;
@@ -131,7 +179,7 @@ const Basket = () => {
                   };
                   return (
                     <div
-                      className={`flex justify-between items-center  py-5 ${
+                      className={`flex flex-col md:flex-row gap-2 justify-between items-start md:items-center  py-5 ${
                         basketActivities.length > 1
                           ? "border-b-2 border-gray-300"
                           : ""
@@ -177,7 +225,7 @@ const Basket = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-between w-full md:w-auto gap-3">
                         <p className="bg-yellow-300 rounded-xl w-30 h-20 flex justify-center items-center text-2xl font-semibold">
                           {item.price} ₼
                         </p>
@@ -208,7 +256,7 @@ const Basket = () => {
                 </div>
               )}
             </div>
-            <div className="w-[25%] flex flex-col border-l border-gray-200 pl-6 py-8">
+            <div className="w-full md:w-[25%] flex flex-col border-l border-gray-200 p-6 md:pl-6 py-8">
               <h1 className="text-xl text-gray-500 font-semibold mb-10">
                 Payment information
               </h1>
@@ -246,7 +294,7 @@ const Basket = () => {
                   <p>Total:</p>
                   <p>{totalPrice} ₼</p>
                 </div>
-                <button className="bg-yellow-300 cursor-pointer p-4 rounded-xl text-xl font-bold">
+                <button onClick={handleCheckout} className="bg-yellow-300 cursor-pointer p-4 rounded-xl text-xl font-bold">
                   Create Order
                 </button>
               </div>

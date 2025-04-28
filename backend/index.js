@@ -14,6 +14,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportRouter=require("./routes/passportRouter")
 const passportConfig=require("./config/passport")
+const stripeRouter=require("./routes/stripeRouter")
 const path=require("path")
 const cookieParser = require("cookie-parser");
 
@@ -52,6 +53,7 @@ app.use("/api/likes", likeRouter)
 app.use("/api/basket", basketRouter)
 app.use("/api", authRouter)
 app.use("/api", passportRouter)
+app.use("/api", stripeRouter)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
