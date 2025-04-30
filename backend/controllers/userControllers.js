@@ -142,10 +142,32 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const getUserPromoCodes = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId).populate("usedPromoCodes");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    return res.json({
+      data: user.usedPromoCodes,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
 module.exports = {
   getAllUsers,
   getUserById,
   deleteUser,
   updateUser,
-  updatePassword
+  updatePassword,
+  getUserPromoCodes
 };

@@ -232,7 +232,9 @@ const Home = () => {
                 alt="iTicket Logo"
               />
               <div className="flex items-center gap-4 text-2xl text-gray-300">
+                <NavLink to={"/basket"}>
                 <FaShoppingCart className="cursor-pointer" />
+                </NavLink>
                 <div
                   onMouseOver={() => token && setProfileVisible(true)}
                   onMouseLeave={() => token && setProfileVisible(false)}
@@ -251,21 +253,15 @@ const Home = () => {
                       }`}
                     >
                       <div>
-                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        <NavLink to={"/profile"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
                           <FaUser /> Profile
-                        </button>
-                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                          <GrHistory /> Order History
-                        </button>
-                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
-                          <IoWallet /> Wallet
-                        </button>
-                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        </NavLink>
+                        <NavLink to={"/profile/gift-card"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
                           <MdCardGiftcard /> "iGift" Gift Card
-                        </button>
-                        <button className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        </NavLink>
+                        <NavLink to={"/profile/update-password"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
                           <TbLockPassword /> Update Password
-                        </button>
+                        </NavLink>
                       </div>
                       <button
                         onClick={handleLogout}

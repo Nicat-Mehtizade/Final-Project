@@ -8,8 +8,6 @@ import { IoSearch } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUserLarge } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
-import { GrHistory } from "react-icons/gr";
-import { IoWallet } from "react-icons/io5";
 import { MdCardGiftcard } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -226,7 +224,9 @@ const Details = () => {
             />
           </NavLink>
           <div className="flex items-center gap-4 text-2xl text-gray-300">
-            <FaShoppingCart className="cursor-pointer" />
+            <NavLink to={"/basket"}>
+              <FaShoppingCart className="cursor-pointer" />
+            </NavLink>
             <div
               onMouseOver={() => token && setProfileVisible(true)}
               onMouseLeave={() => token && setProfileVisible(false)}
@@ -250,18 +250,6 @@ const Details = () => {
                       className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
                     >
                       <FaUser /> Profile
-                    </NavLink>
-                    <NavLink
-                      to={"/profile/orders"}
-                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
-                    >
-                      <GrHistory /> Order History
-                    </NavLink>
-                    <NavLink
-                      to={"/profile/wallet"}
-                      className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
-                    >
-                      <IoWallet /> Wallet
                     </NavLink>
                     <NavLink
                       to={"/profile/gift-card"}
@@ -398,18 +386,6 @@ const Details = () => {
                             className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
                           >
                             <FaUser /> Profile
-                          </NavLink>
-                          <NavLink
-                            to={"/profile/orders"}
-                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
-                          >
-                            <GrHistory /> Order History
-                          </NavLink>
-                          <NavLink
-                            to={"/profile/wallet"}
-                            className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
-                          >
-                            <IoWallet /> Wallet
                           </NavLink>
                           <NavLink
                             to={"/profile/gift-card"}

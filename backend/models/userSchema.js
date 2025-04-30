@@ -29,12 +29,15 @@ const userSchema = mongoose.Schema(
         price: { type: Number }
       },
     ],
+    usedPromoCodes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PromoCode' }]
   },
   {
     timestamps: true,
     versionKey: false,
   }
 );
+
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

@@ -9,6 +9,7 @@ const activityRouter = require("./routes/activityRouter");
 const authRouter=require("./routes/authRouter")
 const likeRouter=require("./routes/likeRouter")
 const basketRouter=require("./routes/basketRouter")
+const promoCodeRouter=require("./routes/promoCodeRouter")
 const seatRouter=require("./routes/seatRouter")
 const session = require("express-session");
 const passport = require("passport");
@@ -51,6 +52,7 @@ app.use("/api/activity", activityRouter);
 app.use("/api/seats", seatRouter)
 app.use("/api/likes", likeRouter)
 app.use("/api/basket", basketRouter)
+app.use("/api/promo",promoCodeRouter)
 app.use("/api", authRouter)
 app.use("/api", passportRouter)
 app.use("/api", stripeRouter)

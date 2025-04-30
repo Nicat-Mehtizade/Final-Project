@@ -76,7 +76,7 @@ const UpdatePasswordPage = () => {
     <div className="py-8 w-full">
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mb-3">Update Password</h1>
-      <div className="flex gap-15 py-4 mb-4 px-5 items-center">
+      <div className="flex flex-col lg:flex-row gap-15 py-4 mb-4 px-5 lg:items-center">
         <div className="flex flex-col ">
           <label htmlFor="" className="text-gray-500 font-semibold">
             Current Password
@@ -126,7 +126,7 @@ const UpdatePasswordPage = () => {
       </div>
       <button
         onClick={handleChangePassword}
-        className="bg-yellow-300 ml-5 px-5 font-bold py-3 rounded-lg w-[25%] text-xl cursor-pointer"
+        className="bg-yellow-300 ml-5 px-5 font-bold py-3 rounded-lg lg:w-[25%] text-xl cursor-pointer"
       >
         Save Changes
       </button>

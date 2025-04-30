@@ -19,10 +19,21 @@ const Basket = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  const stripePromise = loadStripe("pk_test_51RITo2Cam93Y6EX3TyMSVqFSAdp5JMa3vzN2lTugzONNd00EKrF1d9xWdJpIEXdBvKeZ2Ux5ps7hO8vXIhUU1GHi00mZg7TiO3")
+  const stripePromise = loadStripe(
+    "pk_test_51RITo2Cam93Y6EX3TyMSVqFSAdp5JMa3vzN2lTugzONNd00EKrF1d9xWdJpIEXdBvKeZ2Ux5ps7hO8vXIhUU1GHi00mZg7TiO3"
+  );
+  const [promoInput, setPromoInput] = useState("");
+  const [promoDiscount, setPromoDiscount] = useState<number>(0);
+  const [promoApplied, setPromoApplied] = useState(false);
+
+  const discountedTotal = useMemo(() => {
+    return promoApplied
+      ? totalPrice - totalPrice * (promoDiscount / 100)
+      : totalPrice;
+  }, [totalPrice, promoApplied, promoDiscount]);
 
   const handleCheckout = async () => {
-    if (isProcessing) return
+    if (isProcessing) return;
 
     setIsProcessing(true);
     const stripe = await stripePromise;
@@ -31,19 +42,25 @@ const Basket = () => {
       const basketItems = basketActivities.map((item) => ({
         title: item.activity?.title,
         image: item.activity?.image,
-        price: item.price,
+        price: promoApplied
+        ? item.price - item.price * (promoDiscount / 100)
+        : item.price,
       }));
 
-      const response = await axios.post<{ sessionId: string }>(`${BASE_URL}/create-checkout-session`, {
-        basketItems,
-      });
+      const response = await axios.post<{ sessionId: string }>(
+        `${BASE_URL}/create-checkout-session`,
+        {
+          basketItems,
+        }
+      );
       const { sessionId } = response.data;
       if (stripe && sessionId) {
-        await stripe.redirectToCheckout({ sessionId });  
+        await stripe.redirectToCheckout({ sessionId });
       } else {
-        throw new Error('Stripe could not be initialized or sessionId is missing');
+        throw new Error(
+          "Stripe could not be initialized or sessionId is missing"
+        );
       }
-      await stripe?.redirectToCheckout({ sessionId });
     } catch (error) {
       console.error(error);
       toast.error("Payment error. Please try again.", {
@@ -54,8 +71,8 @@ const Basket = () => {
           borderRadius: "20px",
         },
       });
-    }finally {
-      setIsProcessing(false); 
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -155,15 +172,62 @@ const Basket = () => {
     }
   };
 
+  const handleApplyPromo = async () => {
+    if (!user || !user._id) {
+      toast.error("User information is missing. Please log in..", {
+        position: "top-right",
+        style: {
+          backgroundColor: "var(--color-yellow-300)",
+          fontWeight: "700",
+          borderRadius: "20px",
+        },
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(`${BASE_URL}/promo/validate`, {
+        code: promoInput.trim(),
+        userId: user._id
+      });
+
+      const { discount } = response.data;
+
+      if (discount) {
+        const numericDiscount = parseFloat(discount.replace("%", ""));
+        setPromoDiscount(numericDiscount);
+        setPromoApplied(true);
+
+        toast.success("Promo code applied!", {
+          position: "top-right",
+          style: {
+            backgroundColor: "var(--color-yellow-300)",
+            fontWeight: "700",
+            borderRadius: "20px",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Promo code not found!", {
+        position: "top-right",
+        style: {
+          backgroundColor: "var(--color-yellow-300)",
+          fontWeight: "700",
+          borderRadius: "20px",
+        },
+      });
+    }
+  };
+
   return (
     <div className="py-10">
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="max-w-[1200px] mx-auto">
-        <div className="bg-white shadow-[0px_6px_24px_rgba(0,0,0,0.35)] rounded-2xl ">
+        <div className="bg-white shadow-[0px_6px_24px_rgba(0,0,0,0.35)] rounded-2xl">
           <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-[73%] py-7 px-6  ">
-              <h1 className="text-3xl font-semibold mb-2 ">Cart</h1>
+            <div className="w-full md:w-[73%] py-7 px-6">
+              <h1 className="text-3xl font-semibold mb-2">Cart</h1>
               {loading ? (
                 <div className="flex justify-center items-center py-20">
                   <SyncLoader color="#facc15" />
@@ -179,7 +243,7 @@ const Basket = () => {
                   };
                   return (
                     <div
-                      className={`flex flex-col md:flex-row gap-2 justify-between items-start md:items-center  py-5 ${
+                      className={`flex flex-col md:flex-row gap-2 justify-between items-start md:items-center py-5 ${
                         basketActivities.length > 1
                           ? "border-b-2 border-gray-300"
                           : ""
@@ -196,7 +260,7 @@ const Basket = () => {
                           <p className="text-gray-500 text-sm font-semibold">
                             {new Date(activity.date).toLocaleString("en-GB", {
                               weekday: "long",
-                            })}
+                            })}{" "}
                             ,{" "}
                             {new Date(activity.date).toLocaleString("en-GB", {
                               day: "2-digit",
@@ -227,7 +291,7 @@ const Basket = () => {
                       </div>
                       <div className="flex items-center justify-between w-full md:w-auto gap-3">
                         <p className="bg-yellow-300 rounded-xl w-30 h-20 flex justify-center items-center text-2xl font-semibold">
-                          {item.price} ₼
+                        {promoDiscount ? (item.price * (1 - promoDiscount / 100)).toFixed(2) : item.price} ₼
                         </p>
                         <button
                           onClick={(event) =>
@@ -279,23 +343,45 @@ const Basket = () => {
                     <input
                       className="border border-gray-300 mb-3 p-3 rounded-xl placeholder:text-gray-400 focus:outline-0 focus:bg-gray-100"
                       type="text"
-                      name=""
-                      id=""
+                      value={promoInput}
+                      onChange={(e) => setPromoInput(e.target.value)}
                       placeholder="PROMO"
                     />
-                    <button className="bg-yellow-300 cursor-pointer py-4 rounded-xl text-xl font-bold">
-                      Apply
+                    <button
+                      onClick={handleApplyPromo}
+                      disabled={promoApplied}
+                      className="bg-yellow-300 cursor-pointer py-4 px-3 rounded-xl text-lg font-semibold"
+                    >
+                      {promoApplied ? "Applied" : "Apply Promo Code"}
                     </button>
                   </div>
                 )}
               </div>
-              <div className="flex flex-col mt-auto">
-                <div className="flex justify-between items-center mb-3 text-gray-500 font-semibold text-lg">
-                  <p>Total:</p>
-                  <p>{totalPrice} ₼</p>
+              <div className="flex justify-between text-xl font-semibold">
+                <p className="text-gray-500">Total</p>
+                <div className="flex flex-col items-end">
+                  {promoApplied ? (
+                    <p className="text-gray-500 line-through text-lg">
+                      {totalPrice.toFixed(2)} ₼
+                    </p>
+                  ) : null}
+
+                  <p className="font-bold text-lg">
+                    {discountedTotal.toFixed(2)} ₼
+                  </p>
                 </div>
-                <button onClick={handleCheckout} className="bg-yellow-300 cursor-pointer p-4 rounded-xl text-xl font-bold">
-                  Create Order
+              </div>
+              <div className="pt-10">
+                <button
+                  onClick={handleCheckout}
+                  disabled={basketActivities.length === 0 || isProcessing}
+                  className="bg-yellow-300 w-full py-3 text-xl font-semibold rounded-xl cursor-pointer"
+                >
+                  {isProcessing ? (
+                    <SyncLoader color="#fff" size={10} />
+                  ) : (
+                    "Create Order   "
+                  )}
                 </button>
               </div>
             </div>

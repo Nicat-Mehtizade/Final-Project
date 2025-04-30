@@ -180,7 +180,7 @@ const ProfilePage = () => {
             onChange={handleImageChange}
           />
         </div>
-        <div className="flex gap-4 mb-5">
+        <div className="flex flex-col lg:flex-row gap-4 mb-5">
           <div className="flex flex-col">
             <label htmlFor="username" className="text-gray-500 font-semibold">
               Username
@@ -212,10 +212,10 @@ const ProfilePage = () => {
             />
           </div>
         </div>
-        <div className="flex justify-between py-3">
+        <div className="flex flex-col lg:flex-row gap-3 justify-between py-3">
           <button
             onClick={handleSaveChanges}
-            className="bg-yellow-300 font-bold py-3 rounded-lg w-[45%] text-xl cursor-pointer"
+            className="bg-yellow-300 font-bold py-3 rounded-lg lg:w-[45%] text-xl cursor-pointer"
           >
             Save Changes
           </button>

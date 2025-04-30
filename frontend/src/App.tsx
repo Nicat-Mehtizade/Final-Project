@@ -15,8 +15,6 @@ import TourismPage from "./pages/TourismPage";
 import MuseumPage from "./pages/MuseumPage";
 import ProfilePage from "./pages/ProfilePage";
 import UserLayout from "./layout/UserLayout";
-import OrdersHistory from "./pages/OrdersHistoryPage";
-import WalletPage from "./pages/WalletPage";
 import GiftCardPage from "./pages/GiftCardPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import FavoritesAndBasketLayout from "./layout/FavoritesAndBasketLayout";
@@ -57,8 +55,6 @@ function App() {
 
         <Route element={<UserLayout />}>
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/orders" element={<OrdersHistory />} />
-          <Route path="/profile/wallet" element={<WalletPage />} />
           <Route path="/profile/gift-card" element={<GiftCardPage />} />
           <Route
             path="/profile/update-password"

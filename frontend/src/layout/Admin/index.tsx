@@ -1,14 +1,39 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImStatsBars } from "react-icons/im";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { MdLibraryAdd } from "react-icons/md";
 import { PiDotsNineLight } from "react-icons/pi";
+import axios from "axios";
+import { BASE_URL } from "../../constant";
 
 const AdminLayout = () => {
   const [sideBarActive, setSideBarActive] = useState(false);
+
+  const stripeBalance = async () => {
+    try {
+      const response = await axios(`${BASE_URL}/balance`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const stripePayments=async()=>{
+    try {
+      const response = await axios(`${BASE_URL}/payments`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    stripeBalance();
+    stripePayments()
+  }, []);
   return (
     <div className="flex h-screen">
       <div
@@ -137,12 +162,25 @@ const AdminLayout = () => {
             )}
           </NavLink>
         </div>
-        <div className={`bg-[#0a7460] ml-3 relative py-4 rounded-xl flex justify-center items-center w-[80%] ${sideBarActive ? "opacity-0" : "opacity-100"}`}>
+        <div
+          className={`bg-[#0a7460] ml-3 relative py-4 rounded-xl flex justify-center items-center w-[80%] ${
+            sideBarActive ? "opacity-0" : "opacity-100"
+          }`}
+        >
           <PiDotsNineLight className="text-3xl absolute text-gray-300 -top-3 left-3" />
-          <p className="text-white font-semibold text-nowrap">iTicket Admin <br />Dashboard</p>
+          <p className="text-white font-semibold text-nowrap">
+            iTicket Admin <br />
+            Dashboard
+          </p>
           <PiDotsNineLight className="absolute text-3xl text-gray-400 -bottom-3 right-0" />
         </div>
-        <p className={`text-gray-500 mt-auto text-nowrap ml-3 ${sideBarActive ? "opacity-0" : "opacity-100"}`}>© 2025 All Rights Reserved</p>
+        <p
+          className={`text-gray-500 mt-auto text-nowrap ml-3 ${
+            sideBarActive ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          © 2025 All Rights Reserved
+        </p>
       </div>
       <div className="w-full">
         <Outlet />
