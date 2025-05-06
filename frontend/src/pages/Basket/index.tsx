@@ -43,16 +43,27 @@ const Basket = () => {
         title: item.activity?.title,
         image: item.activity?.image,
         price: promoApplied
-        ? item.price - item.price * (promoDiscount / 100)
-        : item.price,
+          ? item.price - item.price * (promoDiscount / 100)
+          : item.price,
+        ticketCount: item.seat ? 1 : 0,
+        activityId: item.activity?._id,
+        seat: item.seat
+          ? {
+              seatNumber: item.seat.seatNumber,
+              zone: item.seat.zone,
+              row: item.seat.row,
+              col: item.seat.col,
+            }
+          : null,
       }));
-
+      localStorage.setItem("basketItems", JSON.stringify(basketItems));
       const response = await axios.post<{ sessionId: string }>(
         `${BASE_URL}/create-checkout-session`,
         {
           basketItems,
         }
       );
+      await new Promise((resolve) => setTimeout(resolve, 100));
       const { sessionId } = response.data;
       if (stripe && sessionId) {
         await stripe.redirectToCheckout({ sessionId });
@@ -134,6 +145,7 @@ const Basket = () => {
     }, 0);
     setTotalPrice(total);
   }, [basketActivities]);
+  
 
   const handleDelete = async (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -187,7 +199,7 @@ const Basket = () => {
     try {
       const response = await axios.post(`${BASE_URL}/promo/validate`, {
         code: promoInput.trim(),
-        userId: user._id
+        userId: user._id,
       });
 
       const { discount } = response.data;
@@ -237,10 +249,13 @@ const Basket = () => {
                   if (!item.activity) {
                     return null;
                   }
+                  console.log(item);
                   const { activity, seat } = item as {
                     activity: Activity;
                     seat: Seat;
                   };
+
+                  const isBooked = seat.isBooked;
                   return (
                     <div
                       className={`flex flex-col md:flex-row gap-2 justify-between items-start md:items-center py-5 ${
@@ -283,15 +298,41 @@ const Basket = () => {
                               ? activity.title.slice(0, 40) + "..."
                               : activity.title}
                           </p>
-                          <p className="text-gray-700">
-                            Zone: {seat.zone}, Seat Number: {seat.seatNumber},
-                            Row: {seat.row}
-                          </p>
+                          <div className="text-gray-700 ">
+                            <span className="font-bold">Type:</span>{" "}
+                            <span
+                              className={`italic font-medium ${
+                                seat.type === "silver"
+                                  ? "text-gray-400 dark:text-gray-300"
+                                  : seat.type === "gold"
+                                  ? "text-amber-500 dark:text-amber-400"
+                                  : seat.type === "vip"
+                                  ? "text-indigo-600 dark:text-indigo-400"
+                                  : "text-gray-600 dark:text-gray-400"
+                              }`}
+                            >
+                              {seat.type.toUpperCase()}
+                            </span>
+                            , <span className="font-bold">Zone:</span>{" "}
+                            {seat.zone},{" "}
+                            <span className="font-bold">Seat Number:</span>{" "}
+                            {seat.seatNumber},{" "}
+                            <span className="font-bold">Row:</span> {seat.row}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center justify-between w-full md:w-auto gap-3">
-                        <p className="bg-yellow-300 rounded-xl w-30 h-20 flex justify-center items-center text-2xl font-semibold">
-                        {promoDiscount ? (item.price * (1 - promoDiscount / 100)).toFixed(2) : item.price} ₼
+                        <p
+                          className={`bg-yellow-300 rounded-xl w-30 h-20 flex justify-center items-center text-2xl font-semibold ${
+                            isBooked ? "bg-gray-600" : ""
+                          }`}
+                        >
+                          {promoDiscount
+                            ? (item.price * (1 - promoDiscount / 100)).toFixed(
+                                2
+                              )
+                            : item.price}{" "}
+                          ₼
                         </p>
                         <button
                           onClick={(event) =>
@@ -301,7 +342,12 @@ const Basket = () => {
                               item.seat
                             )
                           }
-                          className="rounded-full bg-red-400 cursor-pointer transition duration-300 hover:bg-red-500 flex justify-center items-center w-10 h-10"
+                          className={`rounded-full cursor-pointer transition duration-300 hover:bg-red-500 flex justify-center items-center w-10 h-10 ${
+                            isBooked
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-red-400"
+                          }`}
+                          disabled={isBooked}
                         >
                           <MdDelete className="text-white text-3xl" />
                         </button>

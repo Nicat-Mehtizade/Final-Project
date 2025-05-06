@@ -10,7 +10,7 @@ export interface Activity{
     showtimes: Showtime[];
     ageLimit: number,
     location: Location;
-    createdAt?: Date;
+    createdAt:string;
     updatedAt?: Date;
     _id:string,
     seats:Seat[][],
@@ -21,6 +21,7 @@ export interface Seat {
   activityId: string;
   zone: string;
   row: string;
+  col:string,
   type:string,
   number: number;
   seatNumber: string;

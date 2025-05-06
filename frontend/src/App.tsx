@@ -28,6 +28,10 @@ import AdminEventPage from "./pages/AdminEventPage";
 import Basket from "./pages/Basket";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
+import AdminAddPage from "./pages/AdminAddPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminPaymentsPage from "./pages/AdminPaymentsPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -45,13 +49,14 @@ function App() {
 
         <Route element={<FavoritesAndBasketLayout />}>
           <Route path="/favorites" element={<Favorites />} />
-          <Route path="/basket" element={<Basket/>}/>
-          <Route path="/success" element={<SuccessPage/>}/>
-          <Route path="/cancel" element={<CancelPage/>}/>
+          <Route path="/basket" element={<Basket />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/cancel" element={<CancelPage />} />
           <Route path="/set-password" element={<SetPasswordPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-        </Route>
+          <Route path="*" element={<NotFound />} />
+          </Route>
 
         <Route element={<UserLayout />}>
           <Route path="/profile" element={<ProfilePage />} />
@@ -75,8 +80,10 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="event" element={<AdminEventPage />} />
+          <Route path="new" element={<AdminAddPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="payments" element={<AdminPaymentsPage />} />
         </Route>
-
       </Routes>
     </>
   );

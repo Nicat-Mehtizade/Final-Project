@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { ImStatsBars } from "react-icons/im";
@@ -6,36 +6,26 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { MdLibraryAdd } from "react-icons/md";
 import { PiDotsNineLight } from "react-icons/pi";
-import axios from "axios";
-import { BASE_URL } from "../../constant";
+import { TiArrowSortedDown } from "react-icons/ti";
+import { MdOutlinePayment } from "react-icons/md";
 
 const AdminLayout = () => {
   const [sideBarActive, setSideBarActive] = useState(false);
-
-  const stripeBalance = async () => {
-    try {
-      const response = await axios(`${BASE_URL}/balance`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const stripePayments=async()=>{
-    try {
-      const response = await axios(`${BASE_URL}/payments`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [eventActive, setEventActive] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    stripeBalance();
-    stripePayments()
-  }, []);
+    if (
+      location.pathname.startsWith("/admin/event") ||
+      location.pathname.startsWith("/admin/new")
+    ) {
+      setEventActive(true);
+    } else {
+      setEventActive(false);
+    }
+  }, [location.pathname]);
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <div
         className={`bg-[#2f363e] flex flex-col relative py-5 pl-5 transition-all duration-300 ${
           !sideBarActive ? "w-75" : "w-18"
@@ -86,32 +76,58 @@ const AdminLayout = () => {
             )}
           </NavLink>
 
-          <NavLink end className="w-full" to="/admin/event">
-            {({ isActive }) => (
-              <div
-                className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
-                  isActive
-                    ? "bg-gradient-to-l from-[#2b4548] to-[#2f373e] text-white"
-                    : ""
-                }`}
-              >
-                <IoCalendarOutline className="text-2xl min-w-6" />
-                <span
-                  className={`${
-                    !sideBarActive
-                      ? "opacity-100 visible"
-                      : "opacity-0 invisible"
+          <div className="w-full">
+            <NavLink className="w-full" to="/admin/event">
+              {({ isActive }) => (
+                <div
+                  className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
+                    eventActive
+                      ? "bg-gradient-to-l from-[#2b4548] to-[#2f373e] text-white"
+                      : ""
                   }`}
                 >
-                  Event
-                </span>
-                {isActive && (
-                  <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
-                )}
-              </div>
+                  <IoCalendarOutline className="text-2xl min-w-6" />
+                  <span
+                    className={`${
+                      !sideBarActive
+                        ? "opacity-100 visible"
+                        : "opacity-0 invisible"
+                    }`}
+                  >
+                    Event
+                  </span>
+                  {eventActive && (
+                    <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
+                  )}
+                  <button className="ml-auto mr-4 cursor-pointer">
+                    {eventActive ? (
+                      <TiArrowSortedDown className="text-white" />
+                    ) : (
+                      <TiArrowSortedDown className="text-white -rotate-90" />
+                    )}
+                  </button>
+                </div>
+              )}
+            </NavLink>
+
+            {eventActive && (
+              <NavLink
+                className={({ isActive }) =>
+                  `pl-10 py-3 flex gap-3 items-center text-[#969b9f] text-base ${
+                    isActive
+                      ? "text-white"
+                      : ""
+                  }`
+                }
+                to={"/admin/new"}
+              >
+                <MdLibraryAdd className="text-xl min-w-6" />
+                <p>Add Event</p>
+              </NavLink>
             )}
-          </NavLink>
-          <NavLink end className="w-full" to="/admin/customer">
+          </div>
+
+          <NavLink end className="w-full" to="/admin/users">
             {({ isActive }) => (
               <div
                 className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
@@ -128,7 +144,7 @@ const AdminLayout = () => {
                       : "opacity-0 invisible"
                   }`}
                 >
-                  Customer
+                  Users
                 </span>
                 {isActive && (
                   <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
@@ -136,7 +152,7 @@ const AdminLayout = () => {
               </div>
             )}
           </NavLink>
-          <NavLink end className="w-full" to="/admin/new">
+          <NavLink end className="w-full" to="/admin/payments">
             {({ isActive }) => (
               <div
                 className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
@@ -145,7 +161,7 @@ const AdminLayout = () => {
                     : ""
                 }`}
               >
-                <MdLibraryAdd className="text-2xl min-w-6" />
+                <MdOutlinePayment className="text-2xl min-w-6" />
                 <span
                   className={`${
                     !sideBarActive
@@ -153,7 +169,7 @@ const AdminLayout = () => {
                       : "opacity-0 invisible"
                   }`}
                 >
-                  Add Event
+                  Payments
                 </span>
                 {isActive && (
                   <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />

@@ -29,6 +29,17 @@ const DetailsSeatsSection = forwardRef<
       return;
     }
 
+    if (seat.isBooked) {
+      toast.error("This seat is already booked.",{
+        style: {
+          backgroundColor:"var(--color-yellow-300)",
+          fontWeight: "700",
+          borderRadius:"20px"
+        },
+      })
+      return;
+    }
+
     const isSelected = basketSeats.includes(seat.seatNumber);
 
     let priceIndex = 0;
@@ -69,7 +80,7 @@ const DetailsSeatsSection = forwardRef<
       }
     } catch (error) {
       console.log(error);
-      toast.error("An error occurred. Please try again.");
+      toast.error("You must be logged in to add items to the basket");
     }
   };
 
@@ -137,12 +148,16 @@ const DetailsSeatsSection = forwardRef<
                     onClick={() => handleSeatSelect(s)}
                     className={`relative w-8 h-8 lg:w-12 lg:h-12 flex justify-center items-end cursor-pointer transition-all duration-200 ${
                       basketSeats.includes(s.seatNumber)
-                        ? "bg-yellow-400"
-                        : "bg-gray-300"
+                      ? "bg-yellow-400"
+                      : s.isBooked
+                      ? "bg-gray-500"
+                      : "bg-gray-300"
                     } rounded-t-full border-2 ${
                       basketSeats.includes(s.seatNumber)
-                        ? "border-yellow-600"
-                        : "border-gray-400"
+                      ? "border-yellow-600"
+                      : s.isBooked
+                      ? "border-gray-700"
+                      : "border-gray-400"
                     } hover:scale-105`}
                     key={s._id}
                   >

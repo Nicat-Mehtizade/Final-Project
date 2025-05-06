@@ -32,14 +32,32 @@ const SuccessPage = () => {
     clearBasket();
 
     confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   }, []);
 
+  useEffect(() => {
+    const confirmSeats = async () => {
+      const basketItems = localStorage.getItem("basketItems");
 
-  
+      if (!basketItems) return;
+
+      try {
+        await axios.post(`${BASE_URL}/confirm-seats`, {
+          basketItems: JSON.parse(basketItems),
+        });
+
+        localStorage.removeItem("basketItems");
+      } catch (err) {
+        console.error("Seat confirmation error:", err);
+      }
+    };
+
+    confirmSeats();
+  }, []);
+
   return (
     <div className="min-h-[80vh] bg-gradient-to-b from-white to-green-50 flex items-center justify-center p-4">
       <motion.div
