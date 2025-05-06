@@ -37,7 +37,10 @@ const Basket = () => {
 
     setIsProcessing(true);
     const stripe = await stripePromise;
-
+    if (!token) {
+      console.log("Token not found");
+      return;
+    }
     try {
       const basketItems = basketActivities.map((item) => ({
         title: item.activity?.title,
@@ -61,6 +64,11 @@ const Basket = () => {
         `${BASE_URL}/create-checkout-session`,
         {
           basketItems,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
       await new Promise((resolve) => setTimeout(resolve, 100));

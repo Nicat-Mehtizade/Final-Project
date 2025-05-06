@@ -32,6 +32,7 @@ import AdminAddPage from "./pages/AdminAddPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminPaymentsPage from "./pages/AdminPaymentsPage";
 import NotFound from "./pages/NotFound";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -56,7 +57,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
-          </Route>
+        </Route>
 
         <Route element={<UserLayout />}>
           <Route path="/profile" element={<ProfilePage />} />
@@ -77,12 +78,14 @@ function App() {
           <Route path="museum" element={<MuseumPage />} />
         </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="event" element={<AdminEventPage />} />
-          <Route path="new" element={<AdminAddPage />} />
-          <Route path="users" element={<AdminUsersPage />} />
-          <Route path="payments" element={<AdminPaymentsPage />} />
+        <Route element={<PrivateRoute roles={["admin"]} />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="event" element={<AdminEventPage />} />
+            <Route path="new" element={<AdminAddPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
+            <Route path="payments" element={<AdminPaymentsPage />} />
+          </Route>
         </Route>
       </Routes>
     </>

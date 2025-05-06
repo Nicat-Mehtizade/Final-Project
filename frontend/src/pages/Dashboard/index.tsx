@@ -16,15 +16,27 @@ import {
   CartesianGrid,
 } from "recharts";
 import { Tickets } from "lucide-react";
+import ClipLoader from "react-spinners/ClipLoader";
 const Dashboard = () => {
   const [totalBalance, setTotalBalance] = useState(0);
   const [paymentsInfo, setPaymentsInfo] = useState<any[]>([]);
   const [users, setUsers] = useState<userType[] | null>(null);
-  const { data: allActivities } = useGetActivitiesQuery({});
+  const [isLoading, setIsLoading] = useState(true);
+  const { data: allActivities, isLoading: activitiesLoading } =
+    useGetActivitiesQuery({});
+  const token = getTokenFromCookie();
 
   const stripeBalance = async () => {
+    if (!token) {
+      console.log("Token not found");
+      return;
+    }
     try {
-      const response = await axios(`${BASE_URL}/balance`);
+      const response = await axios(`${BASE_URL}/balance`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTotalBalance(response.data.pending[0].amount);
     } catch (error) {
       console.log(error);
@@ -32,8 +44,16 @@ const Dashboard = () => {
   };
 
   const stripePayments = async () => {
+    if (!token) {
+      console.log("Token not found");
+      return;
+    }
     try {
-      const response = await axios(`${BASE_URL}/payments`);
+      const response = await axios(`${BASE_URL}/payments`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(response.data.data);
       setPaymentsInfo(response.data.data);
     } catch (error) {
@@ -42,7 +62,6 @@ const Dashboard = () => {
   };
 
   const getUsers = async () => {
-    const token = getTokenFromCookie();
     if (!token) {
       console.log("Token not found");
     }
@@ -68,6 +87,43 @@ const Dashboard = () => {
     name: `Payment ${index + 1}`,
     revenue: q.amount / 100,
   }));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([stripeBalance(), stripePayments(), getUsers()]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const fullyLoading = isLoading || activitiesLoading;
+
+  if (fullyLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen bg-[#24292d] z-50">
+        <div className="relative w-[150px] h-[150px]">
+          <ClipLoader
+            loading={isLoading}
+            size={150}
+            color="#facc15"
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+          <img
+            src="/1234-removebg-preview.png"
+            alt="Logo"
+            className="absolute top-1/2 left-1/2 w-23 h-23 object-contain transform -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-[#24292d] w-full p-5">
       <div>
@@ -112,7 +168,7 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="p-3 bg-white/20 rounded-full">
-              <Calendar  className="text-white" size={28} />
+              <Calendar className="text-white" size={28} />
             </div>
           </div>
         </div>
@@ -193,27 +249,34 @@ const Dashboard = () => {
             </p>
             <div>
               {allActivities &&
-                [...allActivities].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((q) => {
-                  return (
-                    <div className="mb-5 flex items-center gap-4" key={q._id}>
-                      <div className="bg-[#27272A] rounded-full w-10 h-10 flex justify-center items-center">
-                        <Tickets className="-rotate-25 text-white font-semibold" />
+                [...allActivities]
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
+                  .slice(0, 5)
+                  .map((q) => {
+                    return (
+                      <div className="mb-5 flex items-center gap-4" key={q._id}>
+                        <div className="bg-[#27272A] rounded-full w-10 h-10 flex justify-center items-center">
+                          <Tickets className="-rotate-25 text-white font-semibold" />
+                        </div>
+                        <div>
+                          <p className="text-white font-semibold">
+                            {q.title.length > 40
+                              ? q.title.slice(0, 40) + "..."
+                              : q.title}
+                          </p>
+                          <p className="text-gray-500 text-sm font-semibold">
+                            {new Date(
+                              q.showtimes[0].startTime
+                            ).toLocaleDateString("en-GB")}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-white font-semibold">
-                          {q.title.length > 40
-                            ? q.title.slice(0, 40) + "..."
-                            : q.title}
-                        </p>
-                        <p className="text-gray-500 text-sm font-semibold">
-                          {new Date(
-                            q.showtimes[0].startTime
-                          ).toLocaleDateString("en-GB")}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
             </div>
           </div>
         </div>

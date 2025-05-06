@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import confetti from "canvas-confetti";
 const SuccessPage = () => {
+  const token = getTokenFromCookie();
   useEffect(() => {
     const clearBasket = async () => {
-      const token = getTokenFromCookie();
       if (!token) {
         console.log("Token not found");
         return;
@@ -40,14 +40,26 @@ const SuccessPage = () => {
 
   useEffect(() => {
     const confirmSeats = async () => {
+      if (!token) {
+        console.log("Token not found");
+        return;
+      }
       const basketItems = localStorage.getItem("basketItems");
 
       if (!basketItems) return;
 
       try {
-        await axios.post(`${BASE_URL}/confirm-seats`, {
-          basketItems: JSON.parse(basketItems),
-        });
+        await axios.post(
+          `${BASE_URL}/confirm-seats`,
+          {
+            basketItems: JSON.parse(basketItems),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         localStorage.removeItem("basketItems");
       } catch (err) {
