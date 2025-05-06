@@ -17,9 +17,10 @@ import {
 } from "recharts";
 import { Tickets } from "lucide-react";
 import ClipLoader from "react-spinners/ClipLoader";
+import { paymentType } from "../../types/paymentType";
 const Dashboard = () => {
   const [totalBalance, setTotalBalance] = useState(0);
-  const [paymentsInfo, setPaymentsInfo] = useState<any[]>([]);
+  const [paymentsInfo, setPaymentsInfo] = useState<paymentType[]>([]);
   const [users, setUsers] = useState<userType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { data: allActivities, isLoading: activitiesLoading } =

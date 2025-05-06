@@ -3,13 +3,24 @@ import { BASE_URL } from "../../constant";
 import { useEffect, useState } from "react";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { paymentType } from "../../types/paymentType";
+import { MdCreditCard } from "react-icons/md";
+import { FiCalendar } from "react-icons/fi";
+import { LuUser } from "react-icons/lu";
+import { MdOutlineEmail } from "react-icons/md";
+import { IoTicketOutline } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 
 const AdminPaymentsPage = () => {
-  const [paymentsInfo, setPaymentsInfo] = useState<any[]>([]);
+  const [paymentsInfo, setPaymentsInfo] = useState<paymentType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredPayments, setFilteredPayments] = useState<any[]>([]);
+  const [filteredPayments, setFilteredPayments] = useState<paymentType[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedPayment, setSelectedPayment] = useState<paymentType | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
   const getPayments = async () => {
     const token = getTokenFromCookie();
@@ -65,6 +76,8 @@ const AdminPaymentsPage = () => {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  console.log(paymentsInfo);
 
   return (
     <div className="bg-[#24292d] w-full p-5">
@@ -145,7 +158,13 @@ const AdminPaymentsPage = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm">
-                        <button className="text-blue-400 hover:text-blue-300">
+                        <button
+                          onClick={() => {
+                            setSelectedPayment(q);
+                            setIsModalOpen(true);
+                          }}
+                          className="text-blue-400 hover:text-blue-300"
+                        >
                           <MdOutlineRemoveRedEye size={20} />
                         </button>
                       </td>
@@ -170,6 +189,117 @@ const AdminPaymentsPage = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && selectedPayment && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60">
+          <div className="bg-white rounded-lg p-6 w-[700px] text-black relative">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+            >
+              <IoClose className="text-2xl"/>
+            </button>
+            <div className="mb-5">
+              <h2 className="text-2xl font-semibold">Payment Details</h2>
+              <p className="text-sm text-gray-500">
+                Complete information about this payment transaction
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-xl py-2 px-4 flex justify-between items-center">
+              <div>
+                <h1 className="text-gray-500 font-semibold">Payment ID</h1>
+                <p className="text-sm">{selectedPayment.payment_intent}</p>
+              </div>
+              <div>
+                <h1 className="text-gray-500 font-semibold">Amount</h1>
+                <p className="font-bold text-xl">
+                  {(selectedPayment.amount / 100).toFixed(2)}₼
+                </p>
+              </div>
+              <div>
+                <h1 className="text-gray-500 font-semibold mb-1">Status</h1>
+                <p
+                  className={`rounded-full text-center text-white px-3 ${
+                    selectedPayment.status === "succeeded"
+                      ? "bg-green-500"
+                      : selectedPayment.status === "failed"
+                      ? "bg-red-500"
+                      : "bg-gray-500"
+                  }`}
+                >
+                  {selectedPayment.status}
+                </p>
+              </div>
+            </div>
+            <div className="border-b border-gray-300 py-6">
+              <h1 className="text-xl font-semibold mb-4">
+                Payment Information
+              </h1>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2 items-start">
+                  <MdCreditCard className="text-2xl mt-0.5 text-gray-500" />
+                  <div>
+                    <h1 className="font-semibold">Payment Method</h1>
+                    <p className="text-gray-500 font-semibold">
+                      {selectedPayment.payment_method_details.card.brand.toUpperCase()}{" "}
+                      **** {selectedPayment.payment_method_details.card.last4}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <FiCalendar className="text-2xl mt-0.5 text-gray-500" />
+                  <div>
+                    <h1 className="font-semibold">Date</h1>
+                    <p className="text-gray-500 font-semibold">
+                      {new Date(
+                        selectedPayment.created * 1000
+                      ).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="py-6">
+              <h1 className="text-xl font-semibold mb-4">
+                Customer Information
+              </h1>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2 items-start">
+                  <LuUser className="text-2xl mt-0.5 text-gray-500" />
+                  <div>
+                    <h1 className="font-semibold">Name</h1>
+                    <p className="text-gray-500 font-semibold">
+                      {selectedPayment.billing_details.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <MdOutlineEmail className="text-2xl mt-0.5 text-gray-500" />
+                  <div>
+                    <h1 className="font-semibold">Email</h1>
+                    <p className="text-gray-500 font-semibold">
+                      {selectedPayment.billing_details.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <IoTicketOutline className="text-2xl mt-0.5 text-gray-500"/>
+                  <div>
+                    <h1 className="font-semibold">Quantity</h1>
+                    <p className="text-gray-500 font-semibold">{selectedPayment.metadata.total_tickets}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
