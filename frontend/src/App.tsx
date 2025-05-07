@@ -33,6 +33,7 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminPaymentsPage from "./pages/AdminPaymentsPage";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminPromoCodePage from "./pages/AdminPromoCodePage";
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
             <Route path="new" element={<AdminAddPage />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="payments" element={<AdminPaymentsPage />} />
+            <Route path="promo" element={<AdminPromoCodePage/>}/>
           </Route>
         </Route>
       </Routes>

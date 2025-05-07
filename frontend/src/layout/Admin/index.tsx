@@ -8,6 +8,7 @@ import { MdLibraryAdd } from "react-icons/md";
 import { PiDotsNineLight } from "react-icons/pi";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { MdOutlinePayment } from "react-icons/md";
+import { CiGift } from "react-icons/ci";
 
 const AdminLayout = () => {
   const [sideBarActive, setSideBarActive] = useState(false);
@@ -99,7 +100,11 @@ const AdminLayout = () => {
                   {eventActive && (
                     <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
                   )}
-                  <button className="ml-auto mr-4 cursor-pointer">
+                  <button
+                    className={`ml-auto mr-4 cursor-pointer ${
+                      sideBarActive ? "hidden" : "block"
+                    }`}
+                  >
                     {eventActive ? (
                       <TiArrowSortedDown className="text-white" />
                     ) : (
@@ -113,16 +118,22 @@ const AdminLayout = () => {
             {eventActive && (
               <NavLink
                 className={({ isActive }) =>
-                  `pl-10 py-3 flex gap-3 items-center text-[#969b9f] text-base ${
-                    isActive
-                      ? "text-white"
-                      : ""
-                  }`
+                  `py-3 flex gap-3 items-center text-[#969b9f] text-base ${
+                    sideBarActive ? "pl-0" : "pl-10"
+                  } ${isActive ? "text-white" : ""}`
                 }
                 to={"/admin/new"}
               >
                 <MdLibraryAdd className="text-xl min-w-6" />
-                <p>Add Event</p>
+                <p
+                  className={`text-nowrap ${
+                    !sideBarActive
+                      ? "opacity-100 visible"
+                      : "opacity-0 invisible"
+                  }`}
+                >
+                  Add Event
+                </p>
               </NavLink>
             )}
           </div>
@@ -170,6 +181,31 @@ const AdminLayout = () => {
                   }`}
                 >
                   Payments
+                </span>
+                {isActive && (
+                  <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
+                )}
+              </div>
+            )}
+          </NavLink>
+          <NavLink end className="w-full" to="/admin/promo">
+            {({ isActive }) => (
+              <div
+                className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
+                  isActive
+                    ? "bg-gradient-to-l from-[#2b4548] to-[#2f373e] text-white"
+                    : ""
+                }`}
+              >
+                <CiGift  className="text-2xl min-w-6" />
+                <span
+                  className={`${
+                    !sideBarActive
+                      ? "opacity-100 visible"
+                      : "opacity-0 invisible"
+                  }`}
+                >
+                  Promo Codes
                 </span>
                 {isActive && (
                   <span className="absolute right-0 top-0 h-full w-2 bg-[#00d6b9] rounded-tl-2xl rounded-bl-2xl" />
