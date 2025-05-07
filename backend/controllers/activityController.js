@@ -1,6 +1,7 @@
 const Activity = require("../models/activitySchema");
 
 const getAllActivities = async (req, res) => {
+  const { page, limit } = req.query;
   try {
     const activities = await Activity.find({});
 
@@ -65,14 +66,24 @@ const deleteActivity = async (req, res) => {
 const uptadeActivity = async (req, res) => {
   const { id } = req.params;
   try {
-    const updatedActivity = await Activity.findByIdAndUpdate(
-      id,
-      {
-        ...req.body,
-        image: req.file && `http://localhost:8000/${req.file.path}`,
-      },
-      { new: true }
-    );
+    if (req.body.price) {
+      req.body.price = JSON.parse(req.body.price);
+    }
+
+    if (req.body["location[latitude]"] && req.body["location[longitude]"]) {
+      req.body.location = {
+        latitude: parseFloat(req.body["location[latitude]"]),
+        longitude: parseFloat(req.body["location[longitude]"]),
+      };
+    }
+
+    if (req.file) {
+      req.body.image = `http://localhost:8000/${req.file.path}`;
+    }
+
+    const updatedActivity = await Activity.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
     if (!updatedActivity) {
       res.status(404).json({
@@ -90,7 +101,6 @@ const uptadeActivity = async (req, res) => {
     });
   }
 };
-
 
 // const updateActivitiesWithSeats = async () => {
 //   try {
@@ -199,7 +209,6 @@ const uptadeActivity = async (req, res) => {
 //     console.error("Error updating activities:", error);
 //   }
 // };
-
 
 const addActivity = async (req, res) => {
   const imageUrl = `http://localhost:8000/${req.file.path}`;

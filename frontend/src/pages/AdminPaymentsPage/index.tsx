@@ -10,6 +10,7 @@ import { LuUser } from "react-icons/lu";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const AdminPaymentsPage = () => {
   const [paymentsInfo, setPaymentsInfo] = useState<paymentType[]>([]);
@@ -20,6 +21,7 @@ const AdminPaymentsPage = () => {
   const [selectedPayment, setSelectedPayment] = useState<paymentType | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
   const getPayments = async () => {
@@ -38,6 +40,8 @@ const AdminPaymentsPage = () => {
       setFilteredPayments(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,6 +82,28 @@ const AdminPaymentsPage = () => {
   );
 
   console.log(paymentsInfo);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen bg-[#24292d] z-50">
+        <div className="relative w-[150px] h-[150px]">
+          <ClipLoader
+            loading={isLoading}
+            size={150}
+            color="#facc15"
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+          <img
+            src="/1234-removebg-preview.png"
+            alt="Logo"
+            className="absolute top-1/2 left-1/2 w-23 h-23 object-contain transform -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="bg-[#24292d] w-full p-5">
@@ -163,7 +189,7 @@ const AdminPaymentsPage = () => {
                             setSelectedPayment(q);
                             setIsModalOpen(true);
                           }}
-                          className="text-blue-400 hover:text-blue-300"
+                          className="text-blue-400 hover:text-blue-300 cursor-pointer"
                         >
                           <MdOutlineRemoveRedEye size={20} />
                         </button>
@@ -194,9 +220,9 @@ const AdminPaymentsPage = () => {
           <div className="bg-white rounded-lg p-6 w-[700px] text-black relative">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+              className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl cursor-pointer"
             >
-              <IoClose className="text-2xl"/>
+              <IoClose className="text-2xl" />
             </button>
             <div className="mb-5">
               <h2 className="text-2xl font-semibold">Payment Details</h2>
@@ -289,10 +315,12 @@ const AdminPaymentsPage = () => {
                   </div>
                 </div>
                 <div className="flex gap-2 items-start">
-                  <IoTicketOutline className="text-2xl mt-0.5 text-gray-500"/>
+                  <IoTicketOutline className="text-2xl mt-0.5 text-gray-500" />
                   <div>
                     <h1 className="font-semibold">Quantity</h1>
-                    <p className="text-gray-500 font-semibold">{selectedPayment.metadata.total_tickets}</p>
+                    <p className="text-gray-500 font-semibold">
+                      {selectedPayment.metadata.total_tickets}
+                    </p>
                   </div>
                 </div>
               </div>

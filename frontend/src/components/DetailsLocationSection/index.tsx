@@ -12,7 +12,7 @@ const DetailsLocationSection = forwardRef<
   return (
     <div
     ref={ref}
-    className="max-w-[1200px] mx-auto py-6 mb-15">
+    className="max-w-[1200px] mx-auto py-6">
       <h1 className="font-bold text-3xl mb-7">Venue Location</h1>
       <MapContainer
         center={[latitude, longitude]}

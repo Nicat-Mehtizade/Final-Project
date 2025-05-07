@@ -177,20 +177,20 @@ const AdminUsersPage = () => {
             <IoSearch className="text-gray-500 text-xl" />
           </div>
         </motion.div>
-        <div>
+        <div className="bg-[#2f363e] p-4 rounded-xl shadow-lg">
           <motion.table
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-full bg-[#2f363e] rounded-xl text-left"
+            className="w-full bg-[#2f363e] rounded-xl text-left min-w-full table-auto text-white"
           >
             <motion.thead
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0}}
+              animate={{ opacity: 1}}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <tr className="border-b border-gray-400">
-                <th className="py-3 px-4">Name</th>
+              <tr className="border-b  bg-[#444e56] text-sm uppercase tracking-wider">
+                <th className="px-3 py-4">Name</th>
                 <th className="py-3 px-4">User Role</th>
                 <th className="py-3 px-4">Actions</th>
               </tr>
