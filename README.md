@@ -1,4 +1,4 @@
-# iTicket
+# iTicket Clone
 
 ## 📌 Description
 

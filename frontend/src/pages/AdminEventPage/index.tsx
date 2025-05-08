@@ -8,7 +8,7 @@ import AdminEventModal from "../../components/AdminEventInfoModal";
 import AdminEventUpdateModal from "../../components/AdminEventUpdateModal";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import toast from "react-hot-toast";
-
+import Swal from "sweetalert2";
 const AdminEventPage = () => {
   const [allEvents, setAllEvents] = useState<Activity[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Activity | null>(null);
@@ -47,17 +47,48 @@ const AdminEventPage = () => {
       console.log("Token not found");
       return;
     }
-    try {
-      axios.delete(`${BASE_URL}/activity/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("Event removed successfully.");
-      getAllActivities();
-    } catch (error) {
-      console.log(error);
-      toast.error("Error!");
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This event will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      background: "#2f363e",
+      color: "#fff",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${BASE_URL}/activity/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Event has been deleted.",
+          icon: "success",
+          background: "#2f363e",
+          color: "#fff",
+          confirmButtonColor: "#facc15",
+        });
+
+        getAllActivities();
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong during deletion.", {
+          style: {
+            backgroundColor: "#ef4444",
+            color: "white",
+            fontWeight: "700",
+            borderRadius: "12px",
+          },
+        });
+      }
     }
   };
 
@@ -118,7 +149,7 @@ const AdminEventPage = () => {
             <option value="">All Genres</option>
             {uniqueGenres.map((genre) => (
               <option key={genre} value={genre}>
-                {genre.slice(0,1).toUpperCase()+genre.slice(1)}
+                {genre.slice(0, 1).toUpperCase() + genre.slice(1)}
               </option>
             ))}
           </select>

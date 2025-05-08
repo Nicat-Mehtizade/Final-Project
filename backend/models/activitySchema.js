@@ -9,7 +9,7 @@ const activitySchema = mongoose.Schema(
     tag: { type: String, required: true, trim: true },
     date: { type: Date, default: Date.now },
     image: { type: String, required: true },
-    language: { type: String, required: true, trim: true },
+    language: { type: String, trim: true },
     price: [{ type: Number, required: true }],
     ageLimit: { type: Number, trim: true },
     showtimes: [

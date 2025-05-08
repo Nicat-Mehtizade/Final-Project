@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import JwtType from "../../types/jwtType";
 import ClipLoader from "react-spinners/ClipLoader";
+import Swal from 'sweetalert2';
 
 const AdminUsersPage = () => {
   const [users, getUsers] = useState<userType[]>([]);
@@ -64,6 +65,7 @@ const AdminUsersPage = () => {
       });
       return;
     }
+  
     if (!id) {
       toast.error("User ID is missing. Cannot delete the user.", {
         style: {
@@ -75,32 +77,51 @@ const AdminUsersPage = () => {
       });
       return;
     }
-    try {
-      await axios.delete(`${BASE_URL}/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("User deleted successfully.", {
-        style: {
-          backgroundColor: "var(--color-yellow-300)",
-          fontWeight: "700",
-          borderRadius: "20px",
-        },
-      });
-      getAllUsers();
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong during deletion.", {
-        style: {
-          backgroundColor: "#ef4444",
-          color: "white",
-          fontWeight: "700",
-          borderRadius: "12px",
-        },
-      });
+  
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This user will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      background: "#2f363e",
+      color: "#fff"
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${BASE_URL}/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        Swal.fire({
+          title: "Deleted!",
+          text: "User has been deleted.",
+          icon: "success",
+          background: "#2f363e",
+          color: "#fff",
+          confirmButtonColor: "#facc15",
+        });
+  
+        getAllUsers();
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong during deletion.", {
+          style: {
+            backgroundColor: "#ef4444",
+            color: "white",
+            fontWeight: "700",
+            borderRadius: "12px",
+          },
+        });
+      }
     }
   };
+  
 
   const handleRoleChange = async (id?: string, newRole?: string) => {
     if (!token) {

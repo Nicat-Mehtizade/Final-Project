@@ -7,7 +7,8 @@ import JwtType from "../../types/jwtType";
 const PrivateRoute = ({ roles }: { roles: string[] }) => {
   const token=getTokenFromCookie()
   if (token === null) {
-    return <p>Loading...</p>
+    toast.error("You don't have access.", { duration: 2000 });
+    return <Navigate to="/login" />;
   }
 
   if (!token) {
