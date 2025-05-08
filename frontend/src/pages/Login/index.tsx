@@ -7,12 +7,22 @@ import { BASE_URL } from "../../constant";
 import styles from "./index.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { loginValidation } from "../../validation/emailValidation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import ForgotPasswordModal from "../../components/ForgotPasswordModal";
 
 const Login = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const nav = useNavigate();
-  const { setToken } = useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+
+  if (!context) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+
+  const { setToken } = context;
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -22,8 +32,8 @@ const Login = () => {
     onSubmit: async (values) => {
       console.log(values);
       try {
-        const response = await axios.post(`${BASE_URL}/login`, values,{
-          withCredentials: true
+        const response = await axios.post(`${BASE_URL}/login`, values, {
+          withCredentials: true,
         });
         console.log(response);
         const user = response.data.user;
@@ -34,15 +44,15 @@ const Login = () => {
           });
 
           if (user && user.hasPassword === false) {
-          setTimeout(() => {
-            nav("/set-password");
-          }, 2000);
-        } else {
-          setTimeout(() => {
-            setToken(response.data.token);
-            nav("/");
-          }, 2000);
-        }
+            setTimeout(() => {
+              nav("/set-password");
+            }, 2000);
+          } else {
+            setTimeout(() => {
+              setToken(response.data.token);
+              nav("/");
+            }, 2000);
+          }
         }
       } catch (error) {
         console.log(error);
@@ -52,6 +62,14 @@ const Login = () => {
       }
     },
   });
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div className="relative min-h-screen overflow-hidden">
       <Toaster position="top-center" reverseOrder={false} />
@@ -90,10 +108,7 @@ const Login = () => {
               </NavLink>
             </div>
             <div>
-              <form
-                className="flex flex-col"
-                onSubmit={formik.handleSubmit}
-              >
+              <form className="flex flex-col" onSubmit={formik.handleSubmit}>
                 <label htmlFor="email" className="font-semibold mt-1">
                   Email
                 </label>
@@ -139,14 +154,18 @@ const Login = () => {
                       Remember me
                     </label>
                   </div>
-                  <p className="cursor-pointer hover:underline">
+                  <button
+                  type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openModal();
+                    }}
+                    className="cursor-pointer hover:underline"
+                  >
                     Forgot password?
-                  </p>
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  className={styles.button}
-                >
+                <button type="submit" className={styles.button}>
                   Login
                 </button>
                 <div className="flex justify-between items-center my-2">
@@ -155,7 +174,10 @@ const Login = () => {
                   <p className="bg-yellow-300 h-[1px] w-33"></p>
                 </div>
                 <div className="flex justify-center gap-4 py-2">
-                  <a href={`${BASE_URL}/auth/google`} className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  <a
+                    href={`${BASE_URL}/auth/google`}
+                    className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer"
+                  >
                     <img
                       className="w-6"
                       src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
@@ -163,7 +185,10 @@ const Login = () => {
                     />
                     <span className="font-semibold">Google</span>
                   </a>
-                  <a href={`${BASE_URL}/auth/facebook`} className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  <a
+                    href={`${BASE_URL}/auth/facebook`}
+                    className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer"
+                  >
                     <FaFacebook />
                     <span>Facebook</span>
                   </a>
@@ -173,6 +198,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <ForgotPasswordModal isOpen={isModalOpen} closeModal={closeModal} />
     </div>
   );
 };

@@ -25,6 +25,7 @@ This is a project that allows users to explore events, book seats, make payments
   - Cookie-Session and JWT for session handling and authentication
   - Mongoose for MongoDB interactions
   - Cors for enabling cross-origin requests
+  - nodemailer
 
 ## 🚀 Features
 

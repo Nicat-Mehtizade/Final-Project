@@ -34,6 +34,7 @@ import AdminPaymentsPage from "./pages/AdminPaymentsPage";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPromoCodePage from "./pages/AdminPromoCodePage";
+import ResetPassword from "./pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           <Route path="/set-password" element={<SetPasswordPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route path="*" element={<NotFound />} />
         </Route>
 
