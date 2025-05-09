@@ -9,6 +9,7 @@ import { PiDotsNineLight } from "react-icons/pi";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { MdOutlinePayment } from "react-icons/md";
 import { CiGift } from "react-icons/ci";
+import AdminChatPanel from "../../components/AdminChatPanel";
 
 const AdminLayout = () => {
   const [sideBarActive, setSideBarActive] = useState(false);
@@ -236,6 +237,7 @@ const AdminLayout = () => {
       </div>
       <div className="w-full">
         <Outlet />
+        <AdminChatPanel/>
       </div>
     </div>
   );
