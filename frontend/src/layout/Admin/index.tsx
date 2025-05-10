@@ -80,7 +80,7 @@ const AdminLayout = () => {
 
           <div className="w-full">
             <NavLink className="w-full" to="/admin/event">
-              {({ isActive }) => (
+              {() => (
                 <div
                   className={`relative py-4 flex gap-4 items-center text-[#969b9f] text-xl cursor-pointer ${
                     eventActive

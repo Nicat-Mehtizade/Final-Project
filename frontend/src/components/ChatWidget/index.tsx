@@ -4,6 +4,7 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import getTokenFromCookie from "../../context/services/getTokenFromCookie";
 import { jwtDecode } from "jwt-decode";
 import JwtType from "../../types/jwtType";
+import { BiSupport } from "react-icons/bi";
 
 const socket = io(`http://localhost:8000`, {
   withCredentials: true,
@@ -11,7 +12,7 @@ const socket = io(`http://localhost:8000`, {
 
 export default function ChatWidget() {
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState<{ from: string; message: string }[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState("");
   const token = getTokenFromCookie();
@@ -25,25 +26,26 @@ export default function ChatWidget() {
       socket.off("chat-message");
     };
   }, []);
+
   useEffect(() => {
     if (token) {
       const decoded = jwtDecode<JwtType>(token);
       setUsername(decoded.username);
     }
   }, [token]);
+
   const sendMessage = () => {
     if (message.trim()) {
       const data = { message, from: username? username : "User" };
-      console.log("Sent message data:", data);
       socket.emit("chat-message", data);
       setMessage("");
     }
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-3 md:right-6 z-50">
       <button
-        className="bg-yellow-400 text-white rounded-full cursor-pointer w-12 h-12 flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
+        className="bg-yellow-400 text-white rounded-full shadow-[0px_12px_24px_rgba(0,0,0,0.35)] cursor-pointer w-12 h-12 flex items-center justify-center  hover:bg-yellow-500 transition"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
@@ -51,14 +53,15 @@ export default function ChatWidget() {
       </button>
 
       {isOpen && (
-        <div className="mt-2 w-80 h-96 bg-white rounded-lg shadow-xl flex flex-col overflow-hidden border border-gray-200">
-          <div className="p-4 bg-yellow-400 text-white font-semibold text-lg">
+        <div className="mt-2 w-70  md:w-80 h-96 bg-white rounded-lg shadow-xl flex flex-col overflow-hidden border border-gray-200">
+          <div className="p-4 bg-yellow-400 text-white font-semibold text-lg flex items-center gap-2">
             Live Support
+            <BiSupport  className="text-2xl"/>
           </div>
           <div className="flex-1 p-3 overflow-y-auto space-y-2">
-            {chat.map((msg, i) => (
+            {chat.map((msg, index) => (
               <div
-                key={i}
+                key={index}
                 className={`text-sm p-2 rounded ${
                   msg.from === "Admin"
                     ? "bg-yellow-100 text-left"

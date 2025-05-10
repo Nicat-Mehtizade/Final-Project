@@ -22,6 +22,7 @@ const cookieParser = require("cookie-parser");
 const http = require("http");
 const { initSocket } = require("./config/socket");
 
+
 connectDB();
 dotenv.config();
 
@@ -65,6 +66,7 @@ app.use("/api/promo", promoCodeRouter);
 app.use("/api", authRouter);
 app.use("/api", passportRouter);
 app.use("/api", stripeRouter);
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

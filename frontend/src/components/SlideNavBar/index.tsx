@@ -71,6 +71,8 @@ const SlideNavBar = () => {
       console.log(error);
     }
   };
+
+  
   return (
     <div className="absolute  justify-between items-center left-10 top-15 z-50 lg:w-[95%] hidden lg:flex">
       <NavLink to={"/"}>

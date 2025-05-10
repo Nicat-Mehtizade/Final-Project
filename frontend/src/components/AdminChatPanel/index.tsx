@@ -7,7 +7,7 @@ const socket = io(`http://localhost:8000`, {
 });
 
 export default function AdminChatPanel() {
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState<{ from: string; message: string }[]>([]);
   const [message, setMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
