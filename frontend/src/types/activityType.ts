@@ -13,6 +13,7 @@ export interface Activity{
     createdAt:string;
     updatedAt?: Date;
     _id:string,
+    id:string,
     seats:Seat[][],
 }
 

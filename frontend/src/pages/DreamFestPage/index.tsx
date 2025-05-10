@@ -24,7 +24,7 @@ const DreamFestPage = () => {
       nav(`/events/${id}`);
     };
   
-    const handlePriceChange = (event: Event, newValue: number | number[]) => {
+    const handlePriceChange = (_: Event, newValue: number | number[]) => {
       setPriceRange(newValue as number[]);
     };
   

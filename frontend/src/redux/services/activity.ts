@@ -1,50 +1,59 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Activity } from '../../types/activityType';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Activity } from "../../types/activityType";
 export const activityApi = createApi({
-  reducerPath: 'activityApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/' }), 
-  tagTypes: ['Activity'],
+  reducerPath: "activityApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
+  tagTypes: ["Activity"],
   endpoints: (builder) => ({
     getActivities: builder.query<Activity[], { genre?: string }>({
-        query: () => 'activity',
-        transformResponse: (response: {data:Activity[]}, meta, arg) => {
-          if (arg?.genre) {
-            return response.data.filter((activity: Activity) => activity.genre === arg.genre);
-          }
-          return response.data;
-        },
-        providesTags: ['Activity'],
-      }),
+      query: () => "activity",
+      transformResponse: (
+        baseQueryReturnValue: unknown,
+        _meta,
+        arg: { genre?: string }
+      ): Activity[] => {
+        const response = baseQueryReturnValue as { data: Activity[] };
+        if (arg?.genre) {
+          return response.data.filter(
+            (activity: Activity) => activity.genre === arg.genre
+          );
+        }
+        return response.data;
+      },
+      providesTags: ["Activity"],
+    }),
 
     getActivityById: builder.query<Activity, string>({
       query: (id) => `activities/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Activity', id }],
+      providesTags: (result) =>
+        result ? [{ type: "Activity", id: result.id }] : ["Activity"],
     }),
 
     createActivity: builder.mutation<Activity, FormData>({
       query: (newActivity) => ({
-        url: 'activities',
-        method: 'POST',
+        url: "activities",
+        method: "POST",
         body: newActivity,
       }),
-      invalidatesTags: ['Activity'],
+      invalidatesTags: ["Activity"],
     }),
 
     updateActivity: builder.mutation<Activity, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `activities/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Activity', id }],
+      invalidatesTags: (result) =>
+        result ? [{ type: "Activity", id: result.id }] : [],
     }),
 
     deleteActivity: builder.mutation<void, string>({
       query: (id) => ({
         url: `activities/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Activity'],
+      invalidatesTags: ["Activity"],
     }),
   }),
 });

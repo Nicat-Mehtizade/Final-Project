@@ -219,7 +219,7 @@ const ProfilePage = () => {
           >
             Save Changes
           </button>
-          <button onClick={()=>handleDeleteAcc(user?._id)} className="bg-[#9CA3AF] text-white font-bold text-lg py-1 cursor-pointer px-5 rounded-lg hover:bg-red-500">
+          <button onClick={() => user?._id && handleDeleteAcc(user._id)} className="bg-[#9CA3AF] text-white font-bold text-lg py-1 cursor-pointer px-5 rounded-lg hover:bg-red-500">
             Delete my account
           </button>
         </div>
