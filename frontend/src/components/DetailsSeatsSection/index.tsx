@@ -30,13 +30,13 @@ const DetailsSeatsSection = forwardRef<
     }
 
     if (seat.isBooked) {
-      toast.error("This seat is already booked.",{
+      toast.error("This seat is already booked.", {
         style: {
-          backgroundColor:"var(--color-yellow-300)",
+          backgroundColor: "var(--color-yellow-300)",
           fontWeight: "700",
-          borderRadius:"20px"
+          borderRadius: "20px",
         },
-      })
+      });
       return;
     }
 
@@ -69,14 +69,14 @@ const DetailsSeatsSection = forwardRef<
         setBasketSeats((prev) => prev.filter((s) => s !== seat.seatNumber));
       } else {
         setBasketSeats((prev) => [...prev, seat.seatNumber]);
-        toast.success("Tickets were added to basket",{
-          icon:null,
+        toast.success("Tickets were added to basket", {
+          icon: null,
           style: {
-            backgroundColor:"var(--color-yellow-300)",
+            backgroundColor: "var(--color-yellow-300)",
             fontWeight: "700",
-            borderRadius:"20px"
+            borderRadius: "20px",
           },
-        })
+        });
       }
     } catch (error) {
       console.log(error);
@@ -134,41 +134,45 @@ const DetailsSeatsSection = forwardRef<
         </div>
       </div>
       <div className="max-w-[800px] mx-auto py-5">
-        {activity.seats
-          .slice()
-          .reverse()
-          .map((seatRow, rowIndex) => {
-            return (
-              <div
-                key={`row-${rowIndex}`}
-                className="grid grid-cols-10 gap-2 mb-2 lg:gap-5 lg:mb-5 justify-center"
-              >
-                {seatRow.map((s) => (
-                  <button
-                    onClick={() => handleSeatSelect(s)}
-                    className={`relative w-8 h-8 lg:w-12 lg:h-12 flex justify-center items-end cursor-pointer transition-all duration-200 ${
-                      basketSeats.includes(s.seatNumber)
+        <div className="w-full flex justify-center mb-6">
+          <img
+            src="/stage-removebg-preview.png" 
+            alt="Səhnə"
+            className="w-auto h-32 lg:h-48 object-contain"
+          />
+        </div>
+        {activity.seats.map((seatRow, rowIndex) => {
+          return (
+            <div
+              key={`row-${rowIndex}`}
+              className="grid grid-cols-10 gap-2 mb-2 lg:gap-5 lg:mb-5 justify-center"
+            >
+              {seatRow.map((s) => (
+                <button
+                  onClick={() => handleSeatSelect(s)}
+                  className={`relative w-8 h-8 lg:w-12 lg:h-12 flex justify-center items-end cursor-pointer transition-all duration-200 ${
+                    basketSeats.includes(s.seatNumber)
                       ? "bg-yellow-400"
                       : s.isBooked
                       ? "bg-gray-500"
                       : "bg-gray-300"
-                    } rounded-t-full border-2 ${
-                      basketSeats.includes(s.seatNumber)
+                  } rounded-t-full border-2 ${
+                    basketSeats.includes(s.seatNumber)
                       ? "border-yellow-600"
                       : s.isBooked
                       ? "border-gray-700"
                       : "border-gray-400"
-                    } hover:scale-105`}
-                    key={s._id}
-                  >
-                    <span className="text-[10px] lg:text-[12px] font-semibold mb-1">
-                      {s.seatNumber}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            );
-          })}
+                  } hover:scale-105`}
+                  key={s._id}
+                >
+                  <span className="text-[10px] lg:text-[12px] font-semibold mb-1">
+                    {s.seatNumber}
+                  </span>
+                </button>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

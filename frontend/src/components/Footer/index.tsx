@@ -3,6 +3,7 @@ import { RiInstagramFill } from "react-icons/ri";
 import { FaTiktok } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const facebookBtn=()=>{
@@ -32,21 +33,18 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col items-start gap-3 mb-5 md:mb-0">
-            <h1 className="font-bold text-2xl mb-2">Information</h1>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">FAQ</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Support</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Terms & Conditions</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">E-ticket</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Ticket refund or change</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Privacy Policy</button>
+            <h1 className="font-bold text-2xl mb-2">Events</h1>
+            <NavLink to={"/events/concert"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Concert</NavLink>
+            <NavLink to={"/events/theatre"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Theatre</NavLink>
+            <NavLink to={"/events/kids"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Kids</NavLink>
+            <NavLink to={"/events/dream-fest"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Dream Fest 2025</NavLink>
+            <NavLink to={"/events/tourism"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Tourism</NavLink>
+            <NavLink to={"/events/museum"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Museum</NavLink>
           </div>
           <div className="flex flex-col  gap-3 items-start mb-5 md:mb-0">
             <h1 className="font-bold text-2xl mb-2">iTicket</h1>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">About us</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Venues</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Point of Sales</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Karabakh Revival Foundation</button>
-            <button className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Contacts</button>
+            <NavLink to={"/about"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">About us</NavLink>
+            <NavLink to={"/contact"} className="text-gray-500 font-medium text-lg cursor-pointer hover:underline">Contact</NavLink>
           </div>
           <div className="flex flex-col gap-3">
             <h1 className="font-bold text-2xl mb-2">Security</h1>
