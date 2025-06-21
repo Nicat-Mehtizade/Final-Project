@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Activity } from "../../types/activityType";
 export const activityApi = createApi({
   reducerPath: "activityApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://final-project-3-llqp.onrender.com/api/" }),
   tagTypes: ["Activity"],
   endpoints: (builder) => ({
     getActivities: builder.query<Activity[], { genre?: string }>({

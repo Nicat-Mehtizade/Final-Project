@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
-const socket = io(`http://localhost:8000`, {
+const socket = io(`https://final-project-3-llqp.onrender.com`, {
   withCredentials: true,
 });
 

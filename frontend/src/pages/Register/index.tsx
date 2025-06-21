@@ -153,10 +153,13 @@ const Register = () => {
                     />
                     <span className="font-semibold">Google</span>
                   </a>
-                  <div className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer">
+                  <a
+                    href={`${BASE_URL}/auth/facebook`}
+                    className="flex gap-2 items-center border px-6 py-2 border-gray-500 rounded-sm cursor-pointer"
+                  >
                     <FaFacebook />
                     <span>Facebook</span>
-                  </div>
+                  </a>
                 </div>
               </form>
             </div>

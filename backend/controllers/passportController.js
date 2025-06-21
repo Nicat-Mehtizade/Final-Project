@@ -38,9 +38,9 @@ const googleAuthCallback = (req, res, next) => {
           res.cookie("token", token, { httpOnly: false });
 
           if (!existingUser.hasPassword) {
-            return res.redirect("http://localhost:5173/set-password");
+            return res.redirect("https://final-project-five-olive.vercel.app/set-password");
           } else {
-            return res.redirect("http://localhost:5173/");
+            return res.redirect("https://final-project-five-olive.vercel.app/");
           }
         } else {
           const newUser = new User({
@@ -55,7 +55,7 @@ const googleAuthCallback = (req, res, next) => {
           const token = generateJWT(newUser);
           res.cookie("token", token, { httpOnly: false });
 
-          return res.redirect("http://localhost:5173/set-password");
+          return res.redirect("https://final-project-five-olive.vercel.app/set-password");
         }
       } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -70,7 +70,7 @@ const facebookAuthCallback = (req, res, next) => {
     { session: false },
     async (err, user, info) => {
       if (err || !user) {
-        return res.redirect("http://localhost:5173/login");
+        return res.redirect("https://final-project-five-olive.vercel.app/login");
       }
 
       try {
@@ -90,9 +90,9 @@ const facebookAuthCallback = (req, res, next) => {
           });
 
           if (!existingUser.hasPassword) {
-            return res.redirect("http://localhost:5173/set-password");
+            return res.redirect("https://final-project-five-olive.vercel.app/set-password");
           } else {
-            return res.redirect("http://localhost:5173/");
+            return res.redirect("https://final-project-five-olive.vercel.app/");
           }
         } else {
           const newUser = new User({
@@ -112,7 +112,7 @@ const facebookAuthCallback = (req, res, next) => {
             sameSite: "Lax",
           });
 
-          return res.redirect("http://localhost:5173/set-password");
+          return res.redirect("https://final-project-five-olive.vercel.app/set-password");
         }
       } catch (error) {
         console.error("Facebook auth callback error:", error);
