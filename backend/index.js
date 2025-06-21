@@ -45,7 +45,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "https://final-project-five-olive.vercel.app",
+    origin: "https://final-project-five-olive.vercel.app/",
     credentials: true,
   })
 );
