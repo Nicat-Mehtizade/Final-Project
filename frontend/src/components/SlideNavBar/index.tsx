@@ -62,7 +62,9 @@ const SlideNavBar = () => {
     const value = e.target.value;
     setSearchValue(value);
     try {
-      const response = await axios(`${BASE_URL}/activity`);
+      const response = await axios(`${BASE_URL}/activity`, {
+        withCredentials: true,
+      });
       const filtered = response.data.data.filter((q: Activity) =>
         q.title.toLowerCase().includes(value.toLowerCase().trim())
       );
@@ -72,7 +74,6 @@ const SlideNavBar = () => {
     }
   };
 
-  
   return (
     <div className="absolute  justify-between items-center left-10 top-15 z-50 lg:w-[95%] hidden lg:flex">
       <NavLink to={"/"}>

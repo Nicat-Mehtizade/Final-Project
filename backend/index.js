@@ -22,12 +22,8 @@ const cookieParser = require("cookie-parser");
 const http = require("http");
 const { initSocket } = require("./config/socket");
 
-
 connectDB();
 dotenv.config();
-
-app.use(express.json());
-app.use(cookieParser());
 
 app.use(
   session({
@@ -36,9 +32,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      httpOnly: false, 
-      secure: process.env.NODE_ENV === "production", 
-      sameSite: "None", 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   })
 );
@@ -49,6 +45,9 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.json());
+app.use(cookieParser());
 
 const server = http.createServer(app);
 initSocket(server);
@@ -66,7 +65,6 @@ app.use("/api/promo", promoCodeRouter);
 app.use("/api", authRouter);
 app.use("/api", passportRouter);
 app.use("/api", stripeRouter);
-
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

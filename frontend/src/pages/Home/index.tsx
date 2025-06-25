@@ -70,7 +70,9 @@ const Home = () => {
 
   const getAllActivities = async () => {
     try {
-      const response = await axios(`${BASE_URL}/activity`);
+      const response = await axios(`${BASE_URL}/activity`, {
+        withCredentials: true,
+      });
       setSliderData(response.data.data.slice(0, 8));
 
       const tourismActivities = response.data.data.filter(
@@ -132,7 +134,9 @@ const Home = () => {
     const value = e.target.value;
     setSearchValue(value);
     try {
-      const response = await axios(`${BASE_URL}/activity`);
+      const response = await axios(`${BASE_URL}/activity`, {
+        withCredentials: true,
+      });
       const filtered = response.data.data.filter((q: Activity) =>
         q.title.toLowerCase().includes(value.toLowerCase().trim())
       );
@@ -195,7 +199,10 @@ const Home = () => {
                         <IoMdClose />
                       </button>
                     </div>
-                    <button onClick={handleOpen} className="border flex items-center border-gray-400 rounded-lg p-2 gap-2">
+                    <button
+                      onClick={handleOpen}
+                      className="border flex items-center border-gray-400 rounded-lg p-2 gap-2"
+                    >
                       <IoSearch className="text-gray-400 text-2xl min-w-5" />
                       <p className="text-gray-400 mr-2">Search</p>
                     </button>
@@ -232,7 +239,7 @@ const Home = () => {
               />
               <div className="flex items-center gap-4 text-2xl text-gray-300">
                 <NavLink to={"/basket"}>
-                <FaShoppingCart className="cursor-pointer" />
+                  <FaShoppingCart className="cursor-pointer" />
                 </NavLink>
                 <div
                   onMouseOver={() => token && setProfileVisible(true)}
@@ -252,13 +259,22 @@ const Home = () => {
                       }`}
                     >
                       <div>
-                        <NavLink to={"/profile"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        <NavLink
+                          to={"/profile"}
+                          className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                        >
                           <FaUser /> Profile
                         </NavLink>
-                        <NavLink to={"/profile/gift-card"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        <NavLink
+                          to={"/profile/gift-card"}
+                          className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                        >
                           <MdCardGiftcard /> "iGift" Gift Card
                         </NavLink>
-                        <NavLink to={"/profile/update-password"} className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full">
+                        <NavLink
+                          to={"/profile/update-password"}
+                          className="flex items-center gap-4 py-2 mb-3 border-b-1 text-lg cursor-pointer border-gray-300 w-full"
+                        >
                           <TbLockPassword /> Update Password
                         </NavLink>
                       </div>
@@ -322,7 +338,7 @@ const Home = () => {
           <AnimationBottomSection />
         </div>
       )}
-       <Modal
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

@@ -6,8 +6,9 @@ import { jwtDecode } from "jwt-decode";
 import JwtType from "../../types/jwtType";
 import { BiSupport } from "react-icons/bi";
 
-const socket = io(`https://final-project-3-llqp.onrender.com`, {
+const socket = io(`http://localhost:8000`, {
   withCredentials: true,
+  transports: ["websocket"],
 });
 
 export default function ChatWidget() {
