@@ -1,8 +1,6 @@
 # iTicket Clone
 
-<div align="center">
-  <img src="frontend/public/Final-Project-Readme-Photo.png" alt="iTicket Screenshot"/>
-</div>
+
 
 ## 💻 How to Run Locally
 
