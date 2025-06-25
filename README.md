@@ -1,5 +1,39 @@
 # iTicket Clone
 
+<div align="center">
+  <img src="public/Final-Project-Readme-Photo.png" alt="iTicket Screenshot"/>
+</div>
+
+## 💻 How to Run Locally
+
+> Follow the steps below to run the project on your local machine.
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/Nicat-Mehtizade/Final-Project.git
+```
+
+### 2️⃣ Start Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+> Frontend will be running at: http://localhost:5173
+
+### 3️⃣ Start Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+> Backend will be running at: http://localhost:8000
+
 ## 📌 Description
 
 This is a project that allows users to explore events, book seats, make payments, and more. It includes an admin panel for managing events, users, payments, and promotions. The project integrates Google and Facebook login using Passport.js and Stripe for payments. The frontend is built with React and styled with Tailwind CSS and Material UI.
