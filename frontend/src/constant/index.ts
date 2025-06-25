@@ -1,3 +1,3 @@
-const BASE_URL="https://final-project-3-llqp.onrender.com/api"
+const BASE_URL="http://localhost:8000/api"
 
 export {BASE_URL}

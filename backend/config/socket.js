@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 function initSocket(server) {
   const io = new Server(server, {
     cors: {
-      origin: "https://final-project-five-olive.vercel.app", 
+      origin: "http://localhost:5173", 
       methods: ["GET", "POST"],
       credentials: true, 
     },

@@ -79,8 +79,8 @@ const stripePayment = async (req, res) => {
         quantity: item.ticketCount || 1,
       })),
       mode: "payment",
-      success_url: `https://final-project-five-olive.vercel.app/success`,
-      cancel_url: `https://final-project-five-olive.vercel.app/cancel`,
+      success_url: `http://localhost:5173/success`,
+      cancel_url: `http://localhost:5173/cancel`,
       payment_intent_data: {
         metadata: {
           total_tickets: totalTickets.toString(),

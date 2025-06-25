@@ -126,7 +126,7 @@ const forgotPassword = async (req, res) => {
       expiresIn: "15m",
     });
 
-    const resetLink = `https://final-project-five-olive.vercel.app/reset-password?token=${token}`;
+    const resetLink = `http://localhost:5173/reset-password?token=${token}`;
 
     const html = `
       <p style="font-size: 18px; line-height: 1.5; color: #333;">Hi ${user.username},</p>
