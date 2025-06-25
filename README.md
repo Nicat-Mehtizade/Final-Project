@@ -1,4 +1,6 @@
-# iTicket Clone
+<div align="center">
+  <h1>iTicket Clone</h1>
+</div>
 
 <div align="center">
   <img src="frontend/public/Final-Project-Readme-Photo.png" alt="iTicket Screenshot"/>
@@ -41,6 +43,7 @@ This is a project that allows users to explore events, book seats, make payments
 ## 🔧 Tech Stack
 
 - **Frontend**:
+
   - React, Axios, React-Router, Redux-Toolkit
   - CSS, Styled Components, Tailwind CSS
   - React Icons, React Toastify
@@ -64,6 +67,7 @@ This is a project that allows users to explore events, book seats, make payments
 ## 🚀 Features
 
 - **Frontend**:
+
   - User Registration/Login (Google and Facebook login via Passport.js)
   - Event search, sorting, and pagination
   - Event details page with seat selection and booking functionality
