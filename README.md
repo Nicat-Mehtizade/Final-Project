@@ -1,7 +1,7 @@
 # iTicket Clone
 
 <div align="center">
-  <img src="public/Final-Project-Readme-Photo.png" alt="iTicket Screenshot"/>
+  <img src="frontend/public/Final-Project-Readme-Photo.png" alt="iTicket Screenshot"/>
 </div>
 
 ## 💻 How to Run Locally
